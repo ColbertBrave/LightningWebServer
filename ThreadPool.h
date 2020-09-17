@@ -13,15 +13,15 @@ private:
     int Thread_Num;
     int Max_Thread_Num;
     bool Server_IsOn = true;
+    
+    static bool worker();
+    void run();
 
 public:
     ThreadPool(int Thread_Num);
     ~ThreadPool();
 
     bool append(T *request);
-    static bool worker();
-    bool run();
-    
     void shutDown();
 }
 

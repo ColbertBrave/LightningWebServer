@@ -20,7 +20,7 @@ ThreadPool::ThreadPool(int thread_num = 12): Thread_Num(thread_num)
     (*this).ThreadID_List = vector<pthread_t>(thread_num, 0);
     for (int i = 0; i < thread_num; i++)
     {
-        if (pthread_create(&ThreadID_List[i], NULL, worker, this) != 0)  // 创建的每一个线程运行函数均为worker，参数为this，这里有很多问题
+        if (pthread_create(&ThreadID_List[i], NULL, worker, this) != 0)  // 创建的每一个线程运行函数均为worker
         {
             std::cout << "Error occured when initing the thread pool"
                       << std::endl;                                      // 创建失败后是否有必要清除已赋值的ThreadID_List或抛出异常后继续执行
@@ -56,9 +56,9 @@ bool ThreadPool::append(T *request)
 /*
     work()应当为一个静态函数，目的是不管是否创建了对象，都可以调用worker函数？
     静态函数只能调用静态数据成员和静态函数
-    为了调用类的动态成员，因此pthread_create里的函数参数为类的对象，见P304
+    为了调用类的动态成员，因此pthread_create里的函数参数为类的当前对象(this)，见P304
     创建的每个线程在创建后均运行worker(), 该函数运行线程池，
-    从静态成员请求列表中取出头部请求，并处理请求
+    从请求列表中取出头部请求，并处理请求
     静态函数会被自动分配在一个一直使用的存储区，直到退出应用程序实例
     避免了调用函数时压栈出栈，速度快很多。 
 */
@@ -76,7 +76,7 @@ bool worker(void *args)
 }
 
 template <typename T>
-bool ThreadPool::run()
+void ThreadPool::run()
 {
     if (!Server_IsOn)
     {
@@ -84,11 +84,17 @@ bool ThreadPool::run()
         throw std::exception();
     }
     /*
-        所有线程均访问请求列表
+        创建的所有线程均访问当前对象this的成员函数worker()
+        然后通过run()处理线程池对象的请求列表
+        不同线程同时处理该对象的请求列表，因此需要使用互斥锁
     */
 
+    pthread_mutex_t mutex;
+    pthread_mutex_init(&mutex, NULL);
     while (Server_IsOn)
     {
+        // 上锁的位置: 检测请求列表长度之前。
+        pthread_mutex_lock(&mutex);             // 使用互斥锁会导致阻塞，思考如何优化
         if (!Request_List.size())
         {
             continue;
@@ -96,8 +102,10 @@ bool ThreadPool::run()
 
         T *firstRequest = Request_List.front();
         Request_List.pop_front();
+        pthread_mutex_unlock(&mutex);
         firstRequest->process();
     }
+    pthread_mutex_destroy(&mutex);
 }
 
 template <typename T>
