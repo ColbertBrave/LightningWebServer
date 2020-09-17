@@ -8,7 +8,7 @@
 *    返 回 值: void
 */
 template <typename T>
-ThreadPool::ThreadPool(int thread_num = 12): Thread_Num(thread_num)
+ThreadPool::ThreadPool(int thread_num = 12, int max_requests = 10000): Thread_Num(thread_num), Max_Requests(max_requests)
 {
     if (thread_num <= 0 || thread_num > Max_Thread_Num)
     {
@@ -22,8 +22,8 @@ ThreadPool::ThreadPool(int thread_num = 12): Thread_Num(thread_num)
     {
         if (pthread_create(&ThreadID_List[i], NULL, worker, this) != 0)  // 创建的每一个线程运行函数均为worker
         {
-            std::cout << "Error occured when initing the thread pool"
-                      << std::endl;                                      // 创建失败后是否有必要清除已赋值的ThreadID_List或抛出异常后继续执行
+            std::cout << "Error occured when initing the thread pool" << std::endl;
+                                                            // 创建失败后是否有必要清除已赋值的ThreadID_List或抛出异常后继续执行
             throw std::exception();
         }
 
@@ -32,26 +32,15 @@ ThreadPool::ThreadPool(int thread_num = 12): Thread_Num(thread_num)
             std::cout << "Error occured when detaching threads" << std::endl;
             throw std::exception();
         }
-    }      
+    }
+    this->Server_IsOn = true;
 }
+
 
 template <typename T>
 ThreadPool::~ThreadPool() 
 {}
 
-template <typename T>
-bool ThreadPool::append(T *request)
-{
-    if (Request_List.size() >= Max_Requests)
-    {
-        std::cout << "The number of requests exceeds the limit: " 
-                  << this->Max_Requests << std::endl;
-        return false;
-    }
-
-    Request_List.push_back(request);
-    return true;
-}
 
 /*
     work()应当为一个静态函数，目的是不管是否创建了对象，都可以调用worker函数？
@@ -75,6 +64,7 @@ bool worker(void *args)
     return true;
 }
 
+
 template <typename T>
 void ThreadPool::run()
 {
@@ -83,13 +73,13 @@ void ThreadPool::run()
         std::cout << "The server is not on" << std::endl;
         throw std::exception();
     }
+
     /*
         创建的所有线程均访问当前对象this的成员函数worker()
         然后通过run()处理线程池对象的请求列表
         不同线程同时处理该对象的请求列表，因此需要使用互斥锁
     */
-
-    pthread_mutex_t mutex;
+    
     pthread_mutex_init(&mutex, NULL);
     while (Server_IsOn)
     {
@@ -105,13 +95,30 @@ void ThreadPool::run()
         pthread_mutex_unlock(&mutex);
         firstRequest->process();
     }
-    pthread_mutex_destroy(&mutex);
+}
+
+template <typename T>
+bool ThreadPool::append(T *request)
+{
+    // 与从请求列表中取出请求出的互斥锁是同一把
+    pthread_mutex_lock(&mutex);
+    if (Request_List.size() >= Max_Requests)
+    {
+        std::cout << "The number of requests exceeds the limit: " 
+                  << this->Max_Requests << std::endl;
+        return false;
+    }
+
+    Request_List.push_back(request);
+    pthread_mutex_unlock(&mutex);
+    return true;
 }
 
 template <typename T>
 void ThreadPool::shutDown()
 {
     this->Server_IsOn = false;
+    pthread_mutex_destroy(&mutex);
     std::cout << "Server has been shut down" << std::endl;
 }
 
