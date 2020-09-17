@@ -53,6 +53,28 @@ bool ThreadPool::append(T *request)
     return true;
 }
 
+/*
+    work()应当为一个静态函数，目的是不管是否创建了对象，都可以调用worker函数？
+    静态函数只能调用静态数据成员和静态函数
+    为了调用类的动态成员，因此pthread_create里的函数参数为类的对象，见P304
+    创建的每个线程在创建后均运行worker(), 该函数运行线程池，
+    从静态成员请求列表中取出头部请求，并处理请求
+    静态函数会被自动分配在一个一直使用的存储区，直到退出应用程序实例
+    避免了调用函数时压栈出栈，速度快很多。 
+*/
+template <typename T>
+bool worker(void *args)
+{
+    ThreadPool *threadPool = static_cast<ThreadPool *>(args);
+    if (!threadPool)
+    {
+        throw std::exception();
+        return false;
+    }
+    threadPool->run();
+    return true;
+}
+
 template <typename T>
 bool ThreadPool::run()
 {
@@ -61,6 +83,9 @@ bool ThreadPool::run()
         std::cout << "The server is not on" << std::endl;
         throw std::exception();
     }
+    /*
+        所有线程均访问请求列表
+    */
 
     while (Server_IsOn)
     {
@@ -82,12 +107,6 @@ void ThreadPool::shutDown()
     std::cout << "Server has been shut down" << std::endl;
 }
 
-template <typename T>
-bool worker(void *args)
-{
-    ThreadPool *threadPool = static_cast<ThreadPool *>(args);
-    threadPool->run();
-    return true;
-}
+
 
 

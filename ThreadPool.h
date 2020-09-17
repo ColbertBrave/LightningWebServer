@@ -19,8 +19,9 @@ public:
     ~ThreadPool();
 
     bool append(T *request);
+    static bool worker();
     bool run();
-    bool worker();
+    
     void shutDown();
 }
 
