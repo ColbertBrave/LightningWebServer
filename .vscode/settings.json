@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "*.m": "matlab",
-        "string": "cpp"
+        "string": "cpp",
+        "random": "cpp"
     }
 }
