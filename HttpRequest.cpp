@@ -5,8 +5,10 @@
 
 HttpRequest::HttpRequest() {}
 
+// 对象构造时即将http连接添加至epollfd
 HttpRequest::HttpRequest(int epollFd, int socketFd, const sockaddr_in &address) 
 {
+    // 将链接添加至epollFd进行管理
     this->Socket_Fd = socketFd;
     this->Address = address;
     epoll_event httpEvent;      // epoll_event对象包含事件和数据两个成员
@@ -25,11 +27,11 @@ bool HttpRequest::process()
 
 }
 
-void HttpRequest::parse(const std::string &httpRequestMessage)
+void HttpRequest::parse(std::string *Recv_Buffer)
 {
+    const std::string httpRequestMessage = *Recv_Buffer;
     std::string requestLine = httpRequestMessage.substr(0, httpRequestMessage.find("\r\n"));
     this->Request_Method = requestLine.substr(0, requestLine.find(' '));
     this->URL = requestLine.substr(Request_Method.length() + 1, requestLine.find_last_of(' ') - 1);
     this->Http_Version = requestLine.substr(requestLine.find_last_of(' ') + 1, requestLine.find_last_of('\r\n') - 1);
-    
 }
