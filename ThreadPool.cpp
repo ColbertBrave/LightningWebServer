@@ -79,7 +79,6 @@ void ThreadPool::run()
         然后通过run()处理线程池对象的请求列表
         不同线程同时处理该对象的请求列表，因此需要使用互斥锁
     */
-    
     pthread_mutex_init(&mutex, NULL);
     while (Server_IsOn)
     {
