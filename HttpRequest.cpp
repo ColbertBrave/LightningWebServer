@@ -8,7 +8,11 @@ HttpRequest::HttpRequest() {}
 // 对象构造时即将http连接添加至epollfd
 HttpRequest::HttpRequest(int epollFd, int socketFd, const sockaddr_in &address) 
 {
-    // 将链接添加至epollFd进行管理
+    // 每创建一个新的连接，则数量+1
+    if (HttpRequest::Request_Nums > ThreadPool::)
+    HttpRequest::Request_Nums++;
+
+    // 将链接添加至epollFd进行管理???此处是否有必要，如果仅仅是连接而无事件
     this->Socket_Fd = socketFd;
     this->Address = address;
     epoll_event httpEvent;      // epoll_event对象包含事件和数据两个成员
@@ -18,6 +22,12 @@ HttpRequest::HttpRequest(int epollFd, int socketFd, const sockaddr_in &address)
         std::cout << "Failed to add http request into epoll event" << std::endl;
         throw std::exception();
     }
+}
+
+HttpRequest::~HttpRequest()
+{
+    // 每销毁一个新的连接，则数量-1
+    HttpRequest::Request_Nums--;
 }
 
 bool HttpRequest::process()

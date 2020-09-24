@@ -6,6 +6,7 @@
 #include <arpa/inet.h>
 #include <string>
 
+
 /*
     Http连接是建立在TCP连接之上的
 */
@@ -36,9 +37,10 @@ private:
     void parse();
 
 public:
-    static int Epoll_Fd;            // 所有HTTP请求的对象都由同一个EpollFd进行管理，因此是静态数据成员，每个对象创建后均需要添加至Epoll进行管理
+    //static int Epoll_Fd;            // 所有HTTP请求的对象都由同一个EpollFd进行管理，因此是静态数据成员，每个对象创建后均需要添加至Epoll进行管理？？？
+    static unsigned int Request_Nums;
     bool process();
-    
-}
+} 
+unsigned int HttpRequest::Request_Nums = 0;
 
-#endifd
+#endif

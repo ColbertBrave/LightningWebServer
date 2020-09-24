@@ -11,9 +11,10 @@ public:
     WebServer();
     ~WebServer();
 
-    Init();
-    EventLoop();
-    DealReadEvent();
+    bool Init();
+    void EventLoop();
+    bool DealReadEvent();
+    bool BuildNewConnect();
 
 public:
     struct sockaddr_in *Server_Addr;

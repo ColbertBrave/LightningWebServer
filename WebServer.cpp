@@ -1,6 +1,8 @@
 #include "WebServer.h"
 #include "Utils.h"
-
+#include "HttpRequest.h"
+#include "ThreadPool.h"
+#include <cstring>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <iostream>
@@ -26,7 +28,7 @@ WebServer::WebServer(int port = 8888)
 
 WebServer::~WebServer(){}
 
-WebServer::Init()
+bool WebServer::Init()
 {
     listen(this->Listen_Fd, 5);
 
@@ -37,7 +39,7 @@ WebServer::Init()
     this->threadPool = new ThreadPool;
 }
 
-WebServer::EventLoop()
+void WebServer::EventLoop()
 {
     while (Server_IsOn)
     {
@@ -57,18 +59,14 @@ WebServer::EventLoop()
             // 有新连接
             if (sockFd == this->Listen_Fd)      
             {
-                
+                // 所有事件都先经历建立连接这一步
+                BuildNewConnect();
             }
             else
             {
                 if (sockFd & EPOLLIN)  // 此时与sockFd关联的文件可读
                 {
                     DealReadEvent();   // 对可读文件进行处理
-                }
-
-                if (sockFd & EPOLLOUT)  // 此时与sockFd关联的文件可写
-                {
-
                 }
 
                 if (sockFd & EPOLLOUT)  // 此时与sockFd关联的文件可写
@@ -88,8 +86,32 @@ WebServer::EventLoop()
     } 
 }
 
-WebServer::DealReadEvent()      // 对可读文件进行处理：加入到请求队列中分配线程进行处理
+bool WebServer::DealReadEvent()      // 对可读文件进行处理：加入到请求队列中分配线程进行处理
 {
     
     (*threadPool).append()
 }
+
+bool WebServer::BuildNewConnect()
+{
+    if (HttpRequest::Request_Nums > ThreadPool::Max_Requests)
+    {
+        std::cout << "Fail to build a new connection" << std::endl;
+        return false;
+    }
+
+    struct sockaddr_in *clientAddr;
+    int newConnFd = accept(this->Listen_Fd, (struct sockaddr *)clientAddr, sizeof(struct sockaddr));
+    if (newConnFd < 0)
+    {
+        std::cout << "Fail to build a new connection" << std::endl;
+        std::cout << strerror(errno) << std::endl;
+        return false;
+    }
+
+    // 将相应的客户端数据用于建立一个HttpRequest
+    HttpRequest(this->Epoll_Fd, newConnFd, *clientAddr);
+    return true;
+}
+
+

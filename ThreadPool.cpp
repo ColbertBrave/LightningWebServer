@@ -101,7 +101,7 @@ bool ThreadPool::append(T *request)
 {
     // 与从请求列表中取出请求出的互斥锁是同一把
     pthread_mutex_lock(&mutex);
-    if (Request_List.size() >= Max_Requests)
+    if (Request_List.size() >= ThreadPool::Max_Requests)
     {
         std::cout << "The number of requests exceeds the limit: " 
                   << this->Max_Requests << std::endl;
