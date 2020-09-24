@@ -1,6 +1,5 @@
 #include "WebServer.h"
 #include "Utils.h"
-#include "HttpRequest.h"
 #include "ThreadPool.h"
 #include <cstring>
 #include <sys/socket.h>
@@ -66,7 +65,7 @@ void WebServer::EventLoop()
             {
                 if (sockFd & EPOLLIN)  // 此时与sockFd关联的文件可读
                 {
-                    DealReadEvent();   // 对可读文件进行处理
+                    DealReadEvent(sockFd);   // 对可读文件进行处理
                 }
 
                 if (sockFd & EPOLLOUT)  // 此时与sockFd关联的文件可写
@@ -86,9 +85,10 @@ void WebServer::EventLoop()
     } 
 }
 
-bool WebServer::DealReadEvent()      // 对可读文件进行处理：加入到请求队列中分配线程进行处理
+bool WebServer::DealReadEvent(int sockFd)      // 对可读文件进行处理：加入到请求队列中分配线程进行处理
 {
-    
+    // 读操作，添加至请求列表
+    HttpRequest httpRequest(sockFd, );
     (*threadPool).append()
 }
 
@@ -110,7 +110,7 @@ bool WebServer::BuildNewConnect()
     }
 
     // 将相应的客户端数据用于建立一个HttpRequest
-    HttpRequest(this->Epoll_Fd, newConnFd, *clientAddr);
+    HttpRequest httpRequest(newConnFd, *clientAddr);
     return true;
 }
 

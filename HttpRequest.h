@@ -26,7 +26,7 @@ public:
 
 private:
     int         Socket_Fd;      // 该链接对应的socket
-    sockaddr_in Address;
+    sockaddr_in Client_Addr;
     std::string Http_Version;
     std::string URL;
     METHOD Request_Method;

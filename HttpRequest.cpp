@@ -9,12 +9,12 @@ HttpRequest::HttpRequest() {}
 HttpRequest::HttpRequest(int epollFd, int socketFd, const sockaddr_in &address) 
 {
     // 每创建一个新的连接，则数量+1
-    if (HttpRequest::Request_Nums > ThreadPool::)
-    HttpRequest::Request_Nums++;
+    if (HttpRequest::Request_Nums > ThreadPool::Max_Requests)
+        HttpRequest::Request_Nums++;
 
     // 将链接添加至epollFd进行管理???此处是否有必要，如果仅仅是连接而无事件
     this->Socket_Fd = socketFd;
-    this->Address = address;
+    this->Client_Addr = address;
     epoll_event httpEvent;      // epoll_event对象包含事件和数据两个成员
     httpEvent.event = EPOLLIN | EPOLLOUT;
     if (epoll_ctl(epollFd, EPOLL_CTL_ADD, socketFd, httpEvent) != 0)
@@ -22,6 +22,15 @@ HttpRequest::HttpRequest(int epollFd, int socketFd, const sockaddr_in &address)
         std::cout << "Failed to add http request into epoll event" << std::endl;
         throw std::exception();
     }
+}
+
+HttpRequest::HttpRequest(int socketFd, const sockaddr_in &address) 
+{
+    if (HttpRequest::Request_Nums > ThreadPool::Max_Requests)
+        HttpRequest::Request_Nums++;
+
+    this->Socket_Fd = socketFd;
+    this->Client_Addr = address;
 }
 
 HttpRequest::~HttpRequest()
