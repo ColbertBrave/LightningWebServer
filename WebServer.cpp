@@ -1,7 +1,7 @@
 #include "WebServer.h"
 #include "Utils.h"
 #include "ThreadPool.h"
-#include <cstring>
+#include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <iostream>
@@ -70,26 +70,25 @@ void WebServer::EventLoop()
 
                 if (sockFd & EPOLLOUT)  // 此时与sockFd关联的文件可写
                 {
-
+                    DealWriteEvent(sockFd);
                 }
 
                 if (sockFd & (EPOLLERR | EPOLLHUP | EPOLLRDHUP))  // 此时与sockFd关联文件发生错误，挂断或半挂断
                 {
-                    
+                    DealAbnormalEvent(sockFd);
                 }
-            }
-            
-
-            
+            }            
         }
     } 
 }
 
 bool WebServer::DealReadEvent(int sockFd)      // 对可读文件进行处理：加入到请求队列中分配线程进行处理
 {
-    // 读操作，添加至请求列表
-    HttpRequest httpRequest(sockFd, );
-    (*threadPool).append()
+    // 读操作，从连接队列中取出该连接添加至线程池的请求列表中，由线程池分配线程进行处理
+    HttpRequest *theHttpConn = httpConnQueue[sockFd];
+    // 还需要设置该HttpRequest对象所需的操作/状态，以便线程进行处理
+    (*threadPool).append(theHttpConn);
+    return true;
 }
 
 bool WebServer::BuildNewConnect()
@@ -111,7 +110,24 @@ bool WebServer::BuildNewConnect()
 
     // 将相应的客户端数据用于建立一个HttpRequest
     HttpRequest httpRequest(newConnFd, *clientAddr);
+    // lock?
+    // 将新建立的连接加入到http连接队列中，将连接的文件描述符作为索引。因此此处连接需要初始化。这里可以优化。
+    httpConnQueue[newConnFd] = &httpRequest;
     return true;
 }
 
+bool WebServer::DealWriteEvent(int sockFd)
+{
+    // 写操作，从连接队列中取出该连接添加至线程池的请求列表中，由线程池分配线程进行处理
+    HttpRequest *theHttpConn = httpConnQueue[sockFd];
+    // 还需要设置该HttpRequest对象所需的操作/状态，以便线程进行处理
+    (*threadPool).append(theHttpConn);
+    return true;
+}
+
+bool WebServer::DealAbnormalEvent(int sockFd)
+{
+    HttpRequest *theHttpConn = httpConnQueue[sockFd];
+    theHttpConn->close();
+}
 
