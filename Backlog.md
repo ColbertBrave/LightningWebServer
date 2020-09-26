@@ -1,3 +1,11 @@
 # 一些笔记，理解和备忘
 ## 理清思路
 V1 上手直接开始写，一边写一边梳理思路，因为此时尚未能够将各部分知识完全融会贯通。写的过程中逐渐发现许多问题如果提前规划好是可以避免的。
+
+## EPOLL的几种事件
++ EPOLLIN
++ EPOLLOUT
++ EPOLLET
++ EPOLLHUP
++ EPOLLRDHUP
++ EPOLLONESHOT
