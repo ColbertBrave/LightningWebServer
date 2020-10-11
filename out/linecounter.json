@@ -1,0 +1,289 @@
+{
+    "extension": "linecounter",
+    "version": "0.2.7",
+    "workspace": "/mnt/d/Project/P10_C++_LinuxWebServer/LightningWebServer",
+    "linecount": [
+        {
+            "version": "0.2.7",
+            "counttime": "2020-10-09 20:07:04",
+            "filesum": 19,
+            "codesum": 639,
+            "commentsum": 118,
+            "blanksum": 151,
+            "statistics": {
+                ".h": {
+                    "code": 201,
+                    "comment": 43,
+                    "blank": 52
+                },
+                ".cpp": {
+                    "code": 387,
+                    "comment": 75,
+                    "blank": 85
+                },
+                ".md": {
+                    "code": 51,
+                    "comment": 0,
+                    "blank": 14
+                }
+            },
+            "filelist": [
+                {
+                    "blank": 11,
+                    "code": 43,
+                    "comment": 0,
+                    "filename": "Backlog.md"
+                },
+                {
+                    "blank": 20,
+                    "code": 73,
+                    "comment": 20,
+                    "filename": "HttpRequest.cpp"
+                },
+                {
+                    "blank": 9,
+                    "code": 43,
+                    "comment": 6,
+                    "filename": "HttpRequest.h"
+                },
+                {
+                    "blank": 5,
+                    "code": 22,
+                    "comment": 5,
+                    "filename": "MutexLock.h"
+                },
+                {
+                    "blank": 3,
+                    "code": 8,
+                    "comment": 0,
+                    "filename": "Readme.md"
+                },
+                {
+                    "blank": 12,
+                    "code": 68,
+                    "comment": 6,
+                    "filename": "RedisDataBase.cpp"
+                },
+                {
+                    "blank": 4,
+                    "code": 21,
+                    "comment": 5,
+                    "filename": "RedisDataBase.h"
+                },
+                {
+                    "blank": 3,
+                    "code": 4,
+                    "comment": 0,
+                    "filename": "SQLConnectPool.cpp"
+                },
+                {
+                    "blank": 4,
+                    "code": 11,
+                    "comment": 3,
+                    "filename": "SQLConnectPool.h"
+                },
+                {
+                    "blank": 18,
+                    "code": 86,
+                    "comment": 25,
+                    "filename": "ThreadPool.cpp"
+                },
+                {
+                    "blank": 6,
+                    "code": 24,
+                    "comment": 12,
+                    "filename": "ThreadPool.h"
+                },
+                {
+                    "blank": 11,
+                    "code": 32,
+                    "comment": 0,
+                    "filename": "TimerLinkedList.cpp"
+                },
+                {
+                    "blank": 10,
+                    "code": 25,
+                    "comment": 3,
+                    "filename": "TimerLinkedList.h"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "TimeWheel.cpp"
+                },
+                {
+                    "blank": 5,
+                    "code": 16,
+                    "comment": 7,
+                    "filename": "TimeWheel.h"
+                },
+                {
+                    "blank": 2,
+                    "code": 23,
+                    "comment": 2,
+                    "filename": "Utils.cpp"
+                },
+                {
+                    "blank": 2,
+                    "code": 8,
+                    "comment": 0,
+                    "filename": "Utils.h"
+                },
+                {
+                    "blank": 19,
+                    "code": 100,
+                    "comment": 22,
+                    "filename": "WebServer.cpp"
+                },
+                {
+                    "blank": 7,
+                    "code": 31,
+                    "comment": 2,
+                    "filename": "WebServer.h"
+                }
+            ]
+        },
+        {
+            "version": "0.2.7",
+            "counttime": "2020-10-09 20:07:32",
+            "filesum": 19,
+            "codesum": 639,
+            "commentsum": 118,
+            "blanksum": 151,
+            "statistics": {
+                ".cpp": {
+                    "code": 387,
+                    "comment": 75,
+                    "blank": 85
+                },
+                ".h": {
+                    "code": 201,
+                    "comment": 43,
+                    "blank": 52
+                },
+                ".md": {
+                    "code": 51,
+                    "comment": 0,
+                    "blank": 14
+                }
+            },
+            "filelist": [
+                {
+                    "blank": 11,
+                    "code": 43,
+                    "comment": 0,
+                    "filename": "Backlog.md"
+                },
+                {
+                    "blank": 20,
+                    "code": 73,
+                    "comment": 20,
+                    "filename": "HttpRequest.cpp"
+                },
+                {
+                    "blank": 9,
+                    "code": 43,
+                    "comment": 6,
+                    "filename": "HttpRequest.h"
+                },
+                {
+                    "blank": 5,
+                    "code": 22,
+                    "comment": 5,
+                    "filename": "MutexLock.h"
+                },
+                {
+                    "blank": 3,
+                    "code": 8,
+                    "comment": 0,
+                    "filename": "Readme.md"
+                },
+                {
+                    "blank": 12,
+                    "code": 68,
+                    "comment": 6,
+                    "filename": "RedisDataBase.cpp"
+                },
+                {
+                    "blank": 4,
+                    "code": 21,
+                    "comment": 5,
+                    "filename": "RedisDataBase.h"
+                },
+                {
+                    "blank": 3,
+                    "code": 4,
+                    "comment": 0,
+                    "filename": "SQLConnectPool.cpp"
+                },
+                {
+                    "blank": 4,
+                    "code": 11,
+                    "comment": 3,
+                    "filename": "SQLConnectPool.h"
+                },
+                {
+                    "blank": 18,
+                    "code": 86,
+                    "comment": 25,
+                    "filename": "ThreadPool.cpp"
+                },
+                {
+                    "blank": 6,
+                    "code": 24,
+                    "comment": 12,
+                    "filename": "ThreadPool.h"
+                },
+                {
+                    "blank": 11,
+                    "code": 32,
+                    "comment": 0,
+                    "filename": "TimerLinkedList.cpp"
+                },
+                {
+                    "blank": 10,
+                    "code": 25,
+                    "comment": 3,
+                    "filename": "TimerLinkedList.h"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "TimeWheel.cpp"
+                },
+                {
+                    "blank": 5,
+                    "code": 16,
+                    "comment": 7,
+                    "filename": "TimeWheel.h"
+                },
+                {
+                    "blank": 2,
+                    "code": 23,
+                    "comment": 2,
+                    "filename": "Utils.cpp"
+                },
+                {
+                    "blank": 2,
+                    "code": 8,
+                    "comment": 0,
+                    "filename": "Utils.h"
+                },
+                {
+                    "blank": 19,
+                    "code": 100,
+                    "comment": 22,
+                    "filename": "WebServer.cpp"
+                },
+                {
+                    "blank": 7,
+                    "code": 31,
+                    "comment": 2,
+                    "filename": "WebServer.h"
+                }
+            ]
+        }
+    ]
+}
