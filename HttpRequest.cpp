@@ -46,45 +46,42 @@ bool HttpRequest::process()
     // 根据报文做出响应
     switch (Request_Method)
     {
-    case 0:     // GET方法
+    case 0:      // GET方法
         
         break;
     case 1:     // POST方法
-        {
-            switch (this->URL)
-            {
-            case "/base.html"||"/": break;
-            case "/regester.html": break;
-            case "/welcome.html": break;
-            case "/getvote": break;
-            default: break; 
-            }
-        }
+        
         break;
     default: break;   
     }
 
 }
 
+/*
+    功能: 解析接收到的请求报文
+    从接收缓冲区中解析出请求方法，URL，http协议版本，请求头部和请求实体
+*/
 void HttpRequest::parse(std::string *Recv_Buffer)
 {   
-    // 从接收缓冲区中解析出请求方法，URL，http协议版本，请求头部和消息正文
-    if (Recv_Buffer->size() <= 0)
+
+    if (Recv_Buffer->size() == 0)
     {
         std::cout << "The receved buffer is empty" << std::endl;
         throw std::exception();
     }
-        
+
+    // 将请求报文分割为三部分: 请求行，请求头部，请求实体 
     std::string httpRequestPost = *Recv_Buffer;
     std::string requestLine = httpRequestPost.substr(0, httpRequestPost.find("\r\n"));
     std::string requestHead = httpRequestPost.substr(httpRequestPost.find("\r\n") + 2, httpRequestPost.find_last_of('\r\n'));
     std::string requestBody = httpRequestPost.substr(httpRequestPost.find_last_of('\r\n'));
     
+    // 从请求行中解析出请求方法，URL，Http协议版本
     this->Request_Method = requestLine.substr(0, requestLine.find(' '));
     this->URL = requestLine.substr(Request_Method.length() + 1, requestLine.find_last_of(' ') - 1);
     this->Http_Version = requestLine.substr(requestLine.find_last_of(' ') + 1, requestLine.find_last_of('\r\n') - 1);
 
-    // 解析请求头部
+    // 从请求头部中解析出各种头部信息，存入key-value构成的map容器中
     while (true)
     { 
         if (requestHead.size() == 0)
@@ -96,6 +93,9 @@ void HttpRequest::parse(std::string *Recv_Buffer)
         // 去除已经存入map中的key-value
         requestHead = requestHead.substr(requestHead.find("\r\n") + 2);
     }
+
+    // 从请求主体中解析相应的信息
+    // 待完成
 }
 
 bool HttpRequest::write()
