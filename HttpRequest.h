@@ -36,7 +36,7 @@ private:
     std::string     Http_Version;
     std::string     URL;
     METHOD          Request_Method;
-    TriggerMode Trigger_Mode;
+    TriggerMode     Trigger_Mode;
     std::string     *Recv_Buffer;   // 连接里的读写缓冲区的本质及其意义是什么
 
     map<std::string, std::string> Request_Header;

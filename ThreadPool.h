@@ -16,12 +16,12 @@ class ThreadPool
 {
 private:
     std::list<T *>          Request_List;               // 思考Request_List和ThreadID_List选择这样的数据结构的原因
-    std::vector<pthread_t>  ThreadID_List;      // pthread_t是线程的ID类型
+    std::vector<pthread_t>  ThreadID_List;              // pthread_t是线程的ID类型
     pthread_mutex_t         mutex;
-    static unsigned int Max_Requests;
-    int Thread_Num;
-    static const int Max_Thread_Num = 16;       // 作为特例，有序型的const静态数据成员可以在类体中用一常量值初始化
-    bool Server_IsOn;         //？应放在一个更合理的地方
+    static unsigned int     Max_Requests;
+    int                     Thread_Num;
+    static const int        Max_Thread_Num = 16;       // 作为特例，有序型的const静态数据成员可以在类体中用一常量值初始化
+    bool                    Server_IsOn;       //？应放在一个更合理的地方
     
     static bool worker();
     void run();

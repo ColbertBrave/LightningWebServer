@@ -17,7 +17,7 @@ ThreadPool::ThreadPool(int thread_num = 12, int max_requests = 10000): Thread_Nu
         thread_num = 12;
     }
 
-    (*this).ThreadID_List = vector<pthread_t>(thread_num, 0);   // 亦可使用auto count:counts的C++11特性
+    ThreadID_List = vector<pthread_t>(thread_num, 0);   // 亦可使用auto count:counts的C++11特性
     for (int i = 0; i < thread_num; i++)
     {
         if (pthread_create(&ThreadID_List[i], NULL, worker, this) != 0)  // 创建的每一个线程运行函数均为worker

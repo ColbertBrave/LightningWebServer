@@ -26,7 +26,7 @@ public:
 
 
 private:
-    int Listen_Fd;      
+    int Listen_Fd;          // 监听套接字  
     int Epoll_Fd;
     ThreadPool *threadPool; // 该服务器对应的线程池
     bool Server_IsOn;

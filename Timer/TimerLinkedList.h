@@ -1,6 +1,6 @@
 #ifndef TIMERLINKEDLIST_H
 #define TIMERLINKEDLIST_H
-#include <time.h>
+#include <sys/time.h>
 
 typedef struct 
 {
@@ -25,14 +25,13 @@ private:
     Timer *Head_Timer;
     Timer *Tail_Timer;
 
-
 public:
     TimerLinkedList(/* args */);
     ~TimerLinkedList();
 
     bool InsertTimer(Timer *timer);
     bool DeleteTimer(Timer *timer);
-
+    void ClearExpired();
 };
 
 #endif

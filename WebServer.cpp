@@ -6,10 +6,18 @@
 #include <sys/types.h>
 #include <iostream>
 
+
 WebServer::WebServer(int port = 8888)
 {
-    bzero(Server_Addr, sizeof(*Server_Addr));
-    this->Server_Addr->sin_family = AF_INET;
+    // 对传入参数port进行检查
+    if (port > 65535 && port < 1024)
+    {
+        std::cout << "Invalid server port" << std::endl;    // TODO 改为写入到日志中
+        throw std::exception()
+    }
+
+    bzero(Server_Addr, sizeof(*Server_Addr));       // TODO 用C++特性改写
+    this->Server_Addr->sin_family = AF_INET;        // IPv4协议族
     this->Server_Addr->sin_port = htons(port);
     this->Server_Addr->sin_addr->s_addr = htonl(INADDR_ANY);
     this->Listen_Fd = socket(PF_INET, SOCK_STREAM, 0);
@@ -21,6 +29,12 @@ WebServer::WebServer(int port = 8888)
     if (bind(this->Listen_Fd, Server_Addr, typeof(Server_Addr)) < 0)
     {
         std:cout<<"Failed to bind server address"<<std::endl;
+        throw std::exception();
+    }
+
+    if (!Init())
+    {
+        std::cout << "Failed to init" << std::endl;
         throw std::exception();
     }
 }
@@ -36,6 +50,8 @@ bool WebServer::Init()
 
     // 启动线程池
     this->threadPool = new ThreadPool;
+
+    return true;
 }
 
 void WebServer::EventLoop()
@@ -125,6 +141,7 @@ bool WebServer::DealWriteEvent(int sockFd)
     return true;
 }
 
+// 处理异常事件
 bool WebServer::DealAbnormalEvent(int sockFd)
 {
     HttpRequest *theHttpConn = httpConnQueue[sockFd];
