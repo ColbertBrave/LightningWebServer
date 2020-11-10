@@ -4,13 +4,18 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <sys/epoll.h>
 #include <string>
 #include <map>
+#include <functional>
+#include "EventLoop.h"
 #include "Utils.h"
 
 
 /*
     Http连接是建立在TCP连接之上的
+    HttpRequest类并不处理请求，只负责将新的连接封装成请求，并解析请求内容
+    相应的处理方法由EventLoop传入
 */
 class HttpRequest
 {
@@ -25,31 +30,43 @@ public:
         OPTIONS,
         DELETE
     };
-    enum class TriggerMode
-    {
-
-    }
 
 private:
-    int             Socket_Fd;      // 该链接对应的socket
-    sockaddr_in     Client_Addr;
-    std::string     Http_Version;
-    std::string     URL;
-    METHOD          Request_Method;
-    TriggerMode     Trigger_Mode;
-    std::string     *Recv_Buffer;   // 连接里的读写缓冲区的本质及其意义是什么
+    std::make_shared<EventLoop> EventLoop
+    
+                    
+    sockaddr_in                 Client_Addr;
+    std::string                 Http_Version;
+    std::string                 URL;
+    METHOD                      Request_Method;
+    TriggerMode                 Trigger_Mode;
+    std::string                 *Recv_Buffer;   // 连接里的读写缓冲区的本质及其意义是什么
 
     map<std::string, std::string> Request_Header;
     void parse();
 
-
 public:
+    HttpRequest();
+    HttpRequest(int fd, struct sockaddr_in address);
+    ~HttpRequest();
+
+    epoll_event*                EventPtr;      
+    int                         Fd;                 // 该连接对应的socket fd
     static int Epoll_Fd;            // 所有HTTP请求的对象都由同一个EpollFd进行管理，因此是静态数据成员，每个对象创建后均需要添加至Epoll进行管理？？？
     static unsigned int Request_Nums;
+    
     bool process();
     bool write();
     void closeHttp();
-}
-unsigned int HttpRequest::Request_Nums = 0;
 
+
+    std::function<void()> ReadHandler;
+    std::function<void()> WriteHandler;
+
+    void SetFd();
+    void SetEvent();
+    void SetReadHandler(std::function<void()> handler);
+    void SetWriteHandler(std::function<void()> handler);
+    void HandleRequest();
+}
 #endif

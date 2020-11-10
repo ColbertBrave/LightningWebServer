@@ -3,16 +3,18 @@
 #include "ThreadPool.h"
 #include <string.h>
 #include <sys/socket.h>
+#include <netinet/in.h>
 #include <sys/types.h>
 #include <iostream>
 
 
-WebServer::WebServer(int port = 8888)
+WebServer::WebServer(int port = 8888) // TODO 在WebServer里将日志初始化
 {
+    // TODO 在这之前首先启动日库线程
     // 对传入参数port进行检查
     if (port > 65535 && port < 1024)
     {
-        std::cout << "Invalid server port" << std::endl;    // TODO 改为写入到日志中
+        LOG << "Invalid server port\n";    // TODO 改为写入到日志中 DOING 未测试
         throw std::exception()
     }
 
@@ -28,123 +30,52 @@ WebServer::WebServer(int port = 8888)
 
     if (bind(this->Listen_Fd, Server_Addr, typeof(Server_Addr)) < 0)
     {
-        std:cout<<"Failed to bind server address"<<std::endl;
-        throw std::exception();
-    }
-
-    if (!Init())
-    {
-        std::cout << "Failed to init" << std::endl;
+        LOG <<"Failed to bind server address.\n";
         throw std::exception();
     }
 }
 
-WebServer::~WebServer(){}
+// 构造函数只创建线程池，但不启动MainLoop和线程池
+WebServer::WebServer(std::make_shared<EventLoop> loop): MainLoop(loop), ThreadPool(new ThreadPool) {}
 
-bool WebServer::Init()
+WebServer::~WebServer()
 {
-    listen(this->Listen_Fd, 5);
-
-    this->Epoll_Fd = epoll_create(5);   // size参数并不起作用，只是给内核一个提示，告诉它事件表需要多大
-    AddFd(Epoll_Fd, Listen_Fd);
-
-    // 启动线程池
-    this->threadPool = new ThreadPool;
-
-    return true;
+    // TODO 等待到日志线程遍历保存所有缓冲区的日志
 }
 
-void WebServer::EventLoop()
+// 启动服务器: 启动线程池，接收新的连接并交由MainLoop监听
+void WebServer::Start()
 {
-    while (Server_IsOn)
+    ThreadPool->RunThreadPool();
+    // MainLoop接收新连接请求并分发请求
+    // 由于此socket只监听有无连接，谈不上写和其他操作。故只有这两类。（默认是LT模式，即EPOLLLT |EPOLLIN）。
+    //NewRequest->SetEvents(EPOLLIN | EPOLLET);       //TODO ??放在哪里更合适 DONE 这里就可以了，构造函数中没必要 DONE 改写结构，放在这里也没必要了
+    ListenNewRequest();
+    WebServer::Server_Run = true;
+}
+
+// TODO 这里的accept和epoll是否冲突？DONE 不冲突，accept是接收并建立连接，epoll是IO复用，这里是建立连接可能发生的套接字IO操作
+void WebServer::ListenNewRequest()
+{
+    struct sockaddr_in clientAddr;
+    bzero(&clientAddr, sizeof(clientAddr));
+    socklen_t clientAddrLength = sizeof(clientAddr);
+    int newConnFd;
+    while ((newConnFd = accept(this->ListenFd, (struct sockaddr*)&clientAddr, &clientAddrLength)) > 0)
     {
-        int readyEventNums = epoll_wait(this->Epoll_Fd, this->Ready_Events, MAX_EVENTS_NUMBER, timeout) // Reactor模式. 一直阻塞直到有事件来临或满足超时条件
-        if (readyEventNums < 0 && errno != EINTR)   // ? errno != EINTR
+        // 当超过服务器最大连接数时阻塞等待/关闭
+        if (newConnFd > MAX_CONNECTIONS)
         {
-            // LOG_ERROR("%s", "epoll failure");
-            break;
+            //...
         }
 
-        for (auto event:Ready_Events)
-        {
-            // 依次取出就绪I/O事件并进行处理
-            int sockFd = event.data.fd;
+        // 设置为非阻塞模式 WHY
+        //...
 
-            // 此处可以优化
-            // 有新连接
-            if (sockFd == this->Listen_Fd)      
-            {
-                // 所有事件都先经历建立连接这一步
-                BuildNewConnect();
-            }
-            else
-            {
-                if (sockFd & EPOLLIN)  // 此时与sockFd关联的文件可读
-                {
-                    DealReadEvent(sockFd);   // 对可读文件进行处理
-                }
-
-                if (sockFd & EPOLLOUT)  // 此时与sockFd关联的文件可写
-                {
-                    DealWriteEvent(sockFd);
-                }
-
-                if (sockFd & (EPOLLERR | EPOLLHUP | EPOLLRDHUP))  // 此时与sockFd关联文件发生错误，挂断或半挂断
-                {
-                    DealAbnormalEvent(sockFd);
-                }
-            }            
-        }
-    } 
-}
-
-bool WebServer::DealReadEvent(int sockFd)      // 对可读文件进行处理：加入到请求队列中分配线程进行处理
-{
-    // 读操作，从连接队列中取出该连接添加至线程池的请求列表中，由线程池分配线程进行处理
-    HttpRequest *theHttpConn = httpConnQueue[sockFd];
-    // 还需要设置该HttpRequest对象所需的操作/状态，以便线程进行处理
-    (*threadPool).append(theHttpConn);
-    return true;
-}
-
-bool WebServer::BuildNewConnect()
-{
-    if (HttpRequest::Request_Nums > ThreadPool::Max_Requests)
-    {
-        std::cout << "Fail to build a new connection" << std::endl;
-        return false;
+        // 封装新连接为请求, 取出一个EventLoop, 然后分发请求给它
+        std::shared_ptr<EventLoop> nextEventLoop = ThreadPool->GetNextEventLoop();
+        HttpRequest newRequest(newConnFd, clientAddr);
+        NewRequest->SetEvents(EPOLLIN | EPOLLET);       // TODO ??放在哪里更合适 DONE 这里就可以了，构造函数中没必要
+        nextEventLoop->ListenRequest(newRequest);            // TODO mainloop监听这个事件，还是放到各个loop去监听这件事情
     }
-
-    struct sockaddr_in *clientAddr;
-    int newConnFd = accept(this->Listen_Fd, (struct sockaddr *)clientAddr, sizeof(struct sockaddr));
-    if (newConnFd < 0)
-    {
-        std::cout << "Fail to build a new connection" << std::endl;
-        std::cout << strerror(errno) << std::endl;
-        return false;
-    }
-
-    // 将相应的客户端数据用于建立一个HttpRequest
-    HttpRequest httpRequest(newConnFd, *clientAddr);
-    // lock?
-    // 将新建立的连接加入到http连接队列中，将连接的文件描述符作为索引。因此此处连接需要初始化。这里可以优化。
-    httpConnQueue[newConnFd] = &httpRequest;
-    return true;
 }
-
-bool WebServer::DealWriteEvent(int sockFd)
-{
-    // 写操作，从连接队列中取出该连接添加至线程池的请求列表中，由线程池分配线程进行处理
-    HttpRequest *theHttpConn = httpConnQueue[sockFd];
-    // 还需要设置该HttpRequest对象所需的操作/状态，以便线程进行处理
-    (*threadPool).append(theHttpConn);
-    return true;
-}
-
-// 处理异常事件
-bool WebServer::DealAbnormalEvent(int sockFd)
-{
-    HttpRequest *theHttpConn = httpConnQueue[sockFd];
-    theHttpConn->close();
-}
-

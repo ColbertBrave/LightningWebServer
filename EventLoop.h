@@ -1,30 +1,40 @@
 #ifndef EVENTLOOP_H
 #define EVENTLOOP_H
+#define gettid() syscall(SYS_gettid)
+#include <sys/epoll.h>
+#include <sys/types.h>
+#include <pthread.h>
+#include "HttpRequest.h"
 #include <vector>
 
-#include <pthread.h>
-
-#include "MutexLock.h"
-
-
 /*
-    每个EventLoop至少一个线程，每个线程至多处理一个EventLoop，每个EventLoop可以被其他线程访问，因此要保证可重入
-
+    EventLoop类负责监听和返回就绪事件列表，并且提供对应的事件处理函数接口，
+    由封装好的线程类负责调用和运行函数
+    EventLoop和Worker可以视作劳心者与劳力者。EventLoop负责接收请求，向请求对象中传递相应的处理方法，
+    但是事情最终还是要worker来完成
 */
 class EventLoop
 {
 private:
-    std::vector<Event> Events_List;      // TODO Event or HttpRequest
-    std::vector<Event> GetReadyEvents();
-    bool Loop_Flag;
-    pthread_t Thread_ID;
+    int                         EpollFd;
+    pid_t                       ThreadID;
+    std::vector<HttpRequest>    ReadyEvents;
+    const size_t                MAX_EVENTS;
+    int                         Timeout;
+    
 
 public:
+    // TODO 是否需要增加拷贝构造函数和拷贝赋值运算符
     EventLoop();
     ~EventLoop();
 
+    void AddRequest(HttpRequest request);
+    void ModifyRequest();
+    void DeleteRequest();
     void StartLoop();
 
+    bool DealReadEvent(int sockFd);
+    bool DealWriteEvent(int sockFd);
+    bool DealAbnormalEvent(int sockFd);
 };
-
 #endif

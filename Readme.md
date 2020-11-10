@@ -1,24 +1,60 @@
+## TODO
++ 定时器和封装后的互斥锁有无必要，是否可以加入到日志类中，以及是否会影响日志类的性能？
++ 检查各个类是否遵循了RAII
+
+
+
 ## 项目结构
 ### 并发模型
-采用One loop per thread，线程池启动时，创建一定数量的EventLoop，每个EventLoop构造时创建一个线程，
+采用One loop per thread
 
-
-
-
-### 核心结构
 
 ### 服务器
++ 服务器包含一个ThreadPool对象的unique_ptr，一个mainloop对象指针，一个NewRequest指针；
++ mainLoop负责接收客户端发起的连接请求，并且将其封装为NewRequest，然后分发给不同的EventLoop对象；
++ 服务器中会启动线程池，由线程池处理相应的request；
 
 ### 线程池
++ 线程池会创建一定数量的线程(Worker类)，每个worker拥有一个eventloop对象指针；
++ 这个eventloop对象不断接收来自mainloop分发的任务，worker运行StartLoop()进行请求的解析和处理；
++ 每个request对象构造时都会包含一个eventloop对象指针，这意味着这个request将被分派给相应的eventloop；
 
 ### 定时器
 
 ### 日志
+```graphviz
+digraph finite_state_machine {
+    rankdir=LR;
+    size="8,5"
+
+    node [shape = doublecircle]; S;
+    node [shape = point ]; qi
+
+    node [shape = circle];
+    qi -> S;
+    S  -> q1 [ label = "a" ];
+    S  -> S  [ label = "a" ];
+    q1 -> S  [ label = "a" ];
+    q1 -> q2 [ label = "ddb" ];
+    q2 -> q1 [ label = "b" ];
+    q2 -> q2 [ label = "b" ];
+```
+- 线程安全单例
+- 可拓展日志缓冲区数目
+- 要进行测试
+- 简单易懂的变量名和函数名
+- 如何在不同区域调用同一对象
 
 ## 代码规范
 + 在满足需求的基础上，代码的清晰直白比使用各种复杂的特性更加重要；
 + 每个函数都要对传入参数的有效性进行检查；
 + 尽量避免使用C，不得不使用时，使用extern "C"将C语言的代码与C++代码进行分离编译，再统一链接；
++ 类成员均为大驼峰命名，形参和局部变量均为小驼峰
+  
+
+## 改进之处
++ 使用std::array代替了C array;
++ 
 
 ## 参考 & 致谢
 1. 《后台开发核心技术与应用实践》                   徐晓鑫著

@@ -5,7 +5,7 @@
 HttpRequest::HttpRequest() {}
 
 // 对象构造时即将http连接添加至epollfd
-HttpRequest::HttpRequest(int epollFd, int socketFd, const sockaddr_in &address) 
+HttpRequest::HttpRequest(int epollFd, int socketFd, const sockaddr_in &address)
 {
     // 每创建一个新的连接，则数量+1
     if (HttpRequest::Request_Nums > ThreadPool::Max_Requests)
@@ -32,6 +32,7 @@ HttpRequest::HttpRequest(int socketFd, const sockaddr_in &address)
     this->Client_Addr = address;
 }
 
+// TODO 定义拷贝构造函数和拷贝赋值运算符
 HttpRequest::~HttpRequest()
 {
     // 每销毁一个新的连接，则数量-1         ？？放在这里好还是放在closeHttp()好。对象的析构发生在何时(准确时间)？是否可以人为控制对象的析构
@@ -106,4 +107,26 @@ bool HttpRequest::write()
 void HttpRequest::closeHttp()
 {
     RemoveFd(HttpRequest::Epoll_Fd, this->Socket_Fd);   // 从epoll内核事件表中移除该连接
+}
+
+
+void HttpRequest::SetFd(int fd)
+{
+    this->Fd = fd;
+}
+
+// 设置epoll_event的事件类型
+void HttpRequest::SetEvent(uint32_t event)
+{
+    this->EventPtr->events = event;
+}
+
+void SetReadHandler(std::function<void()> &&handler)    //使用右值引用
+{
+    this->ReadHandler = handler;
+}
+
+void SetWriteHandler(std::function<void()> &&handler)
+{
+    this->WriteHandler = handler;
 }

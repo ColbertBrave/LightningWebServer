@@ -35,3 +35,534 @@ Utils.cpp, code is 23, comment is 2, blank is 2.
 Utils.h, code is 8, comment is 0, blank is 2.
 WebServer.cpp, code is 100, comment is 22, blank is 19.
 WebServer.h, code is 31, comment is 2, blank is 7.
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2020-10-15 15:44:07
+count workspace : d:\Project\P10_C++_LinuxWebServer\LightningWebServer
+total files : 23
+total code lines : 740
+total comment lines : 142
+total blank lines : 176
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |             .h|            235|             59|             66|     32|
+   |           .cpp|            449|             83|             95|     61|
+   |            .md|             56|              0|             15|    7.6|
+   -------------------------------------------------------------------------
+Backlog.md, code is 55, comment is 0, blank is 14.
+HttpRequest.cpp, code is 73, comment is 20, blank is 20.
+HttpRequest.h, code is 43, comment is 6, blank is 9.
+Logging\Log.cpp, code is 7, comment is 0, blank is 3.
+Logging\Log.h, code is 15, comment is 6, blank is 9.
+Logging\LogBuffer.cpp, code is 34, comment is 3, blank is 7.
+Logging\LogBuffer.h, code is 19, comment is 10, blank is 5.
+MutexLock.h, code is 22, comment is 5, blank is 5.
+Readme.md, code is 1, comment is 0, blank is 1.
+RedisDataBase.cpp, code is 68, comment is 6, blank is 12.
+RedisDataBase.h, code is 21, comment is 5, blank is 4.
+SQLConnectPool.cpp, code is 4, comment is 0, blank is 3.
+SQLConnectPool.h, code is 11, comment is 3, blank is 4.
+ThreadPool.cpp, code is 86, comment is 25, blank is 18.
+ThreadPool.h, code is 24, comment is 12, blank is 6.
+TimerLinkedList.cpp, code is 53, comment is 4, blank is 11.
+TimerLinkedList.h, code is 25, comment is 3, blank is 10.
+TimeWheel.cpp, code is 1, comment is 0, blank is 0.
+TimeWheel.h, code is 16, comment is 7, blank is 5.
+Utils.cpp, code is 23, comment is 2, blank is 2.
+Utils.h, code is 8, comment is 0, blank is 2.
+WebServer.cpp, code is 100, comment is 23, blank is 19.
+WebServer.h, code is 31, comment is 2, blank is 7.
+===============================================================================
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2020-10-18 15:13:38
+count workspace : d:\Project\P10_C++_LinuxWebServer\LightningWebServer
+total files : 23
+total code lines : 754
+total comment lines : 143
+total blank lines : 182
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |           .cpp|            449|             83|             95|     60|
+   |             .h|            235|             59|             66|     31|
+   |            .md|             70|              1|             21|    9.3|
+   -------------------------------------------------------------------------
+Backlog.md, code is 55, comment is 0, blank is 14.
+HttpRequest.cpp, code is 73, comment is 20, blank is 20.
+HttpRequest.h, code is 43, comment is 6, blank is 9.
+Logging\Log.cpp, code is 7, comment is 0, blank is 3.
+Logging\Log.h, code is 15, comment is 6, blank is 9.
+Logging\LogBuffer.cpp, code is 34, comment is 3, blank is 7.
+Logging\LogBuffer.h, code is 19, comment is 10, blank is 5.
+MutexLock.h, code is 22, comment is 5, blank is 5.
+Readme.md, code is 15, comment is 1, blank is 7.
+RedisDataBase.cpp, code is 68, comment is 6, blank is 12.
+RedisDataBase.h, code is 21, comment is 5, blank is 4.
+SQLConnectPool.cpp, code is 4, comment is 0, blank is 3.
+SQLConnectPool.h, code is 11, comment is 3, blank is 4.
+ThreadPool.cpp, code is 86, comment is 25, blank is 18.
+ThreadPool.h, code is 24, comment is 12, blank is 6.
+TimerLinkedList.cpp, code is 53, comment is 4, blank is 11.
+TimerLinkedList.h, code is 25, comment is 3, blank is 10.
+TimeWheel.cpp, code is 1, comment is 0, blank is 0.
+TimeWheel.h, code is 16, comment is 7, blank is 5.
+Utils.cpp, code is 23, comment is 2, blank is 2.
+Utils.h, code is 8, comment is 0, blank is 2.
+WebServer.cpp, code is 100, comment is 23, blank is 19.
+WebServer.h, code is 31, comment is 2, blank is 7.
+===============================================================================
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2020-10-19 20:40:13
+count workspace : /mnt/d/Project/P10_C++_LinuxWebServer/LightningWebServer
+total files : 25
+total code lines : 859
+total comment lines : 169
+total blank lines : 210
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |             .h|            254|             65|             72|     30|
+   |           .cpp|            527|            101|            112|     61|
+   |            .md|             78|              3|             26|    9.1|
+   -------------------------------------------------------------------------
+Backlog.md, code is 61, comment is 2, blank is 16.
+DataBase/RedisDataBase.cpp, code is 68, comment is 6, blank is 12.
+DataBase/RedisDataBase.h, code is 21, comment is 5, blank is 4.
+DataBase/SQLConnectPool.cpp, code is 4, comment is 0, blank is 3.
+DataBase/SQLConnectPool.h, code is 11, comment is 3, blank is 4.
+EventLoop.cpp, code is 20, comment is 1, blank is 6.
+EventLoop.h, code is 18, comment is 5, blank is 8.
+HttpRequest.cpp, code is 73, comment is 20, blank is 20.
+HttpRequest.h, code is 43, comment is 6, blank is 9.
+Logging/Log.cpp, code is 7, comment is 0, blank is 3.
+Logging/Log.h, code is 15, comment is 6, blank is 9.
+Logging/LogBuffer.cpp, code is 34, comment is 3, blank is 7.
+Logging/LogBuffer.h, code is 19, comment is 10, blank is 5.
+MutexLock.h, code is 22, comment is 5, blank is 5.
+Readme.md, code is 17, comment is 1, blank is 10.
+ThreadPool.cpp, code is 86, comment is 25, blank is 18.
+ThreadPool.h, code is 24, comment is 12, blank is 6.
+Timer/TimerLinkedList.cpp, code is 100, comment is 17, blank is 18.
+Timer/TimerLinkedList.h, code is 26, comment is 3, blank is 8.
+Timer/TimeWheel.cpp, code is 1, comment is 0, blank is 0.
+Timer/TimeWheel.h, code is 16, comment is 7, blank is 5.
+Utils.cpp, code is 23, comment is 2, blank is 2.
+Utils.h, code is 8, comment is 0, blank is 2.
+WebServer.cpp, code is 111, comment is 27, blank is 23.
+WebServer.h, code is 31, comment is 3, blank is 7.
+===============================================================================
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2020-10-25 09:57:15
+count workspace : /mnt/d/Project/P10_C++_LinuxWebServer/LightningWebServer
+total files : 27
+total code lines : 925
+total comment lines : 191
+total blank lines : 218
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |             .h|            295|             79|             75|     32|
+   |           .cpp|            493|             98|            105|     53|
+   |            .md|            137|             14|             38|     15|
+   -------------------------------------------------------------------------
+Backlog.md, code is 67, comment is 7, blank is 17.
+Compile Errors/指针.md, code is 39, comment is 6, blank is 10.
+Compile Errors/模板.md, code is 9, comment is 0, blank is 0.
+Compile Errors/编译时遇到的坑.md, code is 2, comment is 0, blank is 0.
+DataBase/RedisDataBase.cpp, code is 68, comment is 6, blank is 12.
+DataBase/RedisDataBase.h, code is 21, comment is 5, blank is 4.
+DataBase/SQLConnectPool.cpp, code is 4, comment is 0, blank is 3.
+DataBase/SQLConnectPool.h, code is 11, comment is 3, blank is 4.
+EventLoop.cpp, code is 20, comment is 1, blank is 6.
+EventLoop.h, code is 18, comment is 5, blank is 8.
+HttpRequest.cpp, code is 73, comment is 20, blank is 20.
+HttpRequest.h, code is 43, comment is 6, blank is 9.
+Logging/Log.cpp, code is 7, comment is 0, blank is 3.
+Logging/Log.h, code is 15, comment is 6, blank is 7.
+Logging/LogBuffer.h, code is 60, comment is 24, blank is 10.
+MutexLock.h, code is 22, comment is 5, blank is 5.
+Readme.md, code is 20, comment is 1, blank is 11.
+ThreadPool.cpp, code is 86, comment is 25, blank is 18.
+ThreadPool.h, code is 24, comment is 12, blank is 6.
+Timer/TimerLinkedList.cpp, code is 100, comment is 17, blank is 18.
+Timer/TimerLinkedList.h, code is 26, comment is 3, blank is 8.
+Timer/TimeWheel.cpp, code is 1, comment is 0, blank is 0.
+Timer/TimeWheel.h, code is 16, comment is 7, blank is 5.
+Utils.cpp, code is 23, comment is 2, blank is 2.
+Utils.h, code is 8, comment is 0, blank is 2.
+WebServer.cpp, code is 111, comment is 27, blank is 23.
+WebServer.h, code is 31, comment is 3, blank is 7.
+===============================================================================
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2020-10-26 09:54:57
+count workspace : /mnt/d/Project/P10_C++_LinuxWebServer/LightningWebServer
+total files : 27
+total code lines : 985
+total comment lines : 201
+total blank lines : 226
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |           .cpp|            525|             98|            109|     53|
+   |             .h|            323|             89|             79|     33|
+   |            .md|            137|             14|             38|     14|
+   -------------------------------------------------------------------------
+Backlog.md, code is 67, comment is 7, blank is 17.
+Compile Errors/指针.md, code is 39, comment is 6, blank is 10.
+Compile Errors/模板.md, code is 9, comment is 0, blank is 0.
+Compile Errors/编译时遇到的坑.md, code is 2, comment is 0, blank is 0.
+DataBase/RedisDataBase.cpp, code is 68, comment is 6, blank is 12.
+DataBase/RedisDataBase.h, code is 21, comment is 5, blank is 4.
+DataBase/SQLConnectPool.cpp, code is 4, comment is 0, blank is 3.
+DataBase/SQLConnectPool.h, code is 11, comment is 3, blank is 4.
+EventLoop.cpp, code is 20, comment is 1, blank is 6.
+EventLoop.h, code is 18, comment is 5, blank is 8.
+HttpRequest.cpp, code is 73, comment is 20, blank is 20.
+HttpRequest.h, code is 43, comment is 6, blank is 9.
+Logging/Log.cpp, code is 39, comment is 0, blank is 7.
+Logging/Log.h, code is 20, comment is 8, blank is 5.
+Logging/LogBuffer.h, code is 83, comment is 32, blank is 15.
+MutexLock.h, code is 22, comment is 5, blank is 5.
+Readme.md, code is 20, comment is 1, blank is 11.
+ThreadPool.cpp, code is 86, comment is 25, blank is 18.
+ThreadPool.h, code is 24, comment is 12, blank is 6.
+Timer/TimerLinkedList.cpp, code is 100, comment is 17, blank is 18.
+Timer/TimerLinkedList.h, code is 26, comment is 3, blank is 8.
+Timer/TimeWheel.cpp, code is 1, comment is 0, blank is 0.
+Timer/TimeWheel.h, code is 16, comment is 7, blank is 5.
+Utils.cpp, code is 23, comment is 2, blank is 2.
+Utils.h, code is 8, comment is 0, blank is 2.
+WebServer.cpp, code is 111, comment is 27, blank is 23.
+WebServer.h, code is 31, comment is 3, blank is 8.
+===============================================================================
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2020-10-28 16:27:30
+count workspace : d:\Project\P10_C++_LinuxWebServer\LightningWebServer
+total files : 27
+total code lines : 1069
+total comment lines : 209
+total blank lines : 234
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |           .cpp|            535|            101|            112|     50|
+   |             .h|            337|             91|             80|     32|
+   |            .md|            197|             17|             42|     18|
+   -------------------------------------------------------------------------
+Backlog.md, code is 112, comment is 10, blank is 19.
+Compile Errors\指针.md, code is 39, comment is 6, blank is 10.
+Compile Errors\模板.md, code is 9, comment is 0, blank is 0.
+Compile Errors\编译时遇到的坑.md, code is 2, comment is 0, blank is 0.
+DataBase\RedisDataBase.cpp, code is 68, comment is 6, blank is 12.
+DataBase\RedisDataBase.h, code is 21, comment is 5, blank is 4.
+DataBase\SQLConnectPool.cpp, code is 4, comment is 0, blank is 3.
+DataBase\SQLConnectPool.h, code is 11, comment is 3, blank is 4.
+EventLoop.cpp, code is 20, comment is 1, blank is 6.
+EventLoop.h, code is 18, comment is 5, blank is 8.
+HttpRequest.cpp, code is 73, comment is 20, blank is 20.
+HttpRequest.h, code is 43, comment is 6, blank is 9.
+Logging\LogBuffer.h, code is 67, comment is 28, blank is 11.
+Logging\Logging.cpp, code is 49, comment is 3, blank is 10.
+Logging\Logging.h, code is 50, comment is 14, blank is 10.
+MutexLock.h, code is 22, comment is 5, blank is 5.
+Readme.md, code is 35, comment is 1, blank is 13.
+ThreadPool.cpp, code is 86, comment is 25, blank is 18.
+ThreadPool.h, code is 24, comment is 12, blank is 6.
+Timer\TimerLinkedList.cpp, code is 100, comment is 17, blank is 18.
+Timer\TimerLinkedList.h, code is 26, comment is 3, blank is 8.
+Timer\TimeWheel.cpp, code is 1, comment is 0, blank is 0.
+Timer\TimeWheel.h, code is 16, comment is 7, blank is 5.
+Utils.cpp, code is 23, comment is 2, blank is 2.
+Utils.h, code is 8, comment is 0, blank is 2.
+WebServer.cpp, code is 111, comment is 27, blank is 23.
+WebServer.h, code is 31, comment is 3, blank is 8.
+===============================================================================
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2020-11-02 18:51:19
+count workspace : d:\Project\P10_C++_LinuxWebServer\LightningWebServer
+total files : 29
+total code lines : 1142
+total comment lines : 224
+total blank lines : 236
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |             .h|            355|             98|             82|     31|
+   |           .cpp|            541|            105|            108|     47|
+   |            .md|            246|             21|             46|     22|
+   -------------------------------------------------------------------------
+Backlog.md, code is 112, comment is 10, blank is 19.
+Compile Errors\GCC.md, code is 11, comment is 0, blank is 3.
+Compile Errors\指针.md, code is 39, comment is 6, blank is 10.
+Compile Errors\模板.md, code is 9, comment is 0, blank is 0.
+Compile Errors\线程.md, code is 33, comment is 4, blank is 1.
+Compile Errors\编译时遇到的坑.md, code is 3, comment is 0, blank is 0.
+DataBase\RedisDataBase.cpp, code is 68, comment is 6, blank is 12.
+DataBase\RedisDataBase.h, code is 21, comment is 5, blank is 4.
+DataBase\SQLConnectPool.cpp, code is 4, comment is 0, blank is 3.
+DataBase\SQLConnectPool.h, code is 11, comment is 3, blank is 4.
+EventLoop.cpp, code is 20, comment is 1, blank is 6.
+EventLoop.h, code is 18, comment is 5, blank is 8.
+HttpRequest.cpp, code is 73, comment is 20, blank is 20.
+HttpRequest.h, code is 43, comment is 6, blank is 9.
+Logging\LogBuffer.h, code is 83, comment is 31, blank is 13.
+Logging\Logging.cpp, code is 55, comment is 7, blank is 6.
+Logging\Logging.h, code is 52, comment is 18, blank is 10.
+MutexLock.h, code is 22, comment is 5, blank is 5.
+Readme.md, code is 39, comment is 1, blank is 13.
+ThreadPool.cpp, code is 86, comment is 25, blank is 18.
+ThreadPool.h, code is 24, comment is 12, blank is 6.
+Timer\TimerLinkedList.cpp, code is 100, comment is 17, blank is 18.
+Timer\TimerLinkedList.h, code is 26, comment is 3, blank is 8.
+Timer\TimeWheel.cpp, code is 1, comment is 0, blank is 0.
+Timer\TimeWheel.h, code is 16, comment is 7, blank is 5.
+Utils.cpp, code is 23, comment is 2, blank is 2.
+Utils.h, code is 8, comment is 0, blank is 2.
+WebServer.cpp, code is 111, comment is 27, blank is 23.
+WebServer.h, code is 31, comment is 3, blank is 8.
+===============================================================================
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2020-11-05 11:22:08
+count workspace : /mnt/d/Project/P10_C++_LinuxWebServer/LightningWebServer
+total files : 31
+total code lines : 1263
+total comment lines : 263
+total blank lines : 252
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |             .h|            395|            121|             87|     31|
+   |           .cpp|            618|            121|            116|     49|
+   |            .md|            250|             21|             49|     20|
+   -------------------------------------------------------------------------
+Backlog.md, code is 112, comment is 10, blank is 19.
+Compile Errors/GCC.md, code is 11, comment is 0, blank is 3.
+Compile Errors/指针.md, code is 39, comment is 6, blank is 10.
+Compile Errors/模板.md, code is 9, comment is 0, blank is 0.
+Compile Errors/线程.md, code is 33, comment is 4, blank is 1.
+Compile Errors/编译时遇到的坑.md, code is 3, comment is 0, blank is 0.
+DataBase/RedisDataBase.cpp, code is 68, comment is 6, blank is 12.
+DataBase/RedisDataBase.h, code is 21, comment is 5, blank is 4.
+DataBase/SQLConnectPool.cpp, code is 4, comment is 0, blank is 3.
+DataBase/SQLConnectPool.h, code is 11, comment is 3, blank is 4.
+EventLoop.cpp, code is 21, comment is 1, blank is 7.
+EventLoop.h, code is 20, comment is 1, blank is 9.
+HttpRequest.cpp, code is 73, comment is 20, blank is 20.
+HttpRequest.h, code is 43, comment is 6, blank is 9.
+Logging/LogBuffer.h, code is 98, comment is 43, blank is 12.
+Logging/Logging.cpp, code is 89, comment is 15, blank is 9.
+Logging/Logging.h, code is 51, comment is 22, blank is 6.
+MutexLock.h, code is 21, comment is 6, blank is 5.
+Readme.md, code is 43, comment is 1, blank is 16.
+ThreadPool.cpp, code is 86, comment is 27, blank is 14.
+ThreadPool.h, code is 25, comment is 13, blank is 6.
+Timer/TimerLinkedList.cpp, code is 100, comment is 17, blank is 18.
+Timer/TimerLinkedList.h, code is 26, comment is 3, blank is 8.
+Timer/TimeWheel.cpp, code is 1, comment is 0, blank is 0.
+Timer/TimeWheel.h, code is 16, comment is 7, blank is 6.
+Utils.cpp, code is 23, comment is 2, blank is 2.
+Utils.h, code is 8, comment is 0, blank is 2.
+WebServer.cpp, code is 113, comment is 31, blank is 23.
+WebServer.h, code is 34, comment is 5, blank is 8.
+Worker.cpp, code is 40, comment is 2, blank is 8.
+Worker.h, code is 21, comment is 7, blank is 8.
+===============================================================================
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2020-11-07 16:40:06
+count workspace : /mnt/d/Project/P10_C++_LinuxWebServer/LightningWebServer
+total files : 33
+total code lines : 1274
+total comment lines : 275
+total blank lines : 251
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |           .cpp|            601|            145|            117|     47|
+   |            .md|            267|             21|             56|     21|
+   |             .h|            398|            109|             75|     31|
+   |               |              8|              0|              3|   0.63|
+   -------------------------------------------------------------------------
+Backlog.md, code is 112, comment is 10, blank is 19.
+Compile Errors/GCC.md, code is 11, comment is 0, blank is 3.
+Compile Errors/指针.md, code is 39, comment is 6, blank is 10.
+Compile Errors/模板.md, code is 9, comment is 0, blank is 0.
+Compile Errors/线程.md, code is 33, comment is 4, blank is 1.
+Compile Errors/编译时遇到的坑.md, code is 3, comment is 0, blank is 0.
+DataBase/RedisDataBase.cpp, code is 68, comment is 6, blank is 12.
+DataBase/RedisDataBase.h, code is 21, comment is 5, blank is 4.
+DataBase/SQLConnectPool.cpp, code is 4, comment is 0, blank is 3.
+DataBase/SQLConnectPool.h, code is 11, comment is 3, blank is 4.
+EventLoop.cpp, code is 144, comment is 32, blank is 31.
+EventLoop.h, code is 25, comment is 5, blank is 4.
+HttpRequest.cpp, code is 73, comment is 20, blank is 20.
+HttpRequest.h, code is 43, comment is 6, blank is 9.
+Logging/LogBuffer.h, code is 108, comment is 47, blank is 12.
+Logging/Logging.cpp, code is 99, comment is 17, blank is 10.
+Logging/Logging.h, code is 51, comment is 23, blank is 6.
+Logging/Makefile, code is 8, comment is 0, blank is 3.
+Logging/日志.md, code is 16, comment is 0, blank is 6.
+MutexLock.h, code is 21, comment is 6, blank is 5.
+Readme.md, code is 44, comment is 1, blank is 17.
+ThreadPool.cpp, code is 19, comment is 28, blank is 5.
+ThreadPool.h, code is 19, comment is 3, blank is 6.
+Timer/TimerLinkedList.cpp, code is 100, comment is 17, blank is 18.
+Timer/TimerLinkedList.h, code is 26, comment is 3, blank is 8.
+Timer/TimeWheel.cpp, code is 1, comment is 0, blank is 0.
+Timer/TimeWheel.h, code is 16, comment is 7, blank is 6.
+Utils.cpp, code is 23, comment is 2, blank is 2.
+Utils.h, code is 8, comment is 0, blank is 2.
+WebServer.cpp, code is 41, comment is 10, blank is 12.
+WebServer.h, code is 29, comment is 1, blank is 4.
+Worker.cpp, code is 29, comment is 13, blank is 4.
+Worker.h, code is 20, comment is 0, blank is 5.
+===============================================================================
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2020-11-10 09:50:21
+count workspace : /mnt/d/Project/P10_C++_LinuxWebServer/LightningWebServer
+total files : 37
+total code lines : 1346
+total comment lines : 331
+total blank lines : 257
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |             .h|            416|            117|             84|     31|
+   |           .cpp|            616|            193|            116|     46|
+   |            .md|            306|             21|             54|     23|
+   |               |              8|              0|              3|   0.59|
+   -------------------------------------------------------------------------
+Backlog.md, code is 112, comment is 10, blank is 19.
+Compile Errors/GCC.md, code is 11, comment is 0, blank is 3.
+Compile Errors/指针.md, code is 39, comment is 6, blank is 10.
+Compile Errors/模板.md, code is 9, comment is 0, blank is 0.
+Compile Errors/线程.md, code is 33, comment is 4, blank is 1.
+Compile Errors/编译时遇到的坑.md, code is 3, comment is 0, blank is 0.
+Compile Errors/网络.md, code is 34, comment is 0, blank is 1.
+DataBase/RedisDataBase.cpp, code is 68, comment is 6, blank is 12.
+DataBase/RedisDataBase.h, code is 21, comment is 5, blank is 4.
+DataBase/SQLConnectPool.cpp, code is 4, comment is 0, blank is 3.
+DataBase/SQLConnectPool.h, code is 11, comment is 3, blank is 4.
+EventLoop.cpp, code is 101, comment is 66, blank is 23.
+EventLoop.h, code is 28, comment is 7, blank is 5.
+HttpRequest.cpp, code is 89, comment is 23, blank is 25.
+HttpRequest.h, code is 54, comment is 8, blank is 13.
+Logging/LogBuffer.h, code is 108, comment is 47, blank is 12.
+Logging/Logging.cpp, code is 99, comment is 17, blank is 10.
+Logging/Logging.h, code is 51, comment is 23, blank is 6.
+Logging/Makefile, code is 8, comment is 0, blank is 3.
+Logging/日志.md, code is 16, comment is 0, blank is 6.
+MutexLock.h, code is 21, comment is 6, blank is 5.
+Readme.md, code is 49, comment is 1, blank is 14.
+Test/a.out, it is a binary file.
+Test/test, it is a binary file.
+Test/Test.cpp, code is 19, comment is 0, blank is 2.
+ThreadPool.cpp, code is 28, comment is 28, blank is 6.
+ThreadPool.h, code is 23, comment is 3, blank is 8.
+Timer/TimerLinkedList.cpp, code is 100, comment is 17, blank is 18.
+Timer/TimerLinkedList.h, code is 26, comment is 3, blank is 8.
+Timer/TimeWheel.cpp, code is 1, comment is 0, blank is 0.
+Timer/TimeWheel.h, code is 16, comment is 7, blank is 6.
+Utils.cpp, code is 23, comment is 2, blank is 2.
+Utils.h, code is 8, comment is 0, blank is 2.
+WebServer.cpp, code is 55, comment is 21, blank is 11.
+WebServer.h, code is 28, comment is 4, blank is 7.
+Worker.cpp, code is 29, comment is 13, blank is 4.
+Worker.h, code is 21, comment is 1, blank is 4.
+===============================================================================
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2020-11-10 09:52:17
+count workspace : /mnt/d/Project/P10_C++_LinuxWebServer/LightningWebServer
+total files : 37
+total code lines : 1346
+total comment lines : 331
+total blank lines : 257
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |           .cpp|            616|            193|            116|     46|
+   |             .h|            416|            117|             84|     31|
+   |            .md|            306|             21|             54|     23|
+   |               |              8|              0|              3|   0.59|
+   -------------------------------------------------------------------------
+Backlog.md, code is 112, comment is 10, blank is 19.
+Compile Errors/GCC.md, code is 11, comment is 0, blank is 3.
+Compile Errors/指针.md, code is 39, comment is 6, blank is 10.
+Compile Errors/模板.md, code is 9, comment is 0, blank is 0.
+Compile Errors/线程.md, code is 33, comment is 4, blank is 1.
+Compile Errors/编译时遇到的坑.md, code is 3, comment is 0, blank is 0.
+Compile Errors/网络.md, code is 34, comment is 0, blank is 1.
+DataBase/RedisDataBase.cpp, code is 68, comment is 6, blank is 12.
+DataBase/RedisDataBase.h, code is 21, comment is 5, blank is 4.
+DataBase/SQLConnectPool.cpp, code is 4, comment is 0, blank is 3.
+DataBase/SQLConnectPool.h, code is 11, comment is 3, blank is 4.
+EventLoop.cpp, code is 101, comment is 66, blank is 23.
+EventLoop.h, code is 28, comment is 7, blank is 5.
+HttpRequest.cpp, code is 89, comment is 23, blank is 25.
+HttpRequest.h, code is 54, comment is 8, blank is 13.
+Logging/LogBuffer.h, code is 108, comment is 47, blank is 12.
+Logging/Logging.cpp, code is 99, comment is 17, blank is 10.
+Logging/Logging.h, code is 51, comment is 23, blank is 6.
+Logging/Makefile, code is 8, comment is 0, blank is 3.
+Logging/日志.md, code is 16, comment is 0, blank is 6.
+MutexLock.h, code is 21, comment is 6, blank is 5.
+Readme.md, code is 49, comment is 1, blank is 14.
+Test/a.out, it is a binary file.
+Test/test, it is a binary file.
+Test/Test.cpp, code is 19, comment is 0, blank is 2.
+ThreadPool.cpp, code is 28, comment is 28, blank is 6.
+ThreadPool.h, code is 23, comment is 3, blank is 8.
+Timer/TimerLinkedList.cpp, code is 100, comment is 17, blank is 18.
+Timer/TimerLinkedList.h, code is 26, comment is 3, blank is 8.
+Timer/TimeWheel.cpp, code is 1, comment is 0, blank is 0.
+Timer/TimeWheel.h, code is 16, comment is 7, blank is 6.
+Utils.cpp, code is 23, comment is 2, blank is 2.
+Utils.h, code is 8, comment is 0, blank is 2.
+WebServer.cpp, code is 55, comment is 21, blank is 11.
+WebServer.h, code is 28, comment is 4, blank is 7.
+Worker.cpp, code is 29, comment is 13, blank is 4.
+Worker.h, code is 21, comment is 1, blank is 4.
+===============================================================================
