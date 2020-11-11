@@ -69,13 +69,17 @@ void WebServer::ListenNewRequest()
             //...
         }
 
-        // 设置为非阻塞模式 WHY
-        //...
+        // 设置为非阻塞模式 WHY DONE Epoll是多路复用IO，如果设置成阻塞，那么任意一个连接都可能阻塞整个epoll，因此IO多路复用必须配合非阻塞IO
+        if (!SetSocketNonBlocking(newConnFd))
+        {
+            LOG << "Failed to set the new conn fd non-blocking\n";
+            close(newConnFd);
+        }
 
         // 封装新连接为请求, 取出一个EventLoop, 然后分发请求给它
         std::shared_ptr<EventLoop> nextEventLoop = ThreadPool->GetNextEventLoop();
         HttpRequest newRequest(newConnFd, clientAddr);
         NewRequest->SetEvents(EPOLLIN | EPOLLET);       // TODO ??放在哪里更合适 DONE 这里就可以了，构造函数中没必要
-        nextEventLoop->ListenRequest(newRequest);            // TODO mainloop监听这个事件，还是放到各个loop去监听这件事情
+        nextEventLoop->ListenRequest(newRequest);       // TODO mainloop监听这个事件，还是放到各个loop去监听这件事情
     }
 }
