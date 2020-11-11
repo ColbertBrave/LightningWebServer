@@ -23,3 +23,19 @@ bool RemoveFd(int epoll_fd, int fd)
     }
     return true;
 }
+
+bool SetSocketNonBlocking(int fd)
+{
+    int flag = fcntl(fd, F_GETFL, 0);
+    if (flag == -1) 
+    {
+        return false;
+    }
+    
+    flag |= O_NONBLOCK;
+    if (fcntl(fd, F_SETFL, flag) == -1)
+    {
+        return false;
+    }
+    return true;
+}

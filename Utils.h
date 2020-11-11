@@ -6,5 +6,6 @@
 
 bool AddFd(int epoll_fd, int fd);
 bool RemoveFd(int epoll_fd, int fd);
+bool SetSocketNonBlocking(int fd);
 
 #endif
