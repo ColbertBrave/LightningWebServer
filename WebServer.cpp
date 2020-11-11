@@ -70,6 +70,7 @@ void WebServer::ListenNewRequest()
         }
 
         // 设置为非阻塞模式 WHY DONE Epoll是多路复用IO，如果设置成阻塞，那么任意一个连接都可能阻塞整个epoll，因此IO多路复用必须配合非阻塞IO
+        // More: https://www.zhihu.com/question/49947156
         if (!SetSocketNonBlocking(newConnFd))
         {
             LOG << "Failed to set the new conn fd non-blocking\n";
