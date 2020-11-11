@@ -28,6 +28,5 @@ public:
 
     void RunThreadPool();
     std::shared_ptr<EventLoop> GetNextEventLoop();
-} 
-
+}
 #endif
