@@ -15,7 +15,7 @@
 /*
     Http连接是建立在TCP连接之上的
     HttpRequest类并不处理请求，只负责将新的连接封装成请求，并解析请求内容
-    相应的处理方法由EventLoop传入
+    相应的处理方法由EventLoop传入。EventLoop是一个TCP连接和处理方法的集合
 */
 class HttpRequest
 {
