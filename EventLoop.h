@@ -1,10 +1,11 @@
 #ifndef EVENTLOOP_H
 #define EVENTLOOP_H
 #define gettid() syscall(SYS_gettid)
-#include <sys/epoll.h>
+
 #include <sys/types.h>
 #include <pthread.h>
 #include "HttpRequest.h"
+#include "Epoll.h"
 #include <vector>
 
 /*
@@ -16,7 +17,7 @@
 class EventLoop
 {
 private:
-    int                         EpollFd;
+    std::shared_ptr<Epoll>      Epoll;
     pid_t                       ThreadID;
     std::vector<HttpRequest>    ReadyEvents;
     const size_t                MAX_EVENTS;
