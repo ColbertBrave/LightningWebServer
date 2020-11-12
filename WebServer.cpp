@@ -81,6 +81,6 @@ void WebServer::ListenNewRequest()
         std::shared_ptr<EventLoop> nextEventLoop = ThreadPool->GetNextEventLoop();
         HttpRequest newRequest(newConnFd, clientAddr);
         NewRequest->SetEvents(EPOLLIN | EPOLLET);       // TODO ??放在哪里更合适 DONE 这里就可以了，构造函数中没必要
-        nextEventLoop->ListenRequest(newRequest);       // TODO mainloop监听这个事件，还是放到各个loop去监听这件事情
+        nextEventLoop->AddRequest(newRequest);       // TODO mainloop监听这个事件，还是放到各个loop去监听这件事情
     }
 }
