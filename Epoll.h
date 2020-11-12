@@ -6,13 +6,17 @@
 class Epoll
 {
 private:
-    /* data */
+    int EpollFd;
+    
+
 public:
     Epoll(/* args */);
     ~Epoll();
-};
 
-
-
+    bool EpollAddEvent();
+    bool EpollModifyEvent();
+    bool EpollDeleteEvent();
+    void GetReadyEvents();
+};  
 
 #endif
