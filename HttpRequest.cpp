@@ -35,27 +35,33 @@ HttpRequest::HttpRequest(int socketFd, const sockaddr_in &address)
 // TODO 定义拷贝构造函数和拷贝赋值运算符
 HttpRequest::~HttpRequest()
 {
-    // 每销毁一个新的连接，则数量-1         ？？放在这里好还是放在closeHttp()好。对象的析构发生在何时(准确时间)？是否可以人为控制对象的析构
+    // 每销毁一个新的连接，则数量-1         
+    // TODO ？？放在这里好还是放在closeHttp()好。对象的析构发生在何时(准确时间)？是否可以人为控制对象的析构
     HttpRequest::Request_Nums--;
 }
 
-bool HttpRequest::process()
+bool HttpRequest::HandleRequest()
 {
     // 首先解析http报文
     parse();
 
     // 根据报文做出响应
-    switch (Request_Method)
+    // TODO 此处使用策略模式优化
+
+    if (sockFd & EPOLLIN)  // 此时与sockFd关联的文件可读
     {
-    case 0:      // GET方法
-        
-        break;
-    case 1:     // POST方法
-        
-        break;
-    default: break;   
+        ReadHandler();   // 对可读文件进行处理
     }
 
+    if (sockFd & EPOLLOUT)  // 此时与sockFd关联的文件可写
+    {
+        WriteHandler();
+    }
+
+    if (sockFd & (EPOLLERR | EPOLLHUP | EPOLLRDHUP))  // 此时与sockFd关联文件发生错误，挂断或半挂断
+    {
+        ErrorHandler(); 
+    }
 }
 
 /*
@@ -64,7 +70,6 @@ bool HttpRequest::process()
 */
 void HttpRequest::parse(std::string *Recv_Buffer)
 {   
-
     if (Recv_Buffer->size() == 0)
     {
         std::cout << "The receved buffer is empty" << std::endl;
@@ -99,10 +104,7 @@ void HttpRequest::parse(std::string *Recv_Buffer)
     // 待完成
 }
 
-bool HttpRequest::write()
-{
-    
-}
+
 
 void HttpRequest::closeHttp()
 {

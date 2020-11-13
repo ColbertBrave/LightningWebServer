@@ -15,7 +15,7 @@
 /*
     Http连接是建立在TCP连接之上的
     HttpRequest类并不处理请求，只负责将新的连接封装成请求，并解析请求内容
-    相应的处理方法由EventLoop传入。EventLoop是一个TCP连接和处理方法的集合
+    相应的处理方法由外部传入。
 */
 class HttpRequest
 {
@@ -52,16 +52,17 @@ public:
 
     epoll_event*                EventPtr;      
     int                         Fd;                 // 该连接对应的socket fd
-    static int Epoll_Fd;            // 所有HTTP请求的对象都由同一个EpollFd进行管理，因此是静态数据成员，每个对象创建后均需要添加至Epoll进行管理？？？
+    // static int Epoll_Fd;            
+    // OLD所有HTTP请求的对象都由同一个EpollFd进行管理，因此是静态数据成员，每个对象创建后均需要添加至Epoll进行管理？？？
+    // DONE 所有请求在被接收后就封装分发至epoll监听
     static unsigned int Request_Nums;
     
-    bool process();
-    bool write();
-    void closeHttp();
 
+    void closeHttp();
 
     std::function<void()> ReadHandler;
     std::function<void()> WriteHandler;
+    std::function<void()> ErrorHandler;
     std::function<void()> ConnHandler;
 
     void SetFd(int fd);
