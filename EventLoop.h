@@ -29,7 +29,7 @@ public:
     EventLoop();
     ~EventLoop();
 
-    void AddRequest(HttpRequest request);
+    void AddRequest(std::shared_ptr<HttpRequest> request);
     void ModifyRequest();
     void DeleteRequest();
     void StartLoop();

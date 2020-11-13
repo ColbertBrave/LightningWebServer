@@ -1,9 +1,7 @@
 #include "EventLoop.h"
 
-EventLoop::EventLoop(/* args */)
+EventLoop::EventLoop(): Epoll(std::make_shared<Epoll>()), ThreadID(gettid())
 {
-    this->EpollFd = epoll_create(5); //TODO 用epoll_create1还是epoll_create好
-    this->ThreadID = gettid();
     
 }
 
@@ -12,41 +10,20 @@ EventLoop::~EventLoop() {}
 // 添加事件给EventLoop进行监听
 void EventLoop::AddRequest(std::shared_ptr<HttpRequest> request)
 {
-    if (epoll_ctl(EpollFd, EPOLL_CTL_ADD, request->Fd, request->EventPtr) < 0)
-    {
-        LOG << "Failed to add event to epoll in the event loop:" << strerror(errno) << "\n";
-    }
+    // 要监听的事件类型由EventLoop指定给Epoll，Epoll只是一个工具人
+    Epoll->EpollAddEvent(request->Fd, );
 }
 
 // 修改请求
 void EventLoop::ModifyRequest(std::shared_ptr<HttpRequest> request, epoll_event *event)
 {
-    if (epoll_ctl(EpollFd, EPOLL_CTL_MOD, request->Fd, event) < 0)
-    {
-        LOG << "Failed to modify event in the event loop:" << strerror(errno) << "\n";
-    }
+    Epoll->EpollModifyEvent(request->Fd, );
 }
 
+// 删除请求
 void EventLoop::DeleteRequest(std::shared_ptr<HttpRequest> request)
 {
-    if (epoll_ctl(EpollFd, EPOLL_CTL_DEL, request->Fd, request->EventPtr) < 0)
-    {
-        LOG << "Failed to delete event in the event loop:" << strerror(errno) << "\n";
-    }
-}
-
-void EventLoop::StartLoop()
-{
-    while (WebServer::Server_Run)
-    {
-        int readyEventNums = epoll_wait(this->Epoll_Fd, this->Ready_Events, MAX_EVENTS, Timeout) // Reactor模式. 一直阻塞直到有事件来临或满足超时条件
-        for (size_t i = 0; i < readyEventNums; i++)
-        {
-            
-            
-        }
-        
-    }
+    Epoll->EpollDeleteEvent(request->Fd);
 }
 
 void EventLoop::StartLoop()
@@ -54,60 +31,23 @@ void EventLoop::StartLoop()
     assert(!WebServer::Server_Run);
     while (WebServer::Server_Run)
     {
-        this->Events_List = GetReadyEvents();
+        this->Events_List = Epoll->GetReadyEvents();
         for (auto request : Events_List)
         {
             // 一个线程对应一个EventLoop，因此不存在竞态条件
+            // 虽然是request调用HandleRequest()去处理请求，但是HttpRequest同样也是工具人
+            // HttpRequest的各种情形下处理函数由EventLoop传入
             request->HandleRequest();
         }
     }
 }
 
-void WebServer::StartLoop()
-{
-    while (Server_Run)
-    {
-        int readyEventNums = epoll_wait(this->Epoll_Fd, this->Ready_Events, MAX_EVENTS_NUMBER, timeout) // Reactor模式. 一直阻塞直到有事件来临或满足超时条件
-        if (readyEventNums < 0 && errno != EINTR)   // ? errno != EINTR
-        {
-            // LOG_ERROR("%s", "epoll failure");
-            break;
-        }
-
-        for (auto event:Ready_Events)
-        {
-            // 依次取出就绪I/O事件并进行处理
-            int sockFd = event.data.fd;
-
-            // 此处可以优化
-            // 有新连接
-            if (sockFd == this->Listen_Fd)      
-            {
-                // 所有事件都先经历建立连接这一步
-                BuildNewConnect();
-            }
-            else
-            {
-                if (sockFd & EPOLLIN)  // 此时与sockFd关联的文件可读
-                {
-                    DealReadEvent(sockFd);   // 对可读文件进行处理
-                }
-
-                if (sockFd & EPOLLOUT)  // 此时与sockFd关联的文件可写
-                {
-                    DealWriteEvent(sockFd);
-                }
-
-                if (sockFd & (EPOLLERR | EPOLLHUP | EPOLLRDHUP))  // 此时与sockFd关联文件发生错误，挂断或半挂断
-                {
-                    DealAbnormalEvent(sockFd);
-                }
-            }            
-        }
-    } 
-}
-
-bool WebServer::DealReadEvent(int sockFd)      // 对可读文件进行处理：加入到请求队列中分配线程进行处理
+/*
+    HttpRequest中并不具有各种情形下的处理方法，这些处理方法需要从外界传入
+    服务器ListenFd监听接收到的新连接的处理方法在WebServer中传入
+    新的连接NewConnFd上监听到请求处理方法在EventLoop中传入
+*/
+bool EventLoop::DealReadEvent(int sockFd)      // 对可读文件进行处理：加入到请求队列中分配线程进行处理
 {
     // 读操作，从连接队列中取出该连接添加至线程池的请求列表中，由线程池分配线程进行处理
     HttpRequest *theHttpConn = httpConnQueue[sockFd];
@@ -117,8 +57,7 @@ bool WebServer::DealReadEvent(int sockFd)      // 对可读文件进行处理：
 }
 
 
-
-bool WebServer::DealWriteEvent(int sockFd)
+bool EventLoop::DealWriteEvent(int sockFd)
 {
     // 写操作，从连接队列中取出该连接添加至线程池的请求列表中，由线程池分配线程进行处理
     HttpRequest *theHttpConn = httpConnQueue[sockFd];
@@ -128,7 +67,7 @@ bool WebServer::DealWriteEvent(int sockFd)
 }
 
 // 处理异常事件
-bool WebServer::DealAbnormalEvent(int sockFd)
+bool EventLoop::DealAbnormalEvent(int sockFd)
 {
     HttpRequest *theHttpConn = httpConnQueue[sockFd];
     theHttpConn->close();
