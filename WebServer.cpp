@@ -19,7 +19,7 @@ WebServer::WebServer(std::make_shared<EventLoop> loop): MainLoop(loop), ThreadPo
     NewRequest->SetEvent(EPOLLIN | EPOLLET);
     MainLoop->AddRequest(NewRequest);
     // 新的连接只可能是这两种事件类型，在EventLoop中处理新连接的handler为ReadHandler，
-    // 因此MainLoop将DistributeNewRequest()绑定到NewRequest的ReadHandler
+    // 因此在这里将DistributeNewRequest()绑定到NewRequest的ReadHandler
     // 将NewRequest交由MainLoop监听管理
     // 启动线程池以后由MainLoop接收并分发新的http请求
     NewRequest->SetReadHandler(std::bind(&WebServer::DistributeNewRequest, this));
