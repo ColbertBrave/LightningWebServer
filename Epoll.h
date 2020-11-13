@@ -13,9 +13,9 @@ public:
     Epoll(/* args */);
     ~Epoll();
 
-    bool EpollAddEvent();
-    bool EpollModifyEvent();
-    bool EpollDeleteEvent();
+    void EpollAddEvent();
+    void EpollModifyEvent();
+    void EpollDeleteEvent();
     void GetReadyEvents();
 };  
 
