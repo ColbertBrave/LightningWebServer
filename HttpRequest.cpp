@@ -121,12 +121,17 @@ void HttpRequest::SetEvent(uint32_t event)
     this->EventPtr->events = event;
 }
 
-void SetReadHandler(std::function<void()> &&handler)    //使用右值引用
+void HttpRequest::SetReadHandler(std::function<void()> &&handler)    //使用右值引用
 {
     this->ReadHandler = handler;
 }
 
-void SetWriteHandler(std::function<void()> &&handler)
+void HttpRequest::SetWriteHandler(std::function<void()> &&handler)
 {
     this->WriteHandler = handler;
+}
+
+void SetConnHandler(std::function<void()> handler)
+{
+    this->ConnHandler = handler;
 }

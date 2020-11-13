@@ -62,11 +62,13 @@ public:
 
     std::function<void()> ReadHandler;
     std::function<void()> WriteHandler;
+    std::function<void()> ConnHandler;
 
-    void SetFd();
-    void SetEvent();
+    void SetFd(int fd);
+    void SetEvent(uint32_t event);
     void SetReadHandler(std::function<void()> handler);
     void SetWriteHandler(std::function<void()> handler);
+    void SetConnHandler(std::function<void()> handler);
     void HandleRequest();
 }
 #endif
