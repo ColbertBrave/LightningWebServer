@@ -17,10 +17,10 @@ private:
     int                             ListenFd;
     std::unique_ptr<ThreadPool>     ThreadPool;
     std::shared_ptr<EventLoop>      MainLoop;
-    //std::shared_ptr<HttpRequest>    NewRequest;
+    std::shared_ptr<HttpRequest>    NewRequest;
 
 
-    void ListenNewRequest();
+    void DistributeNewRequest();
 
     // vector<HttpRequest *> httpConnQueue(MAX_CONNECTIONS, 0);
     // epoll_event Ready_Events[MAX_EVENTS_NUMBER];   
