@@ -8,16 +8,23 @@
 #include <functional>
 #include <iostream>
 
-// 构造函数只创建线程池，但不启动MainLoop和线程池
+// 构造函数只创建ThreadPool和NewRequest，不启动MainLoop和线程池
 WebServer::WebServer(std::make_shared<EventLoop> loop): MainLoop(loop), ThreadPool(new ThreadPool)
                                                         NewRequest(std::make_shared<HttpRequest>()),
                                                         ListenFd(SetListenFd())
 {
+    // 由于此socket只监听有无连接，谈不上写和其他操作。故只有这两类。（默认是LT模式，即EPOLLLT |EPOLLIN）。
+    // NewRequest->SetEvents(EPOLLIN | EPOLLET);       
+    //TODO ??放在哪里更合适 DONE 这里就可以了，构造函数中没必要 DONE 改写结构，放在这里也没必要了 DONE 放哪里都可以
     NewRequest->SetEvent(EPOLLIN | EPOLLET);
     MainLoop->AddRequest(NewRequest);
     // 新的连接只可能是这两种事件类型，在EventLoop中处理新连接的handler为ReadHandler，
     // 因此MainLoop将DistributeNewRequest()绑定到NewRequest的ReadHandler
     // 将NewRequest交由MainLoop监听管理
+    // 启动线程池以后由MainLoop接收并分发新的http请求
+    NewRequest->SetReadHandler(std::bind(&WebServer::DistributeNewRequest, this));
+    // 分发完新的请求以后，MainLoop继续监听并接收新的请求，因此设置ConnHandler为继续监听
+    NewRequest->SetConnHandler(std::bind(&WebServer::DistributeNewRequest, this)); // TODO 待修改
 }
 
 WebServer::~WebServer()
@@ -25,23 +32,20 @@ WebServer::~WebServer()
     // TODO 等待到日志线程遍历保存所有缓冲区的日志
 }
 
-// 启动服务器: 启动线程池，接收新的连接并交由MainLoop监听
+// 启动服务器: 启动线程池，MainLoop开始循环接收新的请求并分发请求
 void WebServer::Start()
 {
     ThreadPool->RunThreadPool();
-    
-    // 由于此socket只监听有无连接，谈不上写和其他操作。故只有这两类。（默认是LT模式，即EPOLLLT |EPOLLIN）。
-    // NewRequest->SetEvents(EPOLLIN | EPOLLET);       //TODO ??放在哪里更合适 DONE 这里就可以了，构造函数中没必要 DONE 改写结构，放在这里也没必要了 DONE 放哪里都可以
-    
-    // 启动线程池以后由MainLoop接收并分发新的http请求
-    NewRequest->SetReadHandler(std::bind(&WebServer::DistributeNewRequest, this));
-    // 分发完新的请求以后，MainLoop继续监听并接收新的请求，因此设置ConnHandler为继续监听
-    NewRequest->SetConnHandler(std::bind(&WebServer::DistributeNewRequest, this)); // TODO 待修改
-    // 当线程池启动后，MainLoop开始分发http请求，才设置这个全部标志
-    WebServer::Server_Run = true;
+    // 这个flag要设定在线程池启动后(?再斟酌一下)，StartLoop()之前，因此StartLoop()是不返回的 WRONG
+    // 纠正 StartLoop()的终止和启动都是根据Server_Run这个全局标志的，即使放在StartLoop()之后，
+    // 由于Server_Run尚未被设置为true，StartLoop()依然是会返回的，直到Server_Run改变了StartLoop()才运行起来
+    WebServer::Server_Run = true;    
+    MainLoop->StartLoop();
 }
 
 // TODO 这里的accept和epoll是否冲突？DONE 不冲突，accept是接收并建立连接，epoll是IO复用，这里是建立连接可能发生的套接字IO操作
+// 纠正 epoll监听了listenfd，事件类型为EPOLLIN，相应的处理函数为DistributeNewRequest()，里面接收，封装并分发了请求
+// 处理完毕后epoll继续监听listenfd
 void WebServer::DistributeNewRequest()
 {
     struct sockaddr_in clientAddr;
@@ -71,7 +75,6 @@ void WebServer::DistributeNewRequest()
         nextEventLoop->AddRequest(Request);       // TODO mainloop监听这个事件，还是放到各个loop去监听这件事情
     }
 }
-
 
 
 // WebServer::WebServer(int port = 8888) // TODO 在WebServer里将日志初始化 DONE 在main()里将日志初始化
