@@ -42,3 +42,8 @@ void Worker::WorkerThreadFunc()
         EventLoop->startLoop();
     }
 }
+
+std::shared_ptr<EventLoop> Worker::ReturnEventLoopPtr()
+{
+    return this->EventLoop;
+}
