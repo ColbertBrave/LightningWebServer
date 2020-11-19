@@ -11,8 +11,7 @@
 /*
     EventLoop类负责监听和返回就绪事件列表，并且提供对应的事件处理函数接口，
     由封装好的线程类负责调用和运行函数
-    EventLoop和Worker可以视作劳心者与劳力者。EventLoop负责接收请求，向请求对象中传递相应的处理方法，
-    但是事情最终还是要worker来完成
+    EventLoop和Worker可以视作劳心者与劳力者。EventLoop负责接收请求，并让线程来处理相应的请求
 */
 class EventLoop
 {
@@ -34,8 +33,6 @@ public:
     void DeleteRequest();
     void StartLoop();
 
-    bool DealReadEvent(int sockFd);
-    bool DealWriteEvent(int sockFd);
-    bool DealAbnormalEvent(int sockFd);
+
 };
 #endif

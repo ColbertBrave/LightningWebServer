@@ -42,37 +42,6 @@ void EventLoop::StartLoop()
     }
 }
 
-/*
-    HttpRequest中并不具有各种情形下的处理方法，这些处理方法需要从外界传入
-    服务器ListenFd监听接收到的新连接的处理方法在WebServer中传入
-    新的连接NewConnFd上监听到请求处理方法在EventLoop中传入
-*/
-bool EventLoop::DealReadEvent(int sockFd)      // 对可读文件进行处理：加入到请求队列中分配线程进行处理
-{
-    // 读操作，从连接队列中取出该连接添加至线程池的请求列表中，由线程池分配线程进行处理
-    HttpRequest *theHttpConn = httpConnQueue[sockFd];
-    // 还需要设置该HttpRequest对象所需的操作/状态，以便线程进行处理
-    (*threadPool).append(theHttpConn);
-    return true;
-}
-
-
-bool EventLoop::DealWriteEvent(int sockFd)
-{
-    // 写操作，从连接队列中取出该连接添加至线程池的请求列表中，由线程池分配线程进行处理
-    HttpRequest *theHttpConn = httpConnQueue[sockFd];
-    // 还需要设置该HttpRequest对象所需的操作/状态，以便线程进行处理
-    (*threadPool).append(theHttpConn);
-    return true;
-}
-
-// 处理异常事件
-bool EventLoop::DealAbnormalEvent(int sockFd)
-{
-    HttpRequest *theHttpConn = httpConnQueue[sockFd];
-    theHttpConn->close();
-}
-
 // bool ThreadPool::Append(T *request)
 // {
 //     // 与从请求列表中取出请求出的互斥锁是同一把

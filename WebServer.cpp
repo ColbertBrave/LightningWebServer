@@ -18,6 +18,8 @@ WebServer::WebServer(std::make_shared<EventLoop> loop): MainLoop(loop), ThreadPo
     //TODO ??放在哪里更合适 DONE 这里就可以了，构造函数中没必要 DONE 改写结构，放在这里也没必要了 DONE 放哪里都可以
     NewRequest->SetEvent(EPOLLIN | EPOLLET);
     MainLoop->AddRequest(NewRequest);
+    // 这里覆盖了NewRequest在构造时所拥有的ReadHandler和ConnHandler
+    // TODO 这里也可以考虑通过继承关系virtual覆盖构造时默认的处理函数
     // 新的连接只可能是这两种事件类型，在EventLoop中处理新连接的handler为ReadHandler，
     // 因此在这里将DistributeNewRequest()绑定到NewRequest的ReadHandler
     // 将NewRequest交由MainLoop监听管理
