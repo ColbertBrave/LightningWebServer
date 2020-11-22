@@ -79,7 +79,7 @@ bool HttpRequest::HandleRequest()
     ConnHandler();
 }
 
-void HttpRequest::closeHttp()
+void HttpRequest::CloseHttp()
 {
     RemoveFd(HttpRequest::Epoll_Fd, this->Socket_Fd); // 从epoll内核事件表中移除该连接
 }

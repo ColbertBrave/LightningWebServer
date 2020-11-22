@@ -82,7 +82,7 @@ public:
     // DONE 所有请求在被接收后就封装分发至epoll监听
     static unsigned int Request_Nums;
     
-    void closeHttp();
+    void CloseHttp();
 
     // 设置相关属性
     void SetFd(int fd);
