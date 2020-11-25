@@ -6,7 +6,7 @@
 #include <map>
 #include <functional>
 
-HttpRequest::HttpRequest() {}
+HttpRequest::HttpRequest() {}   // 在epoll里用到了
 
 // // 对象构造时即将http连接添加至epollfd
 // HttpRequest::HttpRequest(int epollFd, int socketFd, const sockaddr_in &address)
@@ -39,6 +39,7 @@ HttpRequest::HttpRequest(int socketFd, const sockaddr_in &address)
     // NewRequest类继承自HttpRequest类然后将其覆盖
     SetReadHandler(std::bind(&HttpRequest::HandleReadEvent(), this));
     SetWriteHandler(std::bind(&HttpRequest::HandleWriteEvent), this);
+    SetUpdateHandler(std::bind(&HttpRequest::UpdateConnect()), this);
 }
 
 // TODO 定义拷贝构造函数和拷贝赋值运算符
@@ -54,29 +55,35 @@ bool HttpRequest::HandleRequest()
     // 根据报文做出响应，先用if-else实现
     // TODO 此处使用策略模式优化
     // TODO 此处参考linya，尚有不理解之处
-    if ((EventPtr->events & EPOLLHUP) && !(EventPtr->events & EPOLLIN))
+    
+    // 对端挂断
+    if ((revents & EPOLLHUP) && !(revents & EPOLLIN))
     {
         return;
     }
 
-    if (EventPtr->events & EPOLLERR)
+    // 出错
+    if (revents & EPOLLERR)
     {
-        if (errorHandler_)  //  TODO 待修改
+        if (ErrorHandler)  //  TODO 待修改，为什么linya让events=0
             ErrorHandler();
         return;
     }
 
-    if (EventPtr->events & (EPOLLIN | EPOLLPRI | EPOLLRDHUP))
+    // 可写
+    if (revents & (EPOLLIN | EPOLLPRI | EPOLLRDHUP))
     {
         ReadHandler();
     }
 
-    if (EventPtr->events & EPOLLOUT)
+    // 可读
+    if (revents & EPOLLOUT)
     {
         WriteHandler();
     }
 
-    ConnHandler();
+    // 请求处理完后继续监听连接
+    UpdateHandler();
 }
 
 void HttpRequest::CloseHttp()
@@ -145,7 +152,10 @@ void HttpRequest::SetFd(int fd)
     this->Fd = fd;
 }
 
+void HttpRequest::UpdateConnect()
+{
 
+}
 /*
     功能: 解析接收到的请求报文
     从接收缓冲区中解析出请求方法，URL，http协议版本，请求头部和请求实体
@@ -301,7 +311,7 @@ void HttpRequest::SetWriteHandler(std::function<void()> &&handler)
     this->WriteHandler = handler;
 }
 
-void HttpRequest::SetConnHandler(std::function<void()> handler)
+void HttpRequest::SetUpdateHandler(std::function<void()> &&handler)
 {
-    this->ConnHandler = handler;
+    this->UpdateHandler = handler;
 }

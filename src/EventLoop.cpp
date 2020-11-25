@@ -11,19 +11,19 @@ EventLoop::~EventLoop() {}
 void EventLoop::AddRequest(std::shared_ptr<HttpRequest> request)
 {
     // 要监听的事件类型由EventLoop指定给Epoll，Epoll只是一个工具人
-    Epoll->EpollAddEvent(request->Fd, );
+    Epoll->EpollAddEvent(request->Fd, request->EventPtr);
 }
 
 // 修改请求
 void EventLoop::ModifyRequest(std::shared_ptr<HttpRequest> request, epoll_event *event)
 {
-    Epoll->EpollModifyEvent(request->Fd, );
+    Epoll->EpollModifyEvent(request->Fd, event);
 }
 
 // 删除请求
 void EventLoop::DeleteRequest(std::shared_ptr<HttpRequest> request)
 {
-    Epoll->EpollDeleteEvent(request->Fd);
+    Epoll->EpollDeleteEvent(request->Fd, request->EventPtr);
 }
 
 void EventLoop::StartLoop()
@@ -31,8 +31,8 @@ void EventLoop::StartLoop()
     assert(!WebServer::Server_Run);
     while (WebServer::Server_Run)
     {
-        this->Events_List = Epoll->GetReadyEvents();
-        for (auto request : Events_List)
+        this->ReadyRequestsList = Epoll->GetReadyEvents();
+        for (auto request : ReadyRequestsList)
         {
             // 一个线程对应一个EventLoop，因此不存在竞态条件
             // 虽然是request调用HandleRequest()去处理请求，但是HttpRequest同样也是工具人

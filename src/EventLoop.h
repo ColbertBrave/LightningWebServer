@@ -18,7 +18,7 @@ class EventLoop
 private:
     std::shared_ptr<Epoll>      Epoll;
     pid_t                       ThreadID;
-    std::vector<HttpRequest>    ReadyEvents;
+    std::vector<std::shared_ptr<HttpRequest>>    ReadyRequestsList;
     const size_t                MAX_EVENTS;
     int                         Timeout;
     

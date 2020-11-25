@@ -4,18 +4,20 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <sys/epoll.h>
 #include <sys/types.h>
 #include <functional>
 #include <iostream>
 
 // 构造函数只创建ThreadPool和NewRequest，不启动MainLoop和线程池
-WebServer::WebServer(std::make_shared<EventLoop> loop): MainLoop(loop), ThreadPool(new ThreadPool)
+WebServer::WebServer(std::shared_ptr<EventLoop> loop): MainLoop(loop), ThreadPool(new ThreadPool)
                                                         NewRequest(std::make_shared<HttpRequest>()),
                                                         ListenFd(SetListenFd())
 {
     // 由于此socket只监听有无连接，谈不上写和其他操作。故只有这两类。（默认是LT模式，即EPOLLLT |EPOLLIN）。
     // NewRequest->SetEvents(EPOLLIN | EPOLLET);       
     //TODO ??放在哪里更合适 DONE 这里就可以了，构造函数中没必要 DONE 改写结构，放在这里也没必要了 DONE 放哪里都可以
+    // 新请求设置ET模式(Epoll默认是LT模式)
     NewRequest->SetEvent(EPOLLIN | EPOLLET);
     MainLoop->AddRequest(NewRequest);
     // 这里覆盖了NewRequest在构造时所拥有的ReadHandler和ConnHandler

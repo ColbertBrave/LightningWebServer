@@ -23,18 +23,11 @@ class HttpRequest
 public:
     enum class METHOD
     {
-        GET,
-        POST,
-        HEAD,
-        PUT,
-        TRACE,
-        OPTIONS,
-        DELETE
+        GET, POST, HEAD, PUT, TRACE, OPTIONS, DELETE
     };
     enum class HTTPSTATUS
     {
-        CONNECTED,
-        DISCONNECTED
+        CONNECTED, DISCONNECTED
     };
 
 private:
@@ -42,7 +35,7 @@ private:
     std::function<void()>       ReadHandler;
     std::function<void()>       WriteHandler;
     std::function<void()>       ErrorHandler;
-    std::function<void()>       ConnHandler;
+    std::function<void()>       UpdateHandler;
     
     // 可以封装为一个struct httpdata{}
     std::string                     FilePath;       // GET等方法请求文件所在的文件路径
@@ -75,8 +68,9 @@ public:
     ~HttpRequest();
 
     int                         Fd;                 // 该连接对应的socket fd
-    epoll_event*                EventPtr;           // fd对应的epoll_event
-    HTTPSTATUS                  HttpStatus;         // 该http连接所对应的状态
+    epoll_event*                EventPtr;           // fd对应的epoll_event, 用于epoll_ctl()添加
+    uint32_t                    revents;            // 实际的事件状态
+    HTTPSTATUS                  HttpStatus; // 该http连接所对应的状态
     // static int Epoll_Fd;
     // OLD 所有HTTP请求的对象都由同一个EpollFd进行管理，因此是静态数据成员，每个对象创建后均需要添加至Epoll进行管理？？？
     // DONE 所有请求在被接收后就封装分发至epoll监听
@@ -89,7 +83,7 @@ public:
     void SetEvent(uint32_t event);
     void SetReadHandler(std::function<void()> handler);
     void SetWriteHandler(std::function<void()> handler);
-    void SetConnHandler(std::function<void()> handler);
+    void SetUpdateHandler(std::function<void()> handler);
     void SetErrorHandler(std::function<void()> handler);
     
     // 处理请求
@@ -97,6 +91,7 @@ public:
     void HandleReadEvent();
     void HandleWriteEvent();
     void HandleErrorEvent();
+    void UpdateConnect();
     void Response();
 }
 #endif

@@ -2,7 +2,7 @@
 + 定时器和封装后的互斥锁有无必要，是否可以加入到日志类中，以及是否会影响日志类的性能？
 + 检查各个类是否遵循了RAII
 
-
+## 项目目的
 
 ## 项目结构
 ### 并发模型
@@ -22,23 +22,6 @@
 ### 定时器
 
 ### 日志
-```graphviz
-digraph finite_state_machine {
-    rankdir=LR;
-    size="8,5"
-
-    node [shape = doublecircle]; S;
-    node [shape = point ]; qi
-
-    node [shape = circle];
-    qi -> S;
-    S  -> q1 [ label = "a" ];
-    S  -> S  [ label = "a" ];
-    q1 -> S  [ label = "a" ];
-    q1 -> q2 [ label = "ddb" ];
-    q2 -> q1 [ label = "b" ];
-    q2 -> q2 [ label = "b" ];
-```
 - 线程安全单例
 - 可拓展日志缓冲区数目
 - 要进行测试
