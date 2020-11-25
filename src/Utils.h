@@ -11,9 +11,9 @@ bool SetSocketNonBlocking(int fd);
 int SetListenFd(int port = 8888);
 
 // 从fd的缓冲区中读取内容到buffer中
-ssize_t ReadFromBuffer(int fd, std::string &buffer);
+ssize_t Read(int fd, std::string &buffer);
 
 // 将buffer的内容写至fd的缓冲区中
-ssize_t WriteToBuffer(int fd, std::string &buffer);
+ssize_t Write(int fd, std::string &buffer);
 
 #endif

@@ -71,7 +71,7 @@ int SetListenFd(int port)
     return listen_fd;
 }
 
-ssize_t ReadFromBuffer(int fd, std::string &buffer)
+ssize_t Read(int fd, std::string &buffer)
 {
     // 循环读取缓冲区的内容，直到读取完毕
     ssize_t sumReadBytes = 0;
@@ -106,7 +106,7 @@ ssize_t ReadFromBuffer(int fd, std::string &buffer)
 }
 
 // TODO 读和写的关系似乎混淆了, 还有缓冲区似乎也有些问题
-ssize_t WriteToBuffer(int fd, std::string &buffer)
+ssize_t Write(int fd, std::string &buffer)
 {
     ssize_t alreadyWritten = 0;
     ssize_t leftBytes = buffer.size();

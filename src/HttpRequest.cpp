@@ -4,6 +4,8 @@
 #include <fcntl.h>
 #include <iostream>
 #include <map>
+#include <sys/mman.h>
+#include <unistd.h>
 #include <functional>
 
 HttpRequest::HttpRequest() {}   // 在epoll里用到了
@@ -27,13 +29,15 @@ HttpRequest::HttpRequest() {}   // 在epoll里用到了
 //     }
 // }
 
-HttpRequest::HttpRequest(int socketFd, const sockaddr_in &address)
+HttpRequest::HttpRequest(int socketFd, const sockaddr_in &address): Fd(socketFd), ClientAddr(address)
 {
-    if (HttpRequest::Request_Nums > ThreadPool::Max_Requests)
-        HttpRequest::Request_Nums++;
+    if (HttpRequest::Request_Nums > ThreadPool::MAX_REQUESTS)
+    {
+        HandleErrorEvent(503, "Too many requests now, please wait for a moment");
+        CloseHttp();
+    }
 
-    this->Socket_Fd = socketFd;
-    this->Client_Addr = address;
+    HttpRequest::Request_Nums++;
     // 默认写入自带的函数对象，在新连接中会覆盖这一请求
     // 考虑通过继承关系，将EPOLLIN的状态的处理函数设置virtual
     // NewRequest类继承自HttpRequest类然后将其覆盖
@@ -56,17 +60,22 @@ bool HttpRequest::HandleRequest()
     // TODO 此处使用策略模式优化
     // TODO 此处参考linya，尚有不理解之处
     
-    // 对端挂断
+    // 对端挂断，则关闭连接
     if ((revents & EPOLLHUP) && !(revents & EPOLLIN))
     {
+        CloseHttp();
         return;
     }
 
     // 出错
     if (revents & EPOLLERR)
     {
-        if (ErrorHandler)  //  TODO 待修改，为什么linya让events=0
-            ErrorHandler();
+        // TODO待修改，为什么linya让events=0 DONE linya每次处理完就让events=0, 是一个处理状态的flag
+        // 处理完后为0，在UpdateConnect()可以对events是否为0进行检测，如果为0则视情形更新连接
+        if (ErrorHandler)  
+        {
+             ErrorHandler();
+        }
         return;
     }
 
@@ -86,37 +95,44 @@ bool HttpRequest::HandleRequest()
     UpdateHandler();
 }
 
-void HttpRequest::CloseHttp()
-{
-    RemoveFd(HttpRequest::Epoll_Fd, this->Socket_Fd); // 从epoll内核事件表中移除该连接
-}
-
-/*
-    HttpRequest中并不具有各种情形下的处理方法，这些处理方法需要从外界传入
-    服务器ListenFd监听接收到的新连接的处理方法在WebServer中传入
-    新的连接NewConnFd上监听到请求处理方法在EventLoop中传入
-*/
 void HttpRequest::HandleReadEvent()
 {
+    // 如果未连接，返回
     if (HttpStatus == HTTPSTATUS::DISCONNECTED)
     {
         return;
     }
 
-    ssize_t sumReadBytes = ReadToBuffer(this->Fd, this->ReadBuffer);
+    // 从fd的缓冲区循环读取数据至ReadBuffer中
+    ssize_t sumReadBytes = Read(this->Fd, this->ReadBuffer);
+    // 如果出错，将出错提示信息发送至客户端
     if (sumReadBytes == -1)
     {
-        HandleErrorEvent();
+        HandleErrorEvent(400, "Failed to read data from the client");
         return;
     }
 
+    // 未出错，但是读不到数据，可能是对端关闭、数据未到达等原因
     if (sumReadBytes == 0)
     {
-        // 报错...
+        LOG << "Read nothing\n";
         return;
     }
 
+    // 解析读取到的数据: 解析出请求方法，URL，请求头部等HTTP信息
     Parse();
+
+    // 根据解析出的具体请求做出响应 TODO 考虑封装成HttpResponse类
+    if (ProcessStatus == PROCESSFLAG::SUCCESS)
+    {
+        Response();
+    }
+    
+    // 如果Response()之后，WriteBuffer中被写入了数据，那么将其发送出去
+    if (!WriteBuffer.empty()) && (ProcessStatus == PROCESSFLAG::SUCCESS)
+    {
+        HandleWriteEvent();
+    }
 }
 
 void HttpRequest::HandleWriteEvent()
@@ -130,42 +146,67 @@ void HttpRequest::HandleWriteEvent()
     if (sumWriteBytes < 0)  // 出现异常情况
     {
         LOG << "Failed to write data to buffer\n";
-        //...
+        HandleErrorEvent(500, "An error occured in the server");
+        return;
     }
 
-    // WriteBuffer不为空，说明有数据写入了，但是出错了
+    // WriteBuffer不为空，说明写了数据，但是没写完，将事件继续置为EPOLLOUT
     if (!WriteBuffer.empty())
     {
         this->EventPtr->events = EPOLLOUT;
     }
 }
 
-// 处理异常事件
-void HttpRequest::HandleErrorEvent()
+// 响应出现错误时，发送出错提示信息到客户端
+void HttpRequest::HandleErrorEvent(int error_num, std::string error_msg)
 {
-    HttpRequest *theHttpConn = httpConnQueue[sockFd];
-    theHttpConn->close();
+    // 错误响应的响应行
+    std::string ErrorResponse = "HTTP/1.1 " + std::to_string(error_num) + "\r\n";
+    
+    // 增加错误响应的响应头部信息
+    ErrorResponse += "Content-Type: text/html\r\n";
+    ErrorResponse += "Connection: Close\r\n";
+    ErrorResponse += "Server: LightningWebServer\r\n";
+    ErrorResponse += "\r\n";
+    
+    // 增加错误响应的主体部分
+    ErrorResponse += "<html><title>哎~出错了</title>";
+    ErrorResponse += "<body bgcolor=\"ffffff\">";
+    ErrorResponse += std::to_string(error_num) + error_msg;
+    ErrorResponse += "<hr><em>LightningWebServer</em>\n</body></html>";
+    ErrorResponse += "\r\n";
+
+    // 将错误响应信息发送至相应的客户端
+    Write(Fd, ErrorResponse);
 }
 
-void HttpRequest::SetFd(int fd)
-{
-    this->Fd = fd;
-}
 
 void HttpRequest::UpdateConnect()
 {
+    // 如果http连接是keep-alive的
+    if (RequestHeader.find("Connection") != RequestHeader.end()) && (RequestHeader["Connection"] != "close") 
+    {
+        SetEvent(EPOLLIN | EPOLLET);
+        this->EventLoop->AddRequest(this); // TODO 是否shared_from_this
+    }
 
 }
-/*
-    功能: 解析接收到的请求报文
-    从接收缓冲区中解析出请求方法，URL，http协议版本，请求头部和请求实体
-*/
+
+void HttpRequest::CloseHttp()
+{
+    HttpStatus = DISCONNECTED;
+    // 从epoll内核事件表中移除该连接
+    this->EventLoop->DeleteRequest(this);
+    close(this->Fd);
+}
+
+// 从接收缓冲区中解析出请求方法，URL，http协议版本，请求头部和请求实体
 void HttpRequest::Parse()
 {
     if (ReadBuffer.empty())
     {
-        std::cout << "The receved buffer is empty" << std::endl;
-        throw std::exception();
+        LOG << "The receved buffer is empty\n";
+        ProcessSatus = PROCESSFLAG::PARSE_ERROR;
     }
 
     // 将请求报文分割为三部分: 请求行，请求头部，请求实体
@@ -178,21 +219,10 @@ void HttpRequest::Parse()
 
     // 从请求头部中解析出各种头部信息，并以key-value的形式存放在map中
     ParseRequestHead(requestHead);
-
-    // 根据请求做出响应 TODO 考虑封装成HttpResponse类
-    Response();
-
-    // 如果Response()之后，WriteBuffer中被写入了数据，那么就发送出去
-    if (!WriteBuffer.empty())
-    {
-        HandleWriteEvent();
-    }
-
-    //... TODO 还有其他异常也需要考虑
 }
 
 // 给定请求行，从中解析出请求方法，URL和Http版本
-void ParseRequestLine(std::string &requestline)
+void HttpRequest::ParseRequestLine(std::string &requestline)
 {
     // 解析请求方法: 利用map从string映射到METHOD枚举体
     std::string requestMethodStr = requestLine.substr(0, requestLine.find(' '));
@@ -208,7 +238,9 @@ void ParseRequestLine(std::string &requestline)
     {
         // 当从报文中解析出的字符串无法与现有请求方法匹配时
         LOG << "The request method from client is invalid\n";
-        // ... 报错 TODO
+        ProcessSatus = PROCESSFLAG::PARSE_ERROR;
+        HandleErrorEvent(400, "The request method from client is invalid");
+        return;
     }
     this->RequestMethod = it->second;
 
@@ -217,22 +249,24 @@ void ParseRequestLine(std::string &requestline)
     if (URL.empty())
     {
         LOG << "URL is empty\n";
-        // ... 报错 TODO
+        ProcessSatus = PROCESSFLAG::PARSE_ERROR;
+        HandleErrorEvent(400, "The URL is empty");
+        return;
     }
 
-    // 解析http版本
+    // 解析http版本, 目前支持HTTP 1.1
     this->Http_Version = requestLine.substr(requestLine.find_last_of(' ') + 1, requestLine.find_last_of('\r\n') - 1);
-    // ... 选择一个版本进行支持 TODO
+    ProcessSatus = PROCESSFLAG::SUCCESS;
 }
 
 // 从请求头部中解析出各种头部信息，存入key-value构成的map容器中
-void ParseRequestHead(std::string &requestHead)
+void HttpRequest::ParseRequestHead(std::string &requestHead)
 {
     while (true)
     {
         if (requestHead.size() == 0)
         {
-            break;
+            return;
         }
         std::string Line = requestHead.substr(0, requestHead.find("\r\n"));
         RequestHeader[Line.substr(0, Line.find(":"))] = Line.substr(Line.find(":") + 1, Line.find("\r\n"));
@@ -241,7 +275,7 @@ void ParseRequestHead(std::string &requestHead)
     }
 }
 
-// 根据不同的请求方法做出对应的响应
+// 根据不同的请求方法做出对应的响应(暂时只支持GET和HEAD方法)
 void HttpRequest::Response()
 {
     if (RequestMethod == METHOD::GET) || (RequestMethod == METHOD::HEAD)
@@ -256,46 +290,92 @@ void HttpRequest::Response()
             responseMsg += "Connection: Keep-Alive\r\n" + "Keep-Alive: timeout=" + std::to_string(DEFAULT_KEEP_ALIVE_TIME) + "\r\n";
         }
 
-        //...TODO 从URL中解析出GET所请求的文件路径和文件类型
+        // 从URL中解析出GET所请求的文件路径和文件类型
+        // 解析出文件路径: 先从中分割出"//"到";"的子串，然后从字串中解析出文件路径
+        // 例如: http://www.mywebsite.com/sj/test;id=8079?name=sviergn&x=true#stuff
+        int pos1 = URL.find("//");
+        int pos2 = URL.find(";");
+        if (pos1 < 0)
+        {
+            pos1 = 0; // 如果URL缺少scheme
+        }
+        else
+            pos1 = pos1 + 2;
+        if (pos2 < 0)
+        {
+            pos2 = URL.size(); // // 如果URL缺少参数
+        }
+        child_URL = URL.substr(pos1, pos2);
+        if (URL.find('.') >= 0)
+            FilePath = child_URL.substr(child_URL.find_first_of('/') + 1);
+        else // URL为sj/test这种情况
+        {
+            FilePath = child_URL;
+        }
+
+        // 解析文件类型
+        int dot_position = FilePath.find('.');
+        std::string fileType;
+        if (dot_position < 0) // 如果找不到文件类型前的‘.’，则文件类型为‘File’
+        {
+            fileType = "File";
+        }
+        fileType = FilePath.substr(dot_position + 1);
 
         // 获取GET所请求文件的文件信息
         struct stat fileStatusBuf;
         if (stat(FilePath.c_str(), &fileStatusBuf) < 0) // 异常处理
         {
-            HandleErrorEvent();
+            ProcessSatus = PROCESSFLAG::RESPONSE_ERROR;
+            HandleErrorEvent(400, "Failed to get the required resource");
             return;
         }
 
-        responseMsg += "Conteng-Type: " + "\r\n";
+        responseMsg += "Conteng-Type: " + fileType + "\r\n";
         responseMsg += "Server: Lightning Web Server\r\n";
         responseMsg += "\r\n";
 
-        // 如果是HEAD请求方法，则返回
+        // 如果是HEAD请求方法，则将头部信息写入发送缓冲区
         if (RequestMethod == METHOD::HEAD)
         {
+            WriteBuffer += responseMsg;    
             return;
         }
 
-        // 如果是GET方法，需要将请求的资源一并返回
+        // 如果是GET方法，需要将请求的资源一并写入发送缓冲区
         int sourceFd = open(FilePath.c_str(), O_RDONLY);
         if (sourceFd == -1) // 打开失败则返回-1
         {
-            //... TODO
-            ErrorHandler();
+            // 打开失败，将出错提示信息发送至客户端后返回
+            ProcessSatus = PROCESSFLAG::RESPONSE_ERROR;
+            HandleErrorEvent(400, "Failed to open the required resource");
+            return;
         }
 
-        void *ret = mmap(NULL, fileStatusBuf.st_size, PROT_READ, MAP_PRIVATE, src_fd, 0);
+        // 将该文件映射至一段连续的内存
+        // mmap可以把对文件的操作转为对内存的操作，以此避免更多的lseek()、read()、write()等系统调用，
+        // 这点对于大文件或者频繁访问的文件尤其有用，提高了I/O效率。
+        void *ret = mmap(NULL, fileStatusBuf.st_size, PROT_READ, MAP_PRIVATE, sourceFd, 0);
         if (ret == (void *) -1)
         {
-            //...异常处理
+            // 映射失败，将出错提示信息发送至客户端后返回
+            ProcessSatus = PROCESSFLAG::RESPONSE_ERROR;
+            HandleErrorEvent(400, "Failed to get the required resource");
+            return;
         }
+
         auto firstAddr = static_cast<char *>(ret)
         responseMsg += std::string(firstAddr, firstAddr + fileStatusBuf.st_size);
-        WriteBuffer += responseMsg;    
+        WriteBuffer += responseMsg;
+        ProcessSatus = PROCESSFLAG::SUCCESS;   
     }
 }
 
-// 设置epoll_event的事件类型
+void HttpRequest::SetFd(int fd)
+{
+    this->Fd = fd;
+}
+
 void HttpRequest::SetEvent(uint32_t event)
 {
     this->EventPtr->events = event;
