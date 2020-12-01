@@ -7,7 +7,6 @@
 
 int main()
 {
-    Logging LOG;
     std::shared_ptr<EventLoop> mainloop = std::make_shared<EventLoop>();
     WebServer server(mainloop);
     server.Start();

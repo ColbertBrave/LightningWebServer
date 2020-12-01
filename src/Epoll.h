@@ -2,21 +2,25 @@
 #define EPOLL_H
 #include <sys/epoll.h>
 #include <vector>
-#include "Timer/Timer.h
+#include <memory>
+#include <errno.h>
+#include "Timer/Timer.h"
 
 class Epoll
 {
 private:
     int EpollFd;
-    std::vector<epoll_event *> ReadyEvents;
+    std::shared_ptr<TimerQueue> TimerQueuePtr;
+    std::vector<epoll_event*> ReadyEvents;
 
 public:
-    Epoll(/* args */);
+    Epoll();
     ~Epoll();
 
-    void EpollAddEvent();
-    void EpollModifyEvent();
-    void EpollDeleteEvent();
+    void EpollAddEvent(std::shared_ptr<HttpRequest> request, int timeout);
+    void EpollModifyEvent(int fd, struct epoll_event* event);
+    void EpollDeleteEvent(int fd, struct epoll_event* event);
+    void RemoveExpiredEvent();
     std::vector<std::shared_ptr<HttpRequest>> GetReadyEvents();
 };  
 

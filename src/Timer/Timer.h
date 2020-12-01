@@ -2,17 +2,17 @@
 #define TIMER_H
 #include <memory>
 #include <queue>
-#include "../HttpRequest.h"
 
+class HttpRequest;
 class TimerNode
 {
 private:
     enum class TimerNodeStatus
     {
-        VALID;
-        EXPIRED
+        VALID, EXPIRED
     };
-    std::shared_ptr<HttpRequest> Request;
+    // 每个定时器都绑定了一个HttpRequest指针，用于清理不活跃连接等
+    
     size_t ExpiredTime;
 
 public:
@@ -23,6 +23,8 @@ public:
     size_t              GetExpiredTime();
     bool                CheckStatus();
     TimerNodeStatus     Status;
+    void                DetachHttpRequest();
+    std::shared_ptr<HttpRequest> RequestPtr;
 };
 
 // 仿照std::greater定义了一个函数对象，用于TimerQueue中priority_queue不同TimerNode的比较
@@ -49,7 +51,7 @@ public:
     TimerQueue();
     ~TimerQueue();
 
-    void AddTimerNode(TimerNode &node);
+    void AddTimerNode(TimerNode& node);
     void RemoveExpiredTimerNode();
-}
+};
 #endif

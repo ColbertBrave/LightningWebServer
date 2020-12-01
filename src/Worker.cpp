@@ -1,6 +1,7 @@
 #include "Worker.h"
 #include <cassert>
 #include <pthread.h>
+#include "WebServer.h"
 
 Worker::Worker(): Eventloop(std::make_shared<EventLoop>())
 {
@@ -37,13 +38,13 @@ void* Worker::Run(void *args)      // NOTE 在h文件中声明的静态成员函
 // Worker被创建后即开始startLoop
 void Worker::WorkerThreadFunc()
 {
-    while (Server_Status)   // Server_Status是一个全局标志
+    while (WebServer::Server_Run)   // Server_Status是一个全局标志
     {
-        EventLoop->startLoop();
+        Eventloop->StartLoop();
     }
 }
 
 std::shared_ptr<EventLoop> Worker::ReturnEventLoopPtr()
 {
-    return this->EventLoop;
+    return this->Eventloop;
 }

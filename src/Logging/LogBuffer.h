@@ -88,7 +88,7 @@ public:
         // 每条日志消息都加上时间戳
         auto time = std::time(nullptr);
         auto localTime = *std::localtime(&time);
-        ostringstream timeStream;
+        std::ostringstream timeStream;
         timeStream << std::put_time(&localTime, "[%Y-%m-%d %H:%M:%S ]");
         std::string totalLog = timeStream.str() + "[Tid:" +std::to_string(gettid())+"] " + log;
 
@@ -108,7 +108,7 @@ public:
         pthread_mutex_lock(&Mutex);
         this->Buffer.fill('\0');    // 没有必要调用fill, 验证后可以更改
         this->Cur = 0;
-        this->FullFlag = false;
+        //this->FullFlag = false;
         pthread_mutex_unlock(&Mutex);
     }
 

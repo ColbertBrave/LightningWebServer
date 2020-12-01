@@ -4,10 +4,13 @@
 
 #include <sys/types.h>
 #include <pthread.h>
-#include "HttpRequest.h"
-#include "Epoll.h"
+
 #include <vector>
 
+#include "HttpRequest.h"
+#include "Epoll.h"
+
+const int DEFAULT_LIVE_TIME = 2 * 60 * 1000; // 2分钟
 /*
     EventLoop类负责监听和返回就绪事件列表，并且提供对应的事件处理函数接口，
     由封装好的线程类负责调用和运行函数
@@ -16,10 +19,10 @@
 class EventLoop
 {
 private:
-    std::shared_ptr<Epoll>      Epoll;
+    std::shared_ptr<Epoll>      EpollPtr;
     pid_t                       ThreadID;
     std::vector<std::shared_ptr<HttpRequest>>    ReadyRequestsList;
-    const size_t                MAX_EVENTS;
+    const size_t                MAX_EVENTS = 10000;
     int                         Timeout;
     
 
@@ -28,11 +31,9 @@ public:
     EventLoop();
     ~EventLoop();
 
-    void AddRequest(std::shared_ptr<HttpRequest> request);
-    void ModifyRequest();
-    void DeleteRequest();
+    void AddRequest(std::shared_ptr<HttpRequest> request, int timeout = DEFAULT_LIVE_TIME);
+    void ModifyRequest(std::shared_ptr<HttpRequest> request, epoll_event *event);
+    void DeleteRequest(std::shared_ptr<HttpRequest> request);
     void StartLoop();
-
-
 };
 #endif

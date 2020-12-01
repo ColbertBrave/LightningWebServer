@@ -2,8 +2,10 @@
 #define WEBSERVER_H
 #include <arpa/inet.h>
 #include <sys/epoll.h>
+
 #include <vector>
 #include <memory>
+
 #include "ThreadPool.h"
 #include "HttpRequest.h"
 #include "Logging/Logging.h"
@@ -12,11 +14,13 @@
 #define MAX_EVENTS_NUMBER 20000
 #define MAX_CONNECTIONS 65536
 
+extern Logging LOG;
+
 class WebServer
 {
 private:
     int                             ListenFd;
-    std::unique_ptr<ThreadPool>     ThreadPool;
+    std::unique_ptr<ThreadPool>     Threadpool;
     std::shared_ptr<EventLoop>      MainLoop;
     std::shared_ptr<HttpRequest>    NewRequest;
 
@@ -30,14 +34,14 @@ private:
     // 2 在定义模板函数时，用于声明依赖模板参数的变量类型，如auto v = x + y; 其中x和y都是模板参数类型
     // auto变量类型在初始化时确定，在编译时会自动推断变量类型，因此并不会造成性能的损失。
 public:
-    WebServer();
+    WebServer(std::shared_ptr<EventLoop> loop);
     ~WebServer();
 
     // 启动服务器
     void Start();
 
 public:
-    struct sockaddr_in *Server_Addr;
+    struct sockaddr_in  Server_Addr;
     static bool         Server_Run;
 }
 

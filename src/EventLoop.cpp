@@ -1,37 +1,38 @@
 #include "EventLoop.h"
+#include "WebServer.h"
+#include <cassert>
 
-EventLoop::EventLoop(): Epoll(std::make_shared<Epoll>()), ThreadID(gettid())
-{
-    
-}
+EventLoop::EventLoop(): EpollPtr(std::make_shared<Epoll>()), ThreadID(gettid())
+{}
 
 EventLoop::~EventLoop() {}
 
 // 添加事件给EventLoop进行监听
-void EventLoop::AddRequest(std::shared_ptr<HttpRequest> request)
+void EventLoop::AddRequest(std::shared_ptr<HttpRequest> request, int timeout)
 {
     // 要监听的事件类型由EventLoop指定给Epoll，Epoll只是一个工具人
-    Epoll->EpollAddEvent(request->Fd, request->EventPtr);
+    EpollPtr->EpollAddEvent(request, timeout);
 }
 
 // 修改请求
 void EventLoop::ModifyRequest(std::shared_ptr<HttpRequest> request, epoll_event *event)
 {
-    Epoll->EpollModifyEvent(request->Fd, event);
+    EpollPtr->EpollModifyEvent(request->Fd, event);
 }
 
 // 删除请求
 void EventLoop::DeleteRequest(std::shared_ptr<HttpRequest> request)
 {
-    Epoll->EpollDeleteEvent(request->Fd, request->EventPtr);
+    EpollPtr->EpollDeleteEvent(request->Fd, request->EventPtr);
 }
 
 void EventLoop::StartLoop()
 {
-    assert(!WebServer::Server_Run);
-    while (WebServer::Server_Run)
+    //assert(!WebServer::Server_Run);
+    while (WebServer::Server_Run) // 全局flag
     {
-        this->ReadyRequestsList = Epoll->GetReadyEvents();
+        // 考虑下std::move, std::copy, std::swap等
+        this->ReadyRequestsList = EpollPtr->GetReadyEvents();
         for (auto request : ReadyRequestsList)
         {
             // 一个线程对应一个EventLoop，因此不存在竞态条件
@@ -39,51 +40,8 @@ void EventLoop::StartLoop()
             // HttpRequest的各种情形下处理函数由EventLoop传入
             request->HandleRequest();
         }
+        this->EpollPtr->RemoveExpiredEvent();
+        // TimerNode析构时会调用httprequest的closehttp()方法
+        // TimerNode何时析构？
     }
 }
-
-// bool ThreadPool::Append(T *request)
-// {
-//     // 与从请求列表中取出请求出的互斥锁是同一把
-//     pthread_mutex_lock(&mutex);
-//     if (Request_List.size() >= ThreadPool::Max_Requests)
-//     {
-//         std::cout << "The number of requests exceeds the limit: " 
-//                   << this->Max_Requests << std::endl;
-//         return false;
-//     }
-//
-//     Request_List.push_back(request);
-//     pthread_mutex_unlock(&mutex);
-//     return true;
-// }
-
-// void ThreadPool::Run()
-// {
-//     if (!Server_Status)
-//     {
-//         std::cout << "The server is not on" << std::endl;
-//         throw std::exception();
-//     }
-//
-//     /*
-//         创建的所有线程均访问当前对象this的成员函数worker()
-//         然后通过run()处理线程池对象的请求列表
-//         不同线程同时处理该对象的请求列表，因此需要使用互斥锁
-//     */
-//     pthread_mutex_init(&Mutex, NULL);
-//     while (Server_Status)
-//     {
-//         // 上锁的位置: 检测请求列表长度之前。
-//         pthread_mutex_lock(&Mutex);             // 使用互斥锁会导致阻塞，思考如何优化
-//         if (!Request_List.size())
-//         {
-//             continue;
-//         }
-//
-//         T *firstRequest = Request_List.front();
-//         Request_List.pop_front();
-//         pthread_mutex_unlock(&Mutex);
-//         firstRequest->process();
-//     }
-// }

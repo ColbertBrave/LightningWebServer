@@ -1,11 +1,11 @@
 #include "ThreadPool.h"
 #include <pthread.h>
 #include <iostream>
-
+const int MAX_THREADS = 16;
 
 ThreadPool::ThreadPool(std::shared_ptr<EventLoop> loop, int threadNum): MainLoop(loop), ThreadNum(threadNum), NextLoopIndex(0)
 {
-    if (ThreadNum<=0 || ThreadNum>MAX)
+    if (ThreadNum<=0 || ThreadNum> MAX_THREADS)
     {
         LOG << "The num of threads is out of range.\n";
     }
@@ -31,14 +31,15 @@ void ThreadPool::RunThreadPool()
     }
 }
 
-std::shared_ptr<EventLoop> GetNextEventLoop()
+std::shared_ptr<EventLoop> ThreadPool::GetNextEventLoop()
 {
     if (!EventLoopList.empty())
     {
         std::shared_ptr<EventLoop> nextLoop = EventLoopList[NextLoopIndex];
         NextLoopIndex = (NextLoopIndex + 1) % ThreadNum;
+        return nextLoop;
     }
-    return nextLoop;
+    return;
 }
 
 // ThreadPool::ThreadPool(int thread_num = 12, int max_requests = 10000): ThreadNum(thread_num), MaxRequests(max_requests)

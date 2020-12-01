@@ -1,37 +1,22 @@
-#include "HttpRequest.h"
 #include <sys/epoll.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <iostream>
-#include <map>
 #include <sys/mman.h>
 #include <unistd.h>
+
+#include <iostream>
+#include <map>
 #include <functional>
+
+#include "HttpRequest.h"
+
+const long int MAX_REQUESTS = 10000000;
 
 HttpRequest::HttpRequest() {}   // 在epoll里用到了
 
-// // 对象构造时即将http连接添加至epollfd
-// HttpRequest::HttpRequest(int epollFd, int socketFd, const sockaddr_in &address)
-// {
-//     // 每创建一个新的连接，则数量+1
-//     if (HttpRequest::Request_Nums > ThreadPool::Max_Requests)
-//         HttpRequest::Request_Nums++;
-
-//     // 将链接添加至epollFd进行管理???此处是否有必要，如果仅仅是连接而无事件
-//     this->Socket_Fd = socketFd;
-//     this->Client_Addr = address;
-//     epoll_event httpEvent;      // epoll_event对象包含事件和数据两个成员
-//     httpEvent.event = EPOLLIN | EPOLLOUT;
-//     if (epoll_ctl(epollFd, EPOLL_CTL_ADD, socketFd, httpEvent) != 0)
-//     {
-//         std::cout << "Failed to add http request into epoll event" << std::endl;
-//         throw std::exception();
-//     }
-// }
-
 HttpRequest::HttpRequest(int socketFd, const sockaddr_in &address): Fd(socketFd), ClientAddr(address)
 {
-    if (HttpRequest::Request_Nums > ThreadPool::MAX_REQUESTS)
+    if (HttpRequest::Request_Nums > MAX_REQUESTS)
     {
         HandleErrorEvent(503, "Too many requests now, please wait for a moment");
         CloseHttp();
@@ -54,7 +39,7 @@ HttpRequest::~HttpRequest()
     HttpRequest::Request_Nums--;
 }
 
-bool HttpRequest::HandleRequest()
+void HttpRequest::HandleRequest()
 {
     // 根据报文做出响应，先用if-else实现
     // TODO 此处使用策略模式优化
@@ -127,9 +112,12 @@ void HttpRequest::HandleReadEvent()
     {
         Response();
     }
-    
+
+    // 完成一次响应后，重载当前HttpRequest的属性
+    this->Reset();
+
     // 如果Response()之后，WriteBuffer中被写入了数据，那么将其发送出去
-    if (!WriteBuffer.empty()) && (ProcessStatus == PROCESSFLAG::SUCCESS)
+    if ((!WriteBuffer.empty()) && (ProcessStatus == PROCESSFLAG::SUCCESS))
     {
         HandleWriteEvent();
     }
@@ -142,7 +130,7 @@ void HttpRequest::HandleWriteEvent()
         return;
     }
 
-    ssize_t sumWriteBytes = WriteToBuffer(this->Fd, WriteBuffer);
+    ssize_t sumWriteBytes = Write(this->Fd, WriteBuffer);
     if (sumWriteBytes < 0)  // 出现异常情况
     {
         LOG << "Failed to write data to buffer\n";
@@ -180,23 +168,25 @@ void HttpRequest::HandleErrorEvent(int error_num, std::string error_msg)
     Write(Fd, ErrorResponse);
 }
 
-
+// 响应完请求后重新将请求更新放入EventLoop，和关联的定时器解绑，重新绑定新的定时器，属性重置
+// 定时器队列是小根堆，不支持随机删除，因此先将定时器节点和request解绑，然后将其置为EXPIRED，
+// 直到该定时器节点前面的定时器都被删除，轮到它时它才会被删除
 void HttpRequest::UpdateConnect()
 {
+    DetachTimerNode();
     // 如果http连接是keep-alive的
-    if (RequestHeader.find("Connection") != RequestHeader.end()) && (RequestHeader["Connection"] != "close") 
+    if ((RequestHeader.find("Connection") != RequestHeader.end()) && (RequestHeader["Connection"] != "close"))
     {
         SetEvent(EPOLLIN | EPOLLET);
-        this->EventLoop->AddRequest(this); // TODO 是否shared_from_this
+        this->Eventloop->AddRequest(this); // TODO 是否shared_from_this
     }
-
 }
 
 void HttpRequest::CloseHttp()
 {
-    HttpStatus = DISCONNECTED;
+    HttpStatus = HTTPSTATUS::DISCONNECTED;
     // 从epoll内核事件表中移除该连接
-    this->EventLoop->DeleteRequest(this);
+    this->Eventloop->DeleteRequest(shared_from_this());
     close(this->Fd);
 }
 
@@ -206,7 +196,7 @@ void HttpRequest::Parse()
     if (ReadBuffer.empty())
     {
         LOG << "The receved buffer is empty\n";
-        ProcessSatus = PROCESSFLAG::PARSE_ERROR;
+        ProcessStatus = PROCESSFLAG::PARSE_ERROR;
     }
 
     // 将请求报文分割为三部分: 请求行，请求头部，请求实体
@@ -222,23 +212,23 @@ void HttpRequest::Parse()
 }
 
 // 给定请求行，从中解析出请求方法，URL和Http版本
-void HttpRequest::ParseRequestLine(std::string &requestline)
+void HttpRequest::ParseRequestLine(std::string &requestLine)
 {
     // 解析请求方法: 利用map从string映射到METHOD枚举体
     std::string requestMethodStr = requestLine.substr(0, requestLine.find(' '));
-    map<std::string, METHOD> stringToMETHOD = {{"GET", METHOD::GET},
-                                               {"POST", METHOD::POST},
-                                               {"OPTIONS", METHOD::OPTIONS},
-                                               {"HEAD", METHOD::HEAD},
-                                               {"PUT", METHOD::PUT},
-                                               {"TRACE", METHOD::TRACE},
-                                               {"DELETE", METHOD::DELETE}};
+    std::map<std::string, METHOD> stringToMETHOD = {{"GET", METHOD::GET},
+                                                    {"POST", METHOD::POST},
+                                                    {"OPTIONS", METHOD::OPTIONS},
+                                                    {"HEAD", METHOD::HEAD},
+                                                    {"PUT", METHOD::PUT},
+                                                    {"TRACE", METHOD::TRACE},
+                                                    {"DELETE", METHOD::DELETE}};
     auto it = stringToMETHOD.find(requestMethodStr);
     if (it == stringToMETHOD.end())
     {
         // 当从报文中解析出的字符串无法与现有请求方法匹配时
         LOG << "The request method from client is invalid\n";
-        ProcessSatus = PROCESSFLAG::PARSE_ERROR;
+        this->ProcessStatus = PROCESSFLAG::PARSE_ERROR;
         HandleErrorEvent(400, "The request method from client is invalid");
         return;
     }
@@ -249,14 +239,14 @@ void HttpRequest::ParseRequestLine(std::string &requestline)
     if (URL.empty())
     {
         LOG << "URL is empty\n";
-        ProcessSatus = PROCESSFLAG::PARSE_ERROR;
+        ProcessStatus = PROCESSFLAG::PARSE_ERROR;
         HandleErrorEvent(400, "The URL is empty");
         return;
     }
 
     // 解析http版本, 目前支持HTTP 1.1
-    this->Http_Version = requestLine.substr(requestLine.find_last_of(' ') + 1, requestLine.find_last_of('\r\n') - 1);
-    ProcessSatus = PROCESSFLAG::SUCCESS;
+    this->HttpVersion = requestLine.substr(requestLine.find_last_of(' ') + 1, requestLine.find_last_of('\r\n') - 1);
+    ProcessStatus = PROCESSFLAG::SUCCESS;
 }
 
 // 从请求头部中解析出各种头部信息，存入key-value构成的map容器中
@@ -278,7 +268,7 @@ void HttpRequest::ParseRequestHead(std::string &requestHead)
 // 根据不同的请求方法做出对应的响应(暂时只支持GET和HEAD方法)
 void HttpRequest::Response()
 {
-    if (RequestMethod == METHOD::GET) || (RequestMethod == METHOD::HEAD)
+    if ((RequestMethod == METHOD::GET) || (RequestMethod == METHOD::HEAD))
     {
         // 按照响应行，响应头部，响应主体依次添加至responseMsg
         std::string responseMsg = "HTTP/1.1 200 OK\r\n";
@@ -294,20 +284,26 @@ void HttpRequest::Response()
         // 解析出文件路径: 先从中分割出"//"到";"的子串，然后从字串中解析出文件路径
         // 例如: http://www.mywebsite.com/sj/test;id=8079?name=sviergn&x=true#stuff
         int pos1 = URL.find("//");
-        int pos2 = URL.find(";");
+        
         if (pos1 < 0)
         {
             pos1 = 0; // 如果URL缺少scheme
         }
         else
+        {
             pos1 = pos1 + 2;
+        }
+
+        int pos2 = (this->URL).find(";");
         if (pos2 < 0)
         {
             pos2 = URL.size(); // // 如果URL缺少参数
         }
-        child_URL = URL.substr(pos1, pos2);
+        std::string child_URL = URL.substr(pos1, pos2);
         if (URL.find('.') >= 0)
+        {
             FilePath = child_URL.substr(child_URL.find_first_of('/') + 1);
+        }
         else // URL为sj/test这种情况
         {
             FilePath = child_URL;
@@ -326,7 +322,7 @@ void HttpRequest::Response()
         struct stat fileStatusBuf;
         if (stat(FilePath.c_str(), &fileStatusBuf) < 0) // 异常处理
         {
-            ProcessSatus = PROCESSFLAG::RESPONSE_ERROR;
+            ProcessStatus = PROCESSFLAG::RESPONSE_ERROR;
             HandleErrorEvent(400, "Failed to get the required resource");
             return;
         }
@@ -347,7 +343,7 @@ void HttpRequest::Response()
         if (sourceFd == -1) // 打开失败则返回-1
         {
             // 打开失败，将出错提示信息发送至客户端后返回
-            ProcessSatus = PROCESSFLAG::RESPONSE_ERROR;
+            ProcessStatus = PROCESSFLAG::RESPONSE_ERROR;
             HandleErrorEvent(400, "Failed to open the required resource");
             return;
         }
@@ -359,15 +355,15 @@ void HttpRequest::Response()
         if (ret == (void *) -1)
         {
             // 映射失败，将出错提示信息发送至客户端后返回
-            ProcessSatus = PROCESSFLAG::RESPONSE_ERROR;
+            ProcessStatus = PROCESSFLAG::RESPONSE_ERROR;
             HandleErrorEvent(400, "Failed to get the required resource");
             return;
         }
 
-        auto firstAddr = static_cast<char *>(ret)
+        auto firstAddr = static_cast<char*>(ret);
         responseMsg += std::string(firstAddr, firstAddr + fileStatusBuf.st_size);
         WriteBuffer += responseMsg;
-        ProcessSatus = PROCESSFLAG::SUCCESS;   
+        ProcessStatus = PROCESSFLAG::SUCCESS;
     }
 }
 
@@ -381,17 +377,51 @@ void HttpRequest::SetEvent(uint32_t event)
     this->EventPtr->events = event;
 }
 
-void HttpRequest::SetReadHandler(std::function<void()> &&handler) // 使用右值引用
+void HttpRequest::SetReadHandler(std::function<void()> handler) // 使用右值引用
 {
     this->ReadHandler = handler;
 }
 
-void HttpRequest::SetWriteHandler(std::function<void()> &&handler)
+void HttpRequest::SetWriteHandler(std::function<void()> handler)
 {
     this->WriteHandler = handler;
 }
 
-void HttpRequest::SetUpdateHandler(std::function<void()> &&handler)
+void HttpRequest::SetUpdateHandler(std::function<void()> handler)
 {
     this->UpdateHandler = handler;
 }
+
+void HttpRequest::SetErrorHandler(std::function<void()> handler)
+{
+    this->ErrorHandler = handler;
+}
+
+// TODO 检查是否所有属性都被重置
+void HttpRequest::Reset()
+{
+    ReadBuffer.clear();
+    WriteBuffer.clear();
+    RequestHeader.clear();
+    URL.clear();
+    HttpVersion.clear();
+    FilePath.clear();
+}
+
+// 分离TimerNode和HttpRequest，reset两个对象的指针
+void HttpRequest::DetachTimerNode()
+{
+    // 如果TimerNodeWPtr指向TimerNode的shared_ptr数量不为0
+    // 返回一个指向该TimerNode的shared_ptr
+    if (auto nodePtr = TimerNodeWPtr.lock())
+    {   
+        nodePtr->DetachHttpRequest(); // TimerNode里断开指针
+        TimerNodeWPtr.reset();        // HttpRequest里断开指针 
+    }
+    /*
+        如果TimerNodeWPtr指向TimerNode的shared_ptr数量为0
+        那说明TimerNode已经和request断开，TimerNodeWPtr是一个弱指针，有TimerQueue里的shared_ptr初始化
+        断开的TimerNode在小根堆里依次被销毁后，TimerNodeWPtr指向的对象也被释放。
+    */
+}
+

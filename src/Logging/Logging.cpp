@@ -46,38 +46,38 @@ Logging::Logging()
 Logging::~Logging() {}
 
 // 日志写入速度要快于持久化的速度。确保在正常退出时所有缓冲区的日志都已经持久化 TODO 有问题
-void Logging::Exit()
-{
-    std::shared_ptr<Buffer> check = std::make_shared<Buffer>(*Head);
-    for (auto i = 0; i < 16;i++)
-    {
-        if ((check->Status == Buffer::FREE) && (check->Status == Buffer::LOCK))
-        {
-            cout << "第" << i <<"个buffer已空" << endl;
-            continue;
-        }
-        cout << check->Status << endl;
-        cout << Head->Status << endl;
-        cout << Tail->Status << endl;
-        while (check->Status == Buffer::FULL) // 如果当前节点已满，则等待其保存
-        {
-            cout << "yes" << endl;
-            if ((check->Status == Buffer::FREE) && (check->Status == Buffer::LOCK)) // 当前节点已保存
-            {
-                check->Status = Buffer::LOCK; // 锁定当前buffer
-                check = check->Next;
-                break;
-            }
-        }
-        cout << "清空了第"<< i <<"个Buffer" << endl;
-    }
-}
+// void Logging::Exit()
+// {
+//     std::shared_ptr<Buffer> check = std::make_shared<Buffer>(*Head);
+//     for (auto i = 0; i < 16;i++)
+//     {
+//         if ((check->Status == Buffer::FREE) && (check->Status == Buffer::LOCK))
+//         {
+//             //cout << "第" << i <<"个buffer已空" << endl;
+//             continue;
+//         }
+//         // cout << check->Status << endl;
+//         // cout << Head->Status << endl;
+//         // cout << Tail->Status << endl;
+//         while (check->Status == Buffer::FULL) // 如果当前节点已满，则等待其保存
+//         {
+//             //cout << "yes" << endl;
+//             if ((check->Status == Buffer::FREE) && (check->Status == Buffer::LOCK)) // 当前节点已保存
+//             {
+//                 check->Status = Buffer::LOCK; // 锁定当前buffer
+//                 check = check->Next;
+//                 break;
+//             }
+//         }
+//         //cout << "清空了第"<< i <<"个Buffer" << endl;
+//     }
+// }
 
 std::string Logging::GenerateFileName()
 {
     auto time = std::time(nullptr);
     auto localTime = *std::localtime(&time);
-    ostringstream fileNameStream;
+    std::ostringstream fileNameStream;
     fileNameStream << std::put_time(&localTime, "%Y-%m-%d %H-%M.txt");
     return fileNameStream.str();
 }

@@ -6,6 +6,7 @@
 #include <vector>
 #include <array>
 const int MAX_THREAD_NUM = 16;
+
 class ThreadPool
 {
 private:
@@ -15,14 +16,14 @@ private:
     // 在使用vector时需要依次make_shared and push_back/embrace_back
     // when using std::array, we can use fill() instead of the complex operation
     // OLD std::vector<std::shared_ptr<Worker>>         WorkerList;    // TODO 其他结构如何: array DONE array更好
+    // 补充 由于std::array的第二个模板参数必须是一个常量，在编译时必须是一个确定大小的值，
+    // 在下面的代码中，ThreadNum需要在构造函数运行时才能确定大小，因此编译错误。
+    // 纠正 暂时修改为vector，用shrink_to_fit控制分配的内存大小
+    const unsigned int                                  ThreadNum;
+    std::shared_ptr<EventLoop>                          MainLoop;
     std::array<std::shared_ptr<Worker>, ThreadNum>      WorkerList;
     std::array<std::shared_ptr<EventLoop>, ThreadNum>   EventLoopList;
     unsigned int                                        NextLoopIndex;
-    unsigned int                                        ThreadNum;
-    std::shared_ptr<EventLoop>                          MainLoop;
-    
-    
-    static unsigned int         MaxRequests;
     
 public:
     ThreadPool(std::shared_ptr<EventLoop> loop, int threadNum = 12);

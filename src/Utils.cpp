@@ -1,6 +1,8 @@
 #include "Utils.h"
 #include "string.h"
 #include <unistd.h>
+#include <fcntl.h>
+#include <sys/epoll.h>
 const ssize_t MAX_BUFF = 4096;
 
 bool AddFd(int epoll_fd, int fd)
@@ -9,7 +11,7 @@ bool AddFd(int epoll_fd, int fd)
     int ret = epoll_ctl(epoll_fd, EPOLL_CTL_ADD, fd, &event); // event设置要监听的事件类型
     if (!ret)
     {
-        std::cout << "Fail to add fd into epoll" << std::endl;
+        LOG << "Fail to add fd into epoll\n";
         return false;
     }
     return true;
@@ -21,7 +23,7 @@ bool RemoveFd(int epoll_fd, int fd)
     close(fd);      // 记得关闭文件描述符
     if (!ret)
     {
-        std::cout << "Fail to remove fd from epoll" << std::endl;
+        LOG << "Fail to remove fd from epoll\n";
         return false;
     }
     return true;
@@ -51,19 +53,18 @@ int SetListenFd(int port)
         throw std::exception();
     }
 
-    struct sockaddr_in *server_addr;
-    bzero(server_addr, sizeof(*server_addr));       // TODO 用C++特性改写
-    server_addr->sin_family = AF_INET;        // IPv4协议族
-    server_addr->sin_port = htons(port);
-    server_addr->sin_addr->s_addr = htonl(INADDR_ANY);
-    listen_fd = socket(PF_INET, SOCK_STREAM, 0);
+    struct sockaddr_in server_addr;
+    bzero(&server_addr, sizeof(server_addr));       // TODO 用C++特性改写 DONE 没有必要
+    server_addr.sin_family = AF_INET;        // IPv4协议族
+    server_addr.sin_port = htons(port);
+    server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    int listen_fd = socket(PF_INET, SOCK_STREAM, 0);
 
     // 允许重用本地地址和端口(结束连接后可以立即重启)
     int flag = 1;
-    int listen_fd;
     setsockopt(listen_fd, SOL_SOCKET, SO_REUSEADDR, &flag, sizeof(flag));
 
-    if (bind(this->listen_fd, server_addr, typeof(server_addr)) < 0)
+    if (bind(listen_fd, (struct scokaddr*)&server_addr, sizeof(server_addr)) < 0)
     {
         LOG <<"Failed to bind server address.\n";
         throw std::exception();
@@ -119,12 +120,12 @@ ssize_t Write(int fd, std::string &buffer)
             return; // TODO
         }
 
-        if (onceReadBytes < 0) && (errno == EINTR)
+        if ((onceReadBytes < 0) && (errno == EINTR))
         {
             continue;
         }
 
-        if (onceReadBytes < 0) && (errno == EAGAIN)
+        if ((onceReadBytes < 0) && (errno == EAGAIN))
         {
             break;
         }

@@ -33,7 +33,7 @@ private:
 public:
     Logging();
     ~Logging();
-    void Exit();
+    //void Exit(); TODO
     
     // 将"<<"运算符重载: 通过"<<"向日志缓冲区里写入日志
     // 当日志消息为std::string时
@@ -47,7 +47,7 @@ public:
     Logging& operator<<(const char log)
     {
         std::string str(1, log);
-        Curr_LogBuf->AppendLog(str);
+        this->AppendLog(str);
         return *this;
     }
 
@@ -55,7 +55,7 @@ public:
     Logging& operator<<(const char log[])
     {
         std::string str(log);
-        Curr_LogBuf->AppendLog(str);
+        this->AppendLog(str);
         return *this;
     }
 
@@ -65,9 +65,9 @@ public:
     template<typename T>
     Logging& operator<<(const T num)
     {
-        Curr_LogBuf->AppendLog(std::to_string(num));
+        this->AppendLog(std::to_string(num));
         return *this;
     }
 };
-
+#define LOG Logger
 #endif
