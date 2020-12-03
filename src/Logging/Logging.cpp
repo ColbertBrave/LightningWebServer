@@ -1,28 +1,34 @@
-#include "Logging.h"
-#include <iomanip>
-#include <ctime>
+#include <pthread.h>
+
+#include <memory>
 #include <sstream>
 #include <iostream>
-#include <pthread.h>
-#include <memory>
+#include <ctime>
+#include <iomanip>
+
+#include "Logging.h"
+
+std::shared_ptr<Logging> Logging::LoggingPtr = nullptr;
+std::string Logging::LogSavePath = "";
 
 // 构造函数: 初始化各数据成员，建立双向缓冲区链表，建立日志线程
-Logging::Logging()
+Logging::Logging(int logBufferNum): LogBufferNum(logBufferNum)
 {
     // 建立一个双向缓冲区链表
-    int logBufferNum = 16;  // TODO 如何用默认形参代替
+    // int logBufferNum = 16// TODO 如何用默认形参代替
     // 定义双向循环缓冲区链表的头节点和尾节点, 初始时只有一个节点
     // NOTE make_shared是动态分配了一个新的对象，然后用*Tail初始化了它的各项属性，和Tail是两码事
+    // 补充 这里其实没有建立一个双向循环链表，单向循环链表足矣
     
     Head = std::make_shared<Buffer>();
     Tail = Head;
-    logBufferNum--;
+    LogBufferNum--;
     Head->Next = Tail;
     Head->Prev = Tail;
     Tail->Next = Head;
     Tail->Prev = Head;
 
-    while (logBufferNum > 0)
+    while (LogBufferNum > 0)
     {
         std::shared_ptr<Buffer> New = std::make_shared<Buffer>();
         New->Prev = Tail;
@@ -30,17 +36,21 @@ Logging::Logging()
         Tail->Next = New;
         Head->Prev = New;
         Tail = New;
-        logBufferNum--;
+        LogBufferNum--;
     }
     this->WritePtr = Head;
     this->SavePtr = Tail;
 
+    // 纠正 改用pthread_once
+    // 补充 pthread_once的好处
+    // 更新 还是要用Pthread_create, 混淆了这两者之间的关系
     if (pthread_create(&LogThread_ID, NULL, run, this) != 0)
     {
         std::cout << "Error occured when creating log thread" << std::endl;
         throw std::exception();
     }
     pthread_detach(LogThread_ID);
+    //pthread_once(&once, run);
 }
 
 Logging::~Logging() {}
@@ -78,7 +88,7 @@ std::string Logging::GenerateFileName()
     auto time = std::time(nullptr);
     auto localTime = *std::localtime(&time);
     std::ostringstream fileNameStream;
-    fileNameStream << std::put_time(&localTime, "%Y-%m-%d %H-%M.txt");
+    fileNameStream << LogSavePath <<std::put_time(&localTime, "%Y-%m-%d %H-%M.txt"); //TODO 这里的文件路径名似乎有些问题
     return fileNameStream.str();
 }
 
@@ -86,7 +96,7 @@ std::string Logging::GenerateFileName()
 void Logging::AppendLog(std::string log)
 {
     // 如果当前缓冲区已满，则选择下一个
-    while (!WritePtr->Available(log, sizeof(log)))
+    while (!WritePtr->Append(log, sizeof(log)))
     {
         WritePtr = WritePtr->Next;
     }
@@ -95,7 +105,7 @@ void Logging::AppendLog(std::string log)
 void Logging::LogThreadFunc()
 {
     // 从缓冲区内将日志保存至本地文件
-    while(WebServer::Server_Run)
+    while(true)
     {
         // 条件变量，当FullFlag变为true时，即将缓冲区的日志保存至磁盘中
         // 保存后，清空了日志缓冲区，重置了标志位
@@ -110,11 +120,11 @@ void Logging::LogThreadFunc()
 
 void* Logging::run(void *args)      // NOTE 在h文件中声明的静态成员函数，在cpp文件无需加上static关键字
 {
-    Logging *LOG = static_cast<Logging *>(args);
-    if (!LOG)
+    Logging *LOGPTR = static_cast<Logging *>(args);
+    if (!LOGPTR)
     {
         throw std::exception();
     }
-    LOG->LogThreadFunc();
+    LOGPTR->LogThreadFunc();
     return NULL;
 }

@@ -14,8 +14,6 @@
 #define MAX_EVENTS_NUMBER 20000
 #define MAX_CONNECTIONS 65536
 
-extern Logging LOG;
-
 class WebServer
 {
 private:
@@ -43,6 +41,6 @@ public:
 public:
     struct sockaddr_in  Server_Addr;
     static bool         Server_Run;
-}
+};
 
 #endif

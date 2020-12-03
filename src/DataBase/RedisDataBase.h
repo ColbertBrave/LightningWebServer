@@ -1,6 +1,7 @@
 #ifndef REDISDATABASE_H
 #define REDISDATABASE_H
 #include <hiredis/hiredis.h>
+#include <string>
 
 /*
     使用Redis存储用户名和密码
@@ -10,12 +11,12 @@
 class RedisDataBase
 {
 public:
-    RedisDataBase();
+    RedisDataBase(const char* redis_IP, int redis_port);
     ~RedisDataBase();
     typedef struct UserInfo
     {
-        string userName;
-        string userPassword;
+        std::string userName;
+        std::string userPassword;
     };
 
     bool RegisterUser(UserInfo user_info);

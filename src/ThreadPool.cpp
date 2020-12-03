@@ -15,15 +15,15 @@ ThreadPool::~ThreadPool() {}
 
 void ThreadPool::RunThreadPool()
 {
-    // for (size_t i = 0; i < ThreadNum; i++)
-    // {
-    //     // 每个Worker线程一旦被构造就开始工作
-    //     std::shared_ptr<Worker> workman = std::make_shared<Worker>();
-    //     WorkerList.embrace_back(workman);
-    // } OLD 换用array以后没有必要了
+    for (size_t i = 0; i < ThreadNum; i++)
+    {
+        // 每个Worker线程一旦被构造就开始工作
+        std::shared_ptr<Worker> workman = std::make_shared<Worker>();
+        WorkerList.emplace_back(workman);
+    } //OLD 换用array以后没有必要了
     
     // 每个Worker线程一旦被构造就开始工作
-    WorkerList.fill(std::make_shared<Worker>());
+    //WorkerList.fill(std::make_shared<Worker>());
     for (auto i = 0; i < ThreadNum; i++)
     {
         // 使用at不使用[]的原因: 带有越界检查
@@ -39,7 +39,6 @@ std::shared_ptr<EventLoop> ThreadPool::GetNextEventLoop()
         NextLoopIndex = (NextLoopIndex + 1) % ThreadNum;
         return nextLoop;
     }
-    return;
 }
 
 // ThreadPool::ThreadPool(int thread_num = 12, int max_requests = 10000): ThreadNum(thread_num), MaxRequests(max_requests)

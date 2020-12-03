@@ -9,7 +9,6 @@
 
 #include "WebServer.h"
 #include "Utils.h"
-#include "ThreadPool.h"
 
 // 构造函数只创建ThreadPool和NewRequest，不启动MainLoop和线程池
 WebServer::WebServer(std::shared_ptr<EventLoop> loop): MainLoop(loop), ListenFd(SetListenFd()),

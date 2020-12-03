@@ -1,10 +1,11 @@
 #ifndef THREADPOOL_H
 #define THREADPOOL_H
 #include <pthread.h>
+
 #include <memory>
-#include "Worker.h"
 #include <vector>
-#include <array>
+
+#include "Worker.h"
 const int MAX_THREAD_NUM = 16;
 
 class ThreadPool
@@ -21,8 +22,8 @@ private:
     // 纠正 暂时修改为vector，用shrink_to_fit控制分配的内存大小
     const unsigned int                                  ThreadNum;
     std::shared_ptr<EventLoop>                          MainLoop;
-    std::array<std::shared_ptr<Worker>, ThreadNum>      WorkerList;
-    std::array<std::shared_ptr<EventLoop>, ThreadNum>   EventLoopList;
+    std::vector<std::shared_ptr<Worker>>                WorkerList;
+    std::vector<std::shared_ptr<EventLoop>>             EventLoopList;
     unsigned int                                        NextLoopIndex;
     
 public:
@@ -31,5 +32,5 @@ public:
 
     void                        RunThreadPool();
     std::shared_ptr<EventLoop>  GetNextEventLoop();
-}
+};
 #endif

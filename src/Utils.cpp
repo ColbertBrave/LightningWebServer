@@ -17,17 +17,6 @@ bool AddFd(int epoll_fd, int fd)
     return true;
 }
 
-bool RemoveFd(int epoll_fd, int fd)
-{
-    int ret = epoll_ctl(epoll_fd, fd, EPOLL_CTL_DEL);
-    close(fd);      // 记得关闭文件描述符
-    if (!ret)
-    {
-        LOG << "Fail to remove fd from epoll\n";
-        return false;
-    }
-    return true;
-}
 
 bool SetSocketNonBlocking(int fd)
 {

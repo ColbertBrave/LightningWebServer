@@ -11,7 +11,6 @@
 #include <memory>
 #include <functional>
 
-#include "EventLoop.h"
 #include "Utils.h"
 #include "Timer/Timer.h"
 
@@ -29,8 +28,9 @@ std::map<std::string, std::string> SuffixToFiletype = {{".html", "text/html"},
                                                   {".jpg", "image/jpeg"},
                                                   {".png", "image/png"},
                                                   {".txt", "text/plain"}};
+class EventLoop;
 
-class HttpRequest : public std::enable_shared_from_this<HttpRequest>
+class HttpRequest: public std::enable_shared_from_this<HttpRequest>
 {
 public:
     enum class METHOD
@@ -47,7 +47,7 @@ public:
     };
 
 private:
-    std::shared_ptr<EventLoop>  Eventloop;
+    std::shared_ptr<EventLoop>  EventloopPtr;
     std::function<void()>       ReadHandler;
     std::function<void()>       WriteHandler;
     std::function<void()>       ErrorHandler;
@@ -81,7 +81,7 @@ public:
     ~HttpRequest();
 
     int                         Fd;                 // 该连接对应的socket fd
-    epoll_event* EventPtr;           // fd对应的epoll_event, 用于epoll_ctl()添加
+    epoll_event*                EventPtr;           // fd对应的epoll_event, 用于epoll_ctl()添加
     uint32_t                    revents;            // 实际的事件状态
     HTTPSTATUS                  HttpStatus; // 该http连接所对应的状态
     std::weak_ptr<TimerNode>    TimerNodeWPtr;
@@ -89,7 +89,7 @@ public:
     // static int Epoll_Fd;
     // OLD 所有HTTP请求的对象都由同一个EpollFd进行管理，因此是静态数据成员，每个对象创建后均需要添加至Epoll进行管理？？？
     // DONE 所有请求在被接收后就封装分发至epoll监听
-    static unsigned int Request_Nums = 0;
+    static unsigned int Request_Nums;
 
     // 设置相关属性
     void SetFd(int fd);
@@ -110,4 +110,6 @@ public:
     void CloseHttp();
     void DetachTimerNode();
 };
+
+unsigned int HttpRequest::Request_Nums = 0;
 #endif

@@ -10,7 +10,6 @@
 #include "Logging/Logging.h"
 #include "EventLoop.h"
 
-extern Logging LOG;
 
 // EventLoop创建了之后线程才能够跑起来
 class Worker

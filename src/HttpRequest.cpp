@@ -10,8 +10,6 @@
 
 #include "HttpRequest.h"
 
-const long int MAX_REQUESTS = 10000000;
-
 HttpRequest::HttpRequest() {}   // 在epoll里用到了
 
 HttpRequest::HttpRequest(int socketFd, const sockaddr_in &address): Fd(socketFd), ClientAddr(address)
@@ -178,7 +176,7 @@ void HttpRequest::UpdateConnect()
     if ((RequestHeader.find("Connection") != RequestHeader.end()) && (RequestHeader["Connection"] != "close"))
     {
         SetEvent(EPOLLIN | EPOLLET);
-        this->Eventloop->AddRequest(this); // TODO 是否shared_from_this
+        EventloopPtr->AddRequest(this); // TODO 是否shared_from_this
     }
 }
 
@@ -186,7 +184,7 @@ void HttpRequest::CloseHttp()
 {
     HttpStatus = HTTPSTATUS::DISCONNECTED;
     // 从epoll内核事件表中移除该连接
-    this->Eventloop->DeleteRequest(shared_from_this());
+    EventloopPtr->DeleteRequest(shared_from_this());
     close(this->Fd);
 }
 
@@ -201,8 +199,8 @@ void HttpRequest::Parse()
 
     // 将请求报文分割为三部分: 请求行，请求头部，请求实体
     std::string requestLine = ReadBuffer.substr(0, ReadBuffer.find("\r\n"));
-    std::string requestHead = ReadBuffer.substr(ReadBuffer.find("\r\n") + 2, ReadBuffer.find_last_of('\r\n'));
-    std::string requestBody = ReadBuffer.substr(ReadBuffer.find_last_of('\r\n'));
+    std::string requestHead = ReadBuffer.substr(ReadBuffer.find("\r\n") + 2, ReadBuffer.find_last_of("\r\n"));
+    std::string requestBody = ReadBuffer.substr(ReadBuffer.find_last_of("\r\n"));
 
     // 从请求行中解析出请求方法，URL，Http协议版本
     ParseRequestLine(requestLine);
@@ -245,7 +243,7 @@ void HttpRequest::ParseRequestLine(std::string &requestLine)
     }
 
     // 解析http版本, 目前支持HTTP 1.1
-    this->HttpVersion = requestLine.substr(requestLine.find_last_of(' ') + 1, requestLine.find_last_of('\r\n') - 1);
+    this->HttpVersion = requestLine.substr(requestLine.find_last_of(' ') + 1, requestLine.find_last_of("\r\n") - 1);
     ProcessStatus = PROCESSFLAG::SUCCESS;
 }
 
@@ -275,9 +273,10 @@ void HttpRequest::Response()
         // 如果存在"Connection"(只有close和keep-alive两种value)，且不为close时
         // 在http/1.1中，默认是keep-alive
         // 所有的keep-alive连接默认存活DEFAULT_KEEP_ALIVE_TIME时间
-        if (RequestHeader.find("Connection") != RequestHeader.end()) && (RequestHeader["Connection"] != "close") 
+        if ((RequestHeader.find("Connection") != RequestHeader.end()) && (RequestHeader["Connection"] != "close"))
         {
-            responseMsg += "Connection: Keep-Alive\r\n" + "Keep-Alive: timeout=" + std::to_string(DEFAULT_KEEP_ALIVE_TIME) + "\r\n";
+            responseMsg += std::string("Connection: Keep-Alive\r\n") + std::string("Keep-Alive: timeout=")
+                        + std::to_string(DEFAULT_KEEP_ALIVE_TIME) + std::string("\r\n");
         }
 
         // 从URL中解析出GET所请求的文件路径和文件类型

@@ -1,7 +1,8 @@
 #include "Timer.h"
 #include <sys/time.h>
+#include "../HttpRequest.h"
 
-TimerNode::TimerNode(std::shared_ptr<HttpRequest> request, int timeout): RequestPtr(request)
+TimerNode::TimerNode(std::shared_ptr<HttpRequest> request, int timeout) : RequestPtr(request)
 {
     struct timeval now;
     gettimeofday(&now, NULL);
@@ -36,7 +37,7 @@ bool TimerNode::CheckStatus()
     size_t temp = (((now.tv_sec % 10000) * 1000) + (now.tv_usec / 1000));
     if (temp < ExpiredTime)
         return true;
-    else 
+    else
     {
         Status = TimerNodeStatus::EXPIRED;
         return false;

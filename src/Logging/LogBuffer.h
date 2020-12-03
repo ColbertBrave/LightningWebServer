@@ -138,7 +138,7 @@ public:
         else
         {
             this->Status = FULL;
-            this->FullFlag = true;
+            //this->FullFlag = true;
             //pthread_mutex_unlock(&Mutex);
             return false;
         }

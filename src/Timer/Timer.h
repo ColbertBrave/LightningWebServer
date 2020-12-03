@@ -30,12 +30,12 @@ public:
 // 仿照std::greater定义了一个函数对象，用于TimerQueue中priority_queue不同TimerNode的比较
 struct GreaterTimer
 {
-    bool operator()(TimerNode& timer_node1, TimerNode& timer_node2) const
+    bool operator()(std::shared_ptr<TimerNode> timer_node1, std::shared_ptr<TimerNode> timer_node2) const
     {
-        if (timer_node1.GetExpiredTime() > timer_node2.GetExpiredTime())
-            return timer_node1.GetExpiredTime();
+        if (timer_node1->GetExpiredTime() > timer_node2->GetExpiredTime())
+            return timer_node1->GetExpiredTime();
         else
-            return timer_node2.GetExpiredTime();
+            return timer_node2->GetExpiredTime();
     }
 };
 

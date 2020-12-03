@@ -1,9 +1,11 @@
 #ifndef EPOLL_H
 #define EPOLL_H
 #include <sys/epoll.h>
+#include <errno.h>
+
 #include <vector>
 #include <memory>
-#include <errno.h>
+
 #include "Timer/Timer.h"
 
 class Epoll

@@ -1,9 +1,11 @@
 #ifndef LOGGING_H
 #define LOGGING_H
+#include <pthread.h>
+
+#include <memory>
 #include <vector>
 #include <string>
-#include <pthread.h>
-#include <memory>
+
 #include "LogBuffer.h"
 /*
     Logging类: 一个日志线程负责收集日志信息，并将日志信息写入本地文件
@@ -15,15 +17,19 @@
 */
 const int LogBufferSize =  16 * 1024 * 1024;         // 16MB
 typedef LogBuffer<LogBufferSize> Buffer;             // NOTE 这里如何优化，用enum？还是constxpr
+
 class Logging
 {
 private:
     // TODO 是否有必要将读取点对称设置在循环的另一侧 DONE 没有必要，写入和保存速度不一致，总会产生交错
     pthread_t                   LogThread_ID;
+    static std::string          LogSavePath;
     std::shared_ptr<Buffer>     Head;           // 双向循环链表的头节点
     std::shared_ptr<Buffer>     Tail;           // 双向循环链表的尾节点
     std::shared_ptr<Buffer>     WritePtr;       // 写入指针
     std::shared_ptr<Buffer>     SavePtr;        // 保存指针
+    unsigned int                LogBufferNum;
+    
     std::string GenerateFileName();
     void LogThreadFunc();           // NOTE 构造函数需要用到的函数放在构造函数之前声明???
     static void* run(void* args);
@@ -31,7 +37,7 @@ private:
     pthread_mutex_t Mutex;
 
 public:
-    Logging();
+    Logging(int logBufferNum = 16);
     ~Logging();
     //void Exit(); TODO
     
@@ -68,6 +74,41 @@ public:
         this->AppendLog(std::to_string(num));
         return *this;
     }
+
+    static std::shared_ptr<Logging> LoggingPtr;
+    static void Singleton()
+    {
+        //if (!LoggingPtr)
+        {
+            Logging logSingleton;
+            Logging::LoggingPtr = std::make_shared<Logging>(logSingleton);
+        }
+    }
+
+    static Logging& Init(std::string logSavePath)
+    {
+        // pthread_once指定的函数仅执行一次
+        // int pthread_once(pthread_once_t *once_control, void (*init_routine) (void));
+        // once_control表征是否执行过
+        Logging::LogSavePath = logSavePath;
+        pthread_once_t Once = PTHREAD_ONCE_INIT;
+        pthread_once(&Once, Logging::Singleton);
+
+        return *LoggingPtr;
+    }
+
+    static Logging& Init()
+    {
+        return *LoggingPtr;
+    }
 };
-#define LOG Logger
+// 使用了线程安全的单例模式
+// do while(0)的意义是可以break
+#define LOG_INIT(logSavePath)       \
+    do                              \
+    {                               \
+        Logging::Init(logSavePath); \
+    } while (0)
+
+#define LOG  Logging::Init() 
 #endif
