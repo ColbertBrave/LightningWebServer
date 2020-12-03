@@ -89,6 +89,7 @@ std::string Logging::GenerateFileName()
     auto localTime = *std::localtime(&time);
     std::ostringstream fileNameStream;
     fileNameStream << LogSavePath <<std::put_time(&localTime, "%Y-%m-%d %H-%M.txt"); //TODO 这里的文件路径名似乎有些问题
+    std::cout << fileNameStream.str() << std::endl;
     return fileNameStream.str();
 }
 
