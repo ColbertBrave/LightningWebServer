@@ -48,6 +48,8 @@
         "streambuf": "cpp",
         "typeinfo": "cpp",
         "ctime": "cpp",
-        "iomanip": "cpp"
-    }
+        "iomanip": "cpp",
+        "*.in": "cpp"
+    },
+    "cmake.sourceDirectory": "${workspaceFolder}/src"
 }

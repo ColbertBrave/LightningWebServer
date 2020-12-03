@@ -8,6 +8,7 @@
 
 #include "Logging.h"
 
+pthread_once_t Logging::Once = PTHREAD_ONCE_INIT;
 std::shared_ptr<Logging> Logging::LoggingPtr = nullptr;
 std::string Logging::LogSavePath = "";
 
@@ -129,3 +130,9 @@ void* Logging::run(void *args)      // NOTE 在h文件中声明的静态成员�
     LOGPTR->LogThreadFunc();
     return NULL;
 }
+
+// // static方法
+// Logging& Init()
+// {
+
+// }

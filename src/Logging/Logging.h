@@ -24,6 +24,7 @@ private:
     // TODO 是否有必要将读取点对称设置在循环的另一侧 DONE 没有必要，写入和保存速度不一致，总会产生交错
     pthread_t                   LogThread_ID;
     static std::string          LogSavePath;
+    static pthread_once_t       Once;
     std::shared_ptr<Buffer>     Head;           // 双向循环链表的头节点
     std::shared_ptr<Buffer>     Tail;           // 双向循环链表的尾节点
     std::shared_ptr<Buffer>     WritePtr;       // 写入指针
@@ -85,29 +86,39 @@ public:
         }
     }
 
-    static Logging& Init(std::string logSavePath)
+    // 创建目录，确定是否具有访问权限
+    void SetLogSavePath(std::string logSavePath)
     {
-        // pthread_once指定的函数仅执行一次
-        // int pthread_once(pthread_once_t *once_control, void (*init_routine) (void));
-        // once_control表征是否执行过
         Logging::LogSavePath = logSavePath;
-        pthread_once_t Once = PTHREAD_ONCE_INIT;
-        pthread_once(&Once, Logging::Singleton);
-
-        return *LoggingPtr;
     }
 
     static Logging& Init()
     {
-        return *LoggingPtr;
+        pthread_once(&Once, Logging::Singleton);
+        return *(Logging::LoggingPtr);
     }
+    // {
+    //     // pthread_once指定的函数仅执行一次
+    //     // int pthread_once(pthread_once_t *once_control, void (*init_routine) (void));
+    //     // once_control表征是否执行过
+    //     Logging::LogSavePath = logSavePath;
+    //     pthread_once_t Once = PTHREAD_ONCE_INIT;
+    //     pthread_once(&Once, Logging::Singleton);
+
+    //     return *LoggingPtr;
+    // }
+
+    // static Logging& Init()
+    // {
+    //     return *LoggingPtr;
+    // }
 };
 // 使用了线程安全的单例模式
 // do while(0)的意义是可以break
 #define LOG_INIT(logSavePath)       \
     do                              \
     {                               \
-        Logging::Init(logSavePath); \
+        (Logging::Init()).SetLogSavePath(logSavePath); \
     } while (0)
 
 #define LOG  Logging::Init() 

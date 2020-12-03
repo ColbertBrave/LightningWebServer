@@ -566,3 +566,856 @@ WebServer.h, code is 28, comment is 4, blank is 7.
 Worker.cpp, code is 29, comment is 13, blank is 4.
 Worker.h, code is 21, comment is 1, blank is 4.
 ===============================================================================
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2020-11-16 11:27:35
+count workspace : /mnt/d/Project/P10_C++_LinuxWebServer/LightningWebServer
+total files : 42
+total code lines : 1466
+total comment lines : 410
+total blank lines : 272
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |           .cpp|            710|            261|            127|     48|
+   |             .h|            440|            128|             87|     30|
+   |            .md|            308|             21|             55|     21|
+   |               |              8|              0|              3|   0.55|
+   -------------------------------------------------------------------------
+Backlog.md, code is 114, comment is 10, blank is 20.
+Compile Errors/GCC.md, code is 11, comment is 0, blank is 3.
+Compile Errors/指针.md, code is 39, comment is 6, blank is 10.
+Compile Errors/模板.md, code is 9, comment is 0, blank is 0.
+Compile Errors/线程.md, code is 33, comment is 4, blank is 1.
+Compile Errors/编译时遇到的坑.md, code is 3, comment is 0, blank is 0.
+Compile Errors/网络.md, code is 34, comment is 0, blank is 1.
+DataBase/RedisDataBase.cpp, code is 68, comment is 6, blank is 12.
+DataBase/RedisDataBase.h, code is 21, comment is 5, blank is 4.
+DataBase/SQLConnectPool.cpp, code is 4, comment is 0, blank is 3.
+DataBase/SQLConnectPool.h, code is 11, comment is 3, blank is 4.
+Epoll.cpp, code is 31, comment is 2, blank is 6.
+Epoll.h, code is 16, comment is 0, blank is 6.
+EventLoop.cpp, code is 29, comment is 51, blank is 9.
+EventLoop.h, code is 25, comment is 6, blank is 7.
+HttpRequest.cpp, code is 115, comment is 55, blank is 32.
+HttpRequest.h, code is 58, comment is 10, blank is 11.
+Logging/LogBuffer.h, code is 108, comment is 47, blank is 12.
+Logging/Logging.cpp, code is 99, comment is 17, blank is 10.
+Logging/Logging.h, code is 51, comment is 23, blank is 6.
+Logging/Makefile, code is 8, comment is 0, blank is 3.
+Logging/日志.md, code is 16, comment is 0, blank is 6.
+MutexLock.h, code is 21, comment is 6, blank is 5.
+Readme.md, code is 49, comment is 1, blank is 14.
+Test/a.out, it is a binary file.
+Test/test, it is a binary file.
+Test/Test.cpp, code is 19, comment is 0, blank is 2.
+Test/Test2.cpp, code is 22, comment is 1, blank is 1.
+Test/Test3.cpp, code is 23, comment is 3, blank is 1.
+Test/Test4.cpp, code is 25, comment is 1, blank is 2.
+ThreadPool.cpp, code is 28, comment is 35, blank is 7.
+ThreadPool.h, code is 24, comment is 6, blank is 4.
+Timer/TimerLinkedList.cpp, code is 100, comment is 17, blank is 18.
+Timer/TimerLinkedList.h, code is 26, comment is 3, blank is 8.
+Timer/TimeWheel.cpp, code is 1, comment is 0, blank is 0.
+Timer/TimeWheel.h, code is 16, comment is 7, blank is 6.
+Utils.cpp, code is 64, comment is 7, blank is 11.
+Utils.h, code is 12, comment is 1, blank is 3.
+WebServer.cpp, code is 49, comment is 53, blank is 8.
+WebServer.h, code is 29, comment is 8, blank is 7.
+Worker.cpp, code is 33, comment is 13, blank is 5.
+Worker.h, code is 22, comment is 3, blank is 4.
+===============================================================================
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2020-11-18 08:58:13
+count workspace : /mnt/d/Project/P10_C++_LinuxWebServer/LightningWebServer
+total files : 43
+total code lines : 1565
+total comment lines : 428
+total blank lines : 290
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |             .h|            445|            137|             91|     28|
+   |           .cpp|            804|            270|            141|     51|
+   |            .md|            308|             21|             55|     20|
+   |               |              8|              0|              3|   0.51|
+   -------------------------------------------------------------------------
+Backlog.md, code is 114, comment is 10, blank is 20.
+Compile Errors/GCC.md, code is 11, comment is 0, blank is 3.
+Compile Errors/指针.md, code is 39, comment is 6, blank is 10.
+Compile Errors/模板.md, code is 9, comment is 0, blank is 0.
+Compile Errors/线程.md, code is 33, comment is 4, blank is 1.
+Compile Errors/编译时遇到的坑.md, code is 3, comment is 0, blank is 0.
+Compile Errors/网络.md, code is 34, comment is 0, blank is 1.
+DataBase/RedisDataBase.cpp, code is 68, comment is 6, blank is 12.
+DataBase/RedisDataBase.h, code is 21, comment is 5, blank is 4.
+DataBase/SQLConnectPool.cpp, code is 4, comment is 0, blank is 3.
+DataBase/SQLConnectPool.h, code is 11, comment is 3, blank is 4.
+Epoll.cpp, code is 31, comment is 2, blank is 6.
+Epoll.h, code is 16, comment is 0, blank is 6.
+EventLoop.cpp, code is 29, comment is 51, blank is 9.
+EventLoop.h, code is 25, comment is 6, blank is 7.
+HttpRequest.cpp, code is 131, comment is 58, blank is 35.
+HttpRequest.h, code is 62, comment is 18, blank is 14.
+Logging/LogBuffer.h, code is 108, comment is 47, blank is 12.
+Logging/Logging.cpp, code is 99, comment is 17, blank is 10.
+Logging/Logging.h, code is 51, comment is 23, blank is 6.
+Logging/Makefile, code is 8, comment is 0, blank is 3.
+Logging/日志.md, code is 16, comment is 0, blank is 6.
+MutexLock.h, code is 21, comment is 6, blank is 5.
+Readme.md, code is 49, comment is 1, blank is 14.
+Test/a.out, it is a binary file.
+Test/test, it is a binary file.
+Test/Test.cpp, code is 19, comment is 0, blank is 2.
+Test/Test2.cpp, code is 22, comment is 1, blank is 1.
+Test/Test3.cpp, code is 23, comment is 3, blank is 1.
+Test/Test4.cpp, code is 25, comment is 1, blank is 2.
+Test/Test5.cpp, code is 22, comment is 4, blank is 4.
+ThreadPool.cpp, code is 28, comment is 35, blank is 7.
+ThreadPool.h, code is 24, comment is 6, blank is 4.
+Timer/TimerLinkedList.cpp, code is 100, comment is 17, blank is 18.
+Timer/TimerLinkedList.h, code is 26, comment is 3, blank is 8.
+Timer/TimeWheel.cpp, code is 1, comment is 0, blank is 0.
+Timer/TimeWheel.h, code is 16, comment is 7, blank is 6.
+Utils.cpp, code is 120, comment is 9, blank is 18.
+Utils.h, code is 13, comment is 2, blank is 4.
+WebServer.cpp, code is 49, comment is 53, blank is 8.
+WebServer.h, code is 29, comment is 8, blank is 7.
+Worker.cpp, code is 33, comment is 13, blank is 5.
+Worker.h, code is 22, comment is 3, blank is 4.
+===============================================================================
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2020-11-19 19:48:42
+count workspace : /mnt/d/Project/P10_C++_LinuxWebServer/LightningWebServer
+total files : 46
+total code lines : 1704
+total comment lines : 449
+total blank lines : 313
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |             .h|            474|            142|             95|     28|
+   |           .cpp|            913|            286|            161|     54|
+   |            .md|            309|             21|             54|     18|
+   |               |              8|              0|              3|   0.47|
+   -------------------------------------------------------------------------
+Backlog.md, code is 114, comment is 10, blank is 20.
+Compile Errors/GCC.md, code is 11, comment is 0, blank is 3.
+Compile Errors/指针.md, code is 39, comment is 6, blank is 10.
+Compile Errors/模板.md, code is 9, comment is 0, blank is 0.
+Compile Errors/线程.md, code is 33, comment is 4, blank is 1.
+Compile Errors/编译时遇到的坑.md, code is 3, comment is 0, blank is 0.
+Compile Errors/网络.md, code is 34, comment is 0, blank is 1.
+DataBase/RedisDataBase.cpp, code is 68, comment is 6, blank is 12.
+DataBase/RedisDataBase.h, code is 21, comment is 5, blank is 4.
+DataBase/SQLConnectPool.cpp, code is 4, comment is 0, blank is 3.
+DataBase/SQLConnectPool.h, code is 11, comment is 3, blank is 4.
+Epoll.cpp, code is 31, comment is 2, blank is 6.
+Epoll.h, code is 16, comment is 0, blank is 6.
+EventLoop.cpp, code is 29, comment is 51, blank is 9.
+EventLoop.h, code is 25, comment is 6, blank is 7.
+HttpRequest.cpp, code is 196, comment is 73, blank is 44.
+HttpRequest.h, code is 71, comment is 23, blank is 13.
+Logging/LogBuffer.h, code is 108, comment is 47, blank is 12.
+Logging/Logging.cpp, code is 99, comment is 17, blank is 10.
+Logging/Logging.h, code is 51, comment is 23, blank is 6.
+Logging/Makefile, code is 8, comment is 0, blank is 3.
+Logging/日志.md, code is 16, comment is 0, blank is 6.
+MutexLock.h, code is 21, comment is 6, blank is 5.
+Readme.md, code is 50, comment is 1, blank is 13.
+Test/a.out, it is a binary file.
+Test/test, it is a binary file.
+Test/Test.cpp, code is 19, comment is 0, blank is 2.
+Test/Test2.cpp, code is 22, comment is 1, blank is 1.
+Test/Test3.cpp, code is 23, comment is 3, blank is 1.
+Test/Test4.cpp, code is 25, comment is 1, blank is 2.
+Test/Test5.cpp, code is 22, comment is 4, blank is 4.
+Test/Test6.cpp, code is 30, comment is 1, blank is 3.
+ThreadPool.cpp, code is 28, comment is 35, blank is 7.
+ThreadPool.h, code is 24, comment is 6, blank is 4.
+Timer/Timer.cpp, code is 13, comment is 0, blank is 8.
+Timer/Timer.h, code is 20, comment is 0, blank is 5.
+Timer/TimerLinkedList.cpp, code is 100, comment is 17, blank is 18.
+Timer/TimerLinkedList.h, code is 26, comment is 3, blank is 8.
+Timer/TimeWheel.cpp, code is 1, comment is 0, blank is 0.
+Timer/TimeWheel.h, code is 16, comment is 7, blank is 6.
+Utils.cpp, code is 121, comment is 9, blank is 18.
+Utils.h, code is 13, comment is 2, blank is 4.
+WebServer.cpp, code is 49, comment is 53, blank is 8.
+WebServer.h, code is 29, comment is 8, blank is 7.
+Worker.cpp, code is 33, comment is 13, blank is 5.
+Worker.h, code is 22, comment is 3, blank is 4.
+===============================================================================
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2020-11-25 12:09:01
+count workspace : d:\Project\P10_C++_LinuxWebServer\LightningWebServer
+total files : 72
+total code lines : 5429
+total comment lines : 754
+total blank lines : 764
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |           .cpp|           1541|            352|            291|     28|
+   |             .h|            483|            160|             92|    8.9|
+   |            .md|            341|             28|             56|    6.3|
+   |               |             26|              0|              7|   0.48|
+   |           .txt|            151|            156|             67|    2.8|
+   |        .drawio|            444|              0|              0|    8.2|
+   |         .ninja|             97|              0|             53|    1.8|
+   |         .cmake|            182|              0|             46|    3.4|
+   |          .json|           1265|              0|              0|     23|
+   |   .check_cache|              1|              0|              0|  0.018|
+   |             .c|            507|             50|            114|    9.3|
+   |           .log|            391|              8|             38|    7.2|
+   -------------------------------------------------------------------------
+build\.cmake\api\v1\query\client-vscode\query.json, code is 1, comment is 0, blank is 0.
+build\.cmake\api\v1\reply\cache-v2-59e47f339f2cf851ee12.json, code is 1139, comment is 0, blank is 0.
+build\.cmake\api\v1\reply\codemodel-v2-137f6a368358b83ad256.json, code is 38, comment is 0, blank is 0.
+build\.cmake\api\v1\reply\index-2020-11-22T07-36-27-0465.json, code is 87, comment is 0, blank is 0.
+build\.ninja_deps, it is a binary file.
+build\.ninja_log, code is 1, comment is 0, blank is 0.
+build\build.ninja, code is 66, comment is 0, blank is 39.
+build\cmake_install.cmake, code is 42, comment is 0, blank is 7.
+build\CMakeCache.txt, code is 149, comment is 156, blank is 67.
+build\CMakeFiles\3.16.3\CMakeCCompiler.cmake, code is 60, comment is 0, blank is 16.
+build\CMakeFiles\3.16.3\CMakeCXXCompiler.cmake, code is 70, comment is 0, blank is 18.
+build\CMakeFiles\3.16.3\CMakeDetermineCompilerABI_C.bin, it is a binary file.
+build\CMakeFiles\3.16.3\CMakeDetermineCompilerABI_CXX.bin, it is a binary file.
+build\CMakeFiles\3.16.3\CMakeSystem.cmake, code is 10, comment is 0, blank is 5.
+build\CMakeFiles\3.16.3\CompilerIdC\a.out, it is a binary file.
+build\CMakeFiles\3.16.3\CompilerIdC\CMakeCCompilerId.c, code is 507, comment is 50, blank is 114.
+build\CMakeFiles\3.16.3\CompilerIdCXX\a.out, it is a binary file.
+build\CMakeFiles\3.16.3\CompilerIdCXX\CMakeCXXCompilerId.cpp, code is 491, comment is 52, blank is 117.
+build\CMakeFiles\cmake.check_cache, code is 1, comment is 0, blank is 0.
+build\CMakeFiles\CMakeOutput.log, code is 391, comment is 8, blank is 38.
+build\CMakeFiles\TargetDirectories.txt, code is 2, comment is 0, blank is 0.
+build\rules.ninja, code is 31, comment is 0, blank is 14.
+doc\Backlog.md, code is 161, comment is 17, blank is 24.
+doc\Compile Errors\GCC.md, code is 11, comment is 0, blank is 3.
+doc\Compile Errors\指针.md, code is 39, comment is 6, blank is 10.
+doc\Compile Errors\模板.md, code is 9, comment is 0, blank is 0.
+doc\Compile Errors\线程.md, code is 33, comment is 4, blank is 1.
+doc\Compile Errors\编译时遇到的坑.md, code is 3, comment is 0, blank is 0.
+doc\Compile Errors\网络.md, code is 34, comment is 0, blank is 1.
+doc\Structure.drawio, code is 444, comment is 0, blank is 0.
+LICENSE, code is 17, comment is 0, blank is 4.
+main.cpp, code is 13, comment is 0, blank is 2.
+README.md, code is 35, comment is 1, blank is 11.
+src\DataBase\RedisDataBase.cpp, code is 68, comment is 6, blank is 12.
+src\DataBase\RedisDataBase.h, code is 21, comment is 5, blank is 4.
+src\DataBase\SQLConnectPool.cpp, code is 4, comment is 0, blank is 3.
+src\DataBase\SQLConnectPool.h, code is 11, comment is 3, blank is 4.
+src\Epoll.cpp, code is 54, comment is 4, blank is 8.
+src\Epoll.h, code is 5, comment is 0, blank is 0.
+src\EventLoop.cpp, code is 29, comment is 51, blank is 9.
+src\EventLoop.h, code is 25, comment is 6, blank is 7.
+src\HttpRequest.cpp, code is 200, comment is 79, blank is 45.
+src\HttpRequest.h, code is 66, comment is 24, blank is 13.
+src\Logging\LogBuffer.h, code is 108, comment is 62, blank is 12.
+src\Logging\Logging.cpp, code is 99, comment is 17, blank is 10.
+src\Logging\Logging.h, code is 51, comment is 23, blank is 6.
+src\Logging\Makefile, code is 8, comment is 0, blank is 3.
+src\Logging\日志.md, code is 16, comment is 0, blank is 6.
+src\MutexLock.h, code is 21, comment is 6, blank is 5.
+src\ThreadPool.cpp, code is 28, comment is 35, blank is 7.
+src\ThreadPool.h, code is 24, comment is 6, blank is 4.
+src\Timer\Timer.cpp, code is 55, comment is 4, blank is 10.
+src\Timer\Timer.h, code is 45, comment is 2, blank is 8.
+src\Timer\TimerLinkedList.cpp, code is 100, comment is 17, blank is 18.
+src\Timer\TimerLinkedList.h, code is 26, comment is 3, blank is 8.
+src\Timer\TimeWheel.cpp, code is 1, comment is 0, blank is 0.
+src\Timer\TimeWheel.h, code is 16, comment is 7, blank is 6.
+src\Utils.cpp, code is 121, comment is 9, blank is 18.
+src\Utils.h, code is 13, comment is 2, blank is 4.
+src\WebServer.cpp, code is 50, comment is 54, blank is 8.
+src\WebServer.h, code is 29, comment is 8, blank is 7.
+src\Worker.cpp, code is 33, comment is 13, blank is 5.
+src\Worker.h, code is 22, comment is 3, blank is 4.
+test\a.out, it is a binary file.
+test\test, it is a binary file.
+test\Test.cpp, code is 19, comment is 0, blank is 2.
+test\Test2.cpp, code is 22, comment is 1, blank is 1.
+test\Test3.cpp, code is 23, comment is 3, blank is 1.
+test\Test4.cpp, code is 25, comment is 1, blank is 2.
+test\Test5.cpp, code is 22, comment is 4, blank is 4.
+test\Test6.cpp, code is 30, comment is 1, blank is 3.
+test\Test7.cpp, code is 54, comment is 1, blank is 6.
+===============================================================================
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2020-11-26 15:48:29
+count workspace : /mnt/d/Project/P10_C++_LinuxWebServer/LightningWebServer
+total files : 74
+total code lines : 5592
+total comment lines : 730
+total blank lines : 773
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |           .cpp|           1686|            326|            304|     30|
+   |            .md|            341|             28|             56|    6.1|
+   |             .h|            501|            162|             88|    9.0|
+   |               |             26|              0|              7|   0.46|
+   |        .drawio|            444|              0|              0|    7.9|
+   |           .txt|            151|            156|             67|    2.7|
+   |         .cmake|            182|              0|             46|    3.3|
+   |         .ninja|             97|              0|             53|    1.7|
+   |   .check_cache|              1|              0|              0|  0.018|
+   |           .log|            391|              8|             38|    7.0|
+   |             .c|            507|             50|            114|    9.1|
+   |          .json|           1265|              0|              0|     23|
+   -------------------------------------------------------------------------
+build/.cmake/api/v1/query/client-vscode/query.json, code is 1, comment is 0, blank is 0.
+build/.cmake/api/v1/reply/cache-v2-59e47f339f2cf851ee12.json, code is 1139, comment is 0, blank is 0.
+build/.cmake/api/v1/reply/codemodel-v2-137f6a368358b83ad256.json, code is 38, comment is 0, blank is 0.
+build/.cmake/api/v1/reply/index-2020-11-22T07-36-27-0465.json, code is 87, comment is 0, blank is 0.
+build/.ninja_deps, it is a binary file.
+build/.ninja_log, code is 1, comment is 0, blank is 0.
+build/build.ninja, code is 66, comment is 0, blank is 39.
+build/cmake_install.cmake, code is 42, comment is 0, blank is 7.
+build/CMakeCache.txt, code is 149, comment is 156, blank is 67.
+build/CMakeFiles/3.16.3/CMakeCCompiler.cmake, code is 60, comment is 0, blank is 16.
+build/CMakeFiles/3.16.3/CMakeCXXCompiler.cmake, code is 70, comment is 0, blank is 18.
+build/CMakeFiles/3.16.3/CMakeDetermineCompilerABI_C.bin, it is a binary file.
+build/CMakeFiles/3.16.3/CMakeDetermineCompilerABI_CXX.bin, it is a binary file.
+build/CMakeFiles/3.16.3/CMakeSystem.cmake, code is 10, comment is 0, blank is 5.
+build/CMakeFiles/3.16.3/CompilerIdC/a.out, it is a binary file.
+build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c, code is 507, comment is 50, blank is 114.
+build/CMakeFiles/3.16.3/CompilerIdCXX/a.out, it is a binary file.
+build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp, code is 491, comment is 52, blank is 117.
+build/CMakeFiles/cmake.check_cache, code is 1, comment is 0, blank is 0.
+build/CMakeFiles/CMakeOutput.log, code is 391, comment is 8, blank is 38.
+build/CMakeFiles/TargetDirectories.txt, code is 2, comment is 0, blank is 0.
+build/rules.ninja, code is 31, comment is 0, blank is 14.
+doc/Backlog.md, code is 161, comment is 17, blank is 24.
+doc/Compile Errors/GCC.md, code is 11, comment is 0, blank is 3.
+doc/Compile Errors/指针.md, code is 39, comment is 6, blank is 10.
+doc/Compile Errors/模板.md, code is 9, comment is 0, blank is 0.
+doc/Compile Errors/线程.md, code is 33, comment is 4, blank is 1.
+doc/Compile Errors/编译时遇到的坑.md, code is 3, comment is 0, blank is 0.
+doc/Compile Errors/网络.md, code is 34, comment is 0, blank is 1.
+doc/Structure.drawio, code is 444, comment is 0, blank is 0.
+LICENSE, code is 17, comment is 0, blank is 4.
+main.cpp, code is 13, comment is 0, blank is 2.
+README.md, code is 35, comment is 1, blank is 11.
+src/DataBase/RedisDataBase.cpp, code is 68, comment is 6, blank is 12.
+src/DataBase/RedisDataBase.h, code is 21, comment is 5, blank is 4.
+src/DataBase/SQLConnectPool.cpp, code is 4, comment is 0, blank is 3.
+src/DataBase/SQLConnectPool.h, code is 11, comment is 3, blank is 4.
+src/Epoll.cpp, code is 60, comment is 7, blank is 10.
+src/Epoll.h, code is 6, comment is 0, blank is 0.
+src/EventLoop.cpp, code is 30, comment is 11, blank is 8.
+src/EventLoop.h, code is 26, comment is 7, blank is 4.
+src/HttpRequest.cpp, code is 289, comment is 84, blank is 51.
+src/HttpRequest.h, code is 82, comment is 24, blank is 12.
+src/Logging/LogBuffer.h, code is 108, comment is 62, blank is 12.
+src/Logging/Logging.cpp, code is 99, comment is 17, blank is 10.
+src/Logging/Logging.h, code is 51, comment is 23, blank is 6.
+src/Logging/Makefile, code is 8, comment is 0, blank is 3.
+src/Logging/日志.md, code is 16, comment is 0, blank is 6.
+src/MutexLock.h, code is 21, comment is 6, blank is 5.
+src/ThreadPool.cpp, code is 28, comment is 35, blank is 7.
+src/ThreadPool.h, code is 24, comment is 6, blank is 4.
+src/Timer/Timer.cpp, code is 61, comment is 8, blank is 11.
+src/Timer/Timer.h, code is 45, comment is 3, blank is 8.
+src/Timer/TimerLinkedList.cpp, code is 100, comment is 17, blank is 18.
+src/Timer/TimerLinkedList.h, code is 26, comment is 3, blank is 8.
+src/Timer/TimeWheel.cpp, code is 1, comment is 0, blank is 0.
+src/Timer/TimeWheel.h, code is 16, comment is 7, blank is 6.
+src/Utils.cpp, code is 121, comment is 9, blank is 18.
+src/Utils.h, code is 13, comment is 2, blank is 4.
+src/WebServer.cpp, code is 50, comment is 54, blank is 8.
+src/WebServer.h, code is 29, comment is 8, blank is 7.
+src/Worker.cpp, code is 33, comment is 13, blank is 5.
+src/Worker.h, code is 22, comment is 3, blank is 4.
+test/a.out, it is a binary file.
+test/test, it is a binary file.
+test/Test.cpp, code is 19, comment is 0, blank is 2.
+test/Test2.cpp, code is 22, comment is 1, blank is 1.
+test/Test3.cpp, code is 23, comment is 3, blank is 1.
+test/Test4.cpp, code is 25, comment is 1, blank is 2.
+test/Test5.cpp, code is 22, comment is 4, blank is 4.
+test/Test6.cpp, code is 30, comment is 1, blank is 3.
+test/Test7.cpp, code is 54, comment is 1, blank is 6.
+test/Test8.cpp, code is 10, comment is 1, blank is 1.
+test/Test9.cpp, code is 33, comment is 1, blank is 4.
+===============================================================================
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2020-12-03 10:06:10
+count workspace : /mnt/d/Project/P10_C++_LinuxWebServer/LightningWebServer
+total files : 185
+total code lines : 12379
+total comment lines : 1517
+total blank lines : 2532
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |            .md|            338|             28|             54|    2.7|
+   |           .cpp|           3246|            514|            676|     26|
+   |             .h|            566|            173|            119|    4.6|
+   |               |            811|             16|            347|    6.6|
+   |           .txt|            669|            607|            274|    5.4|
+   |         .cmake|            843|              0|            324|    6.8|
+   |        .drawio|            445|              1|              0|    3.6|
+   |         .marks|              3|              0|              0|  0.024|
+   |   .check_cache|              4|              0|              0|  0.032|
+   |           .log|           1479|             28|            133|     12|
+   |           .tmp|            131|              0|             42|    1.1|
+   |         .ninja|            246|              0|            110|    2.0|
+   |          .json|           1788|              0|             16|     14|
+   |          .make|            206|              0|             92|    1.7|
+   |      .internal|             80|              0|              3|   0.65|
+   |  .includecache|              3|              0|              0|  0.024|
+   |             .c|           1521|            150|            342|     12|
+   -------------------------------------------------------------------------
+.gitignore, code is 6, comment is 16, blank is 0.
+build/.cmake/api/v1/query/client-vscode/query.json, code is 1, comment is 0, blank is 0.
+build/.cmake/api/v1/reply/cache-v2-98446e30aeed59f054cf.json, code is 1211, comment is 0, blank is 0.
+build/.cmake/api/v1/reply/codemodel-v2-2078dab6bb6ac58bbb55.json, code is 86, comment is 0, blank is 0.
+build/.cmake/api/v1/reply/index-2020-12-01T06-05-03-0213.json, code is 87, comment is 0, blank is 0.
+build/.cmake/api/v1/reply/target-server-Debug-64aa1a3ed095203fd552.json, code is 89, comment is 0, blank is 2.
+build/.cmake/api/v1/reply/target-src-Debug-dde1b0a6bc269f9a3051.json, code is 247, comment is 0, blank is 2.
+build/.ninja_deps, it is a binary file.
+build/.ninja_log, code is 1, comment is 0, blank is 0.
+build/build.ninja, code is 189, comment is 0, blank is 84.
+build/build.ninja.tmp, code is 62, comment is 0, blank is 29.
+build/cmake_install.cmake, code is 46, comment is 0, blank is 9.
+build/CMakeCache.txt, code is 151, comment is 158, blank is 69.
+build/CMakeFiles/3.16.3/CMakeCCompiler.cmake, code is 60, comment is 0, blank is 16.
+build/CMakeFiles/3.16.3/CMakeCXXCompiler.cmake, code is 70, comment is 0, blank is 18.
+build/CMakeFiles/3.16.3/CMakeDetermineCompilerABI_C.bin, it is a binary file.
+build/CMakeFiles/3.16.3/CMakeDetermineCompilerABI_CXX.bin, it is a binary file.
+build/CMakeFiles/3.16.3/CMakeSystem.cmake, code is 10, comment is 0, blank is 5.
+build/CMakeFiles/3.16.3/CompilerIdC/a.out, it is a binary file.
+build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c, code is 507, comment is 50, blank is 114.
+build/CMakeFiles/3.16.3/CompilerIdCXX/a.out, it is a binary file.
+build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp, code is 491, comment is 52, blank is 117.
+build/CMakeFiles/cmake.check_cache, code is 1, comment is 0, blank is 0.
+build/CMakeFiles/CMakeOutput.log, code is 391, comment is 8, blank is 38.
+build/CMakeFiles/TargetDirectories.txt, code is 6, comment is 0, blank is 0.
+build/compile_commands.json, code is 67, comment is 0, blank is 12.
+build/compile_commands.json.tmp, code is 61, comment is 0, blank is 11.
+build/rules.ninja, code is 57, comment is 0, blank is 26.
+build/rules.ninja.tmp, code is 8, comment is 0, blank is 2.
+build/src/cmake_install.cmake, code is 33, comment is 0, blank is 6.
+doc/Backlog.md, code is 161, comment is 17, blank is 24.
+doc/Compile Errors/GCC.md, code is 11, comment is 0, blank is 3.
+doc/Compile Errors/指针.md, code is 39, comment is 6, blank is 10.
+doc/Compile Errors/模板.md, code is 9, comment is 0, blank is 0.
+doc/Compile Errors/线程.md, code is 33, comment is 4, blank is 1.
+doc/Compile Errors/编译时遇到的坑.md, code is 3, comment is 0, blank is 0.
+doc/Compile Errors/网络.md, code is 34, comment is 0, blank is 1.
+doc/Structure 2.drawio, code is 1, comment is 1, blank is 0.
+doc/Structure.drawio, code is 444, comment is 0, blank is 0.
+LICENSE, code is 17, comment is 0, blank is 4.
+old/TimerLinkedList.cpp, code is 100, comment is 17, blank is 18.
+old/TimerLinkedList.h, code is 26, comment is 3, blank is 8.
+old/TimeWheel.cpp, code is 1, comment is 0, blank is 0.
+old/TimeWheel.h, code is 16, comment is 7, blank is 6.
+Readme.md, code is 32, comment is 1, blank is 9.
+src/cmake_install.cmake, code is 47, comment is 0, blank is 9.
+src/CMakeCache.txt, code is 131, comment is 137, blank is 56.
+src/CMakeFiles/3.16.3/CMakeCXXCompiler.cmake, code is 70, comment is 0, blank is 18.
+src/CMakeFiles/3.16.3/CMakeDetermineCompilerABI_CXX.bin, it is a binary file.
+src/CMakeFiles/3.16.3/CMakeSystem.cmake, code is 10, comment is 0, blank is 5.
+src/CMakeFiles/3.16.3/CompilerIdCXX/a.out, it is a binary file.
+src/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp, code is 491, comment is 52, blank is 117.
+src/CMakeFiles/cmake.check_cache, code is 1, comment is 0, blank is 0.
+src/CMakeFiles/CMakeDirectoryInformation.cmake, code is 12, comment is 0, blank is 4.
+src/CMakeFiles/CMakeOutput.log, code is 218, comment is 4, blank is 19.
+src/CMakeFiles/Makefile.cmake, code is 16, comment is 0, blank is 35.
+src/CMakeFiles/Makefile2, code is 140, comment is 0, blank is 61.
+src/CMakeFiles/progress.marks, code is 1, comment is 0, blank is 0.
+src/CMakeFiles/Progress/8, code is 1, comment is 0, blank is 0.
+src/CMakeFiles/Progress/count.txt, code is 1, comment is 0, blank is 0.
+src/CMakeFiles/server.dir/build.make, code is 35, comment is 0, blank is 22.
+src/CMakeFiles/server.dir/cmake_clean.cmake, code is 6, comment is 0, blank is 9.
+src/CMakeFiles/server.dir/CXX.includecache, code is 1, comment is 0, blank is 0.
+src/CMakeFiles/server.dir/depend.internal, code is 65, comment is 0, blank is 1.
+src/CMakeFiles/server.dir/depend.make, code is 59, comment is 0, blank is 7.
+src/CMakeFiles/server.dir/DependInfo.cmake, code is 15, comment is 0, blank is 10.
+src/CMakeFiles/server.dir/flags.make, code is 6, comment is 0, blank is 4.
+src/CMakeFiles/server.dir/link.txt, code is 1, comment is 0, blank is 0.
+src/CMakeFiles/server.dir/Main.cpp.o, it is a binary file.
+src/CMakeFiles/server.dir/progress.make, code is 7, comment is 0, blank is 1.
+src/CMakeFiles/server.dir/ThreadPool.cpp.o, it is a binary file.
+src/CMakeFiles/server.dir/WebServer.cpp.o, it is a binary file.
+src/CMakeFiles/TargetDirectories.txt, code is 9, comment is 0, blank is 0.
+src/CMakeLists.txt, code is 22, comment is 0, blank is 9.
+src/DataBase/RedisDataBase.cpp, code is 68, comment is 6, blank is 12.
+src/DataBase/RedisDataBase.h, code is 22, comment is 5, blank is 4.
+src/DataBase/SQLConnectPool.cpp, code is 3, comment is 0, blank is 1.
+src/DataBase/SQLConnectPool.h, code is 11, comment is 3, blank is 4.
+src/Epoll.cpp, code is 61, comment is 7, blank is 10.
+src/Epoll.h, code is 23, comment is 0, blank is 6.
+src/EventLoop.cpp, code is 30, comment is 12, blank is 6.
+src/EventLoop.h, code is 26, comment is 7, blank is 7.
+src/HttpRequest.cpp, code is 298, comment is 84, blank is 56.
+src/HttpRequest.h, code is 83, comment is 24, blank is 14.
+src/Logging/cmake_install.cmake, code is 33, comment is 0, blank is 6.
+src/Logging/CMakeCache.txt, code is 147, comment is 155, blank is 64.
+src/Logging/CMakeFiles/3.16.3/CMakeCCompiler.cmake, code is 60, comment is 0, blank is 16.
+src/Logging/CMakeFiles/3.16.3/CMakeCXXCompiler.cmake, code is 70, comment is 0, blank is 18.
+src/Logging/CMakeFiles/3.16.3/CMakeDetermineCompilerABI_C.bin, it is a binary file.
+src/Logging/CMakeFiles/3.16.3/CMakeDetermineCompilerABI_CXX.bin, it is a binary file.
+src/Logging/CMakeFiles/3.16.3/CMakeSystem.cmake, code is 10, comment is 0, blank is 5.
+src/Logging/CMakeFiles/3.16.3/CompilerIdC/a.out, it is a binary file.
+src/Logging/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c, code is 507, comment is 50, blank is 114.
+src/Logging/CMakeFiles/3.16.3/CompilerIdCXX/a.out, it is a binary file.
+src/Logging/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp, code is 491, comment is 52, blank is 117.
+src/Logging/CMakeFiles/cmake.check_cache, code is 1, comment is 0, blank is 0.
+src/Logging/CMakeFiles/CMakeDirectoryInformation.cmake, code is 12, comment is 0, blank is 4.
+src/Logging/CMakeFiles/CMakeOutput.log, code is 445, comment is 8, blank is 38.
+src/Logging/CMakeFiles/Logging.dir/build.make, code is 35, comment is 0, blank is 22.
+src/Logging/CMakeFiles/Logging.dir/cmake_clean.cmake, code is 6, comment is 0, blank is 4.
+src/Logging/CMakeFiles/Logging.dir/cmake_clean_target.cmake, code is 2, comment is 0, blank is 1.
+src/Logging/CMakeFiles/Logging.dir/CXX.includecache, code is 1, comment is 0, blank is 0.
+src/Logging/CMakeFiles/Logging.dir/depend.internal, code is 6, comment is 0, blank is 1.
+src/Logging/CMakeFiles/Logging.dir/depend.make, code is 5, comment is 0, blank is 2.
+src/Logging/CMakeFiles/Logging.dir/DependInfo.cmake, code is 15, comment is 0, blank is 5.
+src/Logging/CMakeFiles/Logging.dir/flags.make, code is 6, comment is 0, blank is 4.
+src/Logging/CMakeFiles/Logging.dir/link.txt, code is 2, comment is 0, blank is 0.
+src/Logging/CMakeFiles/Logging.dir/Logging.cpp.o, it is a binary file.
+src/Logging/CMakeFiles/Logging.dir/progress.make, code is 2, comment is 0, blank is 1.
+src/Logging/CMakeFiles/Makefile.cmake, code is 16, comment is 0, blank is 33.
+src/Logging/CMakeFiles/Makefile2, code is 71, comment is 0, blank is 35.
+src/Logging/CMakeFiles/progress.marks, code is 1, comment is 0, blank is 0.
+src/Logging/CMakeFiles/TargetDirectories.txt, code is 3, comment is 0, blank is 0.
+src/Logging/CMakeLists.txt, code is 21, comment is 0, blank is 5.
+src/Logging/libLogging.a, it is a binary file.
+src/Logging/LogBuffer.h, code is 106, comment is 64, blank is 12.
+src/Logging/Logging.cpp, code is 74, comment is 46, blank is 13.
+src/Logging/Logging.h, code is 77, comment is 30, blank is 14.
+src/Logging/Logging.o, it is a binary file.
+src/Logging/main.cpp, code is 32, comment is 0, blank is 3.
+src/Logging/Main.o, it is a binary file.
+src/Logging/Makefile, code is 126, comment is 0, blank is 54.
+src/Logging/日志.md, code is 16, comment is 0, blank is 6.
+src/Main.cpp, code is 12, comment is 0, blank is 1.
+src/Makefile, code is 252, comment is 0, blank is 104.
+src/MutexLock.h, code is 21, comment is 6, blank is 5.
+src/ThreadPool.cpp, code is 33, comment is 32, blank is 6.
+src/ThreadPool.h, code is 22, comment is 9, blank is 5.
+src/Timer/cmake_install.cmake, code is 33, comment is 0, blank is 6.
+src/Timer/CMakeCache.txt, code is 149, comment is 157, blank is 66.
+src/Timer/CMakeFiles/3.16.3/CMakeCCompiler.cmake, code is 60, comment is 0, blank is 16.
+src/Timer/CMakeFiles/3.16.3/CMakeCXXCompiler.cmake, code is 70, comment is 0, blank is 18.
+src/Timer/CMakeFiles/3.16.3/CMakeDetermineCompilerABI_C.bin, it is a binary file.
+src/Timer/CMakeFiles/3.16.3/CMakeDetermineCompilerABI_CXX.bin, it is a binary file.
+src/Timer/CMakeFiles/3.16.3/CMakeSystem.cmake, code is 10, comment is 0, blank is 5.
+src/Timer/CMakeFiles/3.16.3/CompilerIdC/a.out, it is a binary file.
+src/Timer/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c, code is 507, comment is 50, blank is 114.
+src/Timer/CMakeFiles/3.16.3/CompilerIdCXX/a.out, it is a binary file.
+src/Timer/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp, code is 491, comment is 52, blank is 117.
+src/Timer/CMakeFiles/cmake.check_cache, code is 1, comment is 0, blank is 0.
+src/Timer/CMakeFiles/CMakeDirectoryInformation.cmake, code is 12, comment is 0, blank is 4.
+src/Timer/CMakeFiles/CMakeOutput.log, code is 425, comment is 8, blank is 38.
+src/Timer/CMakeFiles/Makefile.cmake, code is 16, comment is 0, blank is 29.
+src/Timer/CMakeFiles/Makefile2, code is 71, comment is 0, blank is 35.
+src/Timer/CMakeFiles/progress.marks, code is 1, comment is 0, blank is 0.
+src/Timer/CMakeFiles/TargetDirectories.txt, code is 3, comment is 0, blank is 0.
+src/Timer/CMakeFiles/Timer.dir/build.make, code is 35, comment is 0, blank is 22.
+src/Timer/CMakeFiles/Timer.dir/cmake_clean.cmake, code is 6, comment is 0, blank is 4.
+src/Timer/CMakeFiles/Timer.dir/cmake_clean_target.cmake, code is 2, comment is 0, blank is 1.
+src/Timer/CMakeFiles/Timer.dir/CXX.includecache, code is 1, comment is 0, blank is 0.
+src/Timer/CMakeFiles/Timer.dir/depend.internal, code is 9, comment is 0, blank is 1.
+src/Timer/CMakeFiles/Timer.dir/depend.make, code is 8, comment is 0, blank is 2.
+src/Timer/CMakeFiles/Timer.dir/DependInfo.cmake, code is 15, comment is 0, blank is 5.
+src/Timer/CMakeFiles/Timer.dir/flags.make, code is 6, comment is 0, blank is 4.
+src/Timer/CMakeFiles/Timer.dir/link.txt, code is 2, comment is 0, blank is 0.
+src/Timer/CMakeFiles/Timer.dir/progress.make, code is 2, comment is 0, blank is 1.
+src/Timer/CMakeFiles/Timer.dir/Timer.cpp.o, it is a binary file.
+src/Timer/CMakeLists.txt, code is 21, comment is 0, blank is 5.
+src/Timer/libTimer.a, it is a binary file.
+src/Timer/Makefile, code is 126, comment is 0, blank is 54.
+src/Timer/Timer.cpp, code is 62, comment is 8, blank is 11.
+src/Timer/Timer.h, code is 45, comment is 3, blank is 9.
+src/Utils.cpp, code is 111, comment is 8, blank is 18.
+src/Utils.h, code is 13, comment is 2, blank is 6.
+src/WebServer.cpp, code is 49, comment is 54, blank is 10.
+src/WebServer.h, code is 29, comment is 8, blank is 9.
+src/Worker.cpp, code is 34, comment is 13, blank is 5.
+src/Worker.h, code is 22, comment is 2, blank is 7.
+test/Person1.h, code is 17, comment is 0, blank is 2.
+test/Person2.h, code is 7, comment is 0, blank is 1.
+test/test, it is a binary file.
+test/Test.cpp, code is 19, comment is 0, blank is 2.
+test/Test10.cpp, code is 23, comment is 1, blank is 6.
+test/Test11.cpp, code is 10, comment is 2, blank is 1.
+test/Test12.cpp, code is 10, comment is 1, blank is 0.
+test/Test13.cpp, code is 9, comment is 0, blank is 0.
+test/Test14.cpp, code is 24, comment is 2, blank is 7.
+test/Test2.cpp, code is 22, comment is 1, blank is 1.
+test/Test3.cpp, code is 23, comment is 3, blank is 1.
+test/Test4.cpp, code is 25, comment is 1, blank is 2.
+test/Test5.cpp, code is 22, comment is 4, blank is 4.
+test/Test6.cpp, code is 30, comment is 1, blank is 3.
+test/Test7.cpp, code is 54, comment is 1, blank is 6.
+test/Test8.cpp, code is 10, comment is 1, blank is 1.
+test/Test9.cpp, code is 33, comment is 1, blank is 4.
+===============================================================================
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2020-12-03 19:02:31
+count workspace : d:\Project\P10_C++_LinuxWebServer\LightningWebServer
+total files : 53
+total code lines : 5333
+total comment lines : 837
+total blank lines : 1137
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |           .cpp|           3246|            514|            676|     61|
+   |             .h|            566|            173|            119|     11|
+   |             .c|           1521|            150|            342|     29|
+   -------------------------------------------------------------------------
+build\CMakeFiles\3.16.3\CompilerIdC\CMakeCCompilerId.c, code is 507, comment is 50, blank is 114.
+build\CMakeFiles\3.16.3\CompilerIdCXX\CMakeCXXCompilerId.cpp, code is 491, comment is 52, blank is 117.
+old\TimerLinkedList.cpp, code is 100, comment is 17, blank is 18.
+old\TimerLinkedList.h, code is 26, comment is 3, blank is 8.
+old\TimeWheel.cpp, code is 1, comment is 0, blank is 0.
+old\TimeWheel.h, code is 16, comment is 7, blank is 6.
+src\CMakeFiles\3.16.3\CompilerIdCXX\CMakeCXXCompilerId.cpp, code is 491, comment is 52, blank is 117.
+src\DataBase\RedisDataBase.cpp, code is 68, comment is 6, blank is 12.
+src\DataBase\RedisDataBase.h, code is 22, comment is 5, blank is 4.
+src\DataBase\SQLConnectPool.cpp, code is 3, comment is 0, blank is 1.
+src\DataBase\SQLConnectPool.h, code is 11, comment is 3, blank is 4.
+src\Epoll.cpp, code is 61, comment is 7, blank is 10.
+src\Epoll.h, code is 23, comment is 0, blank is 6.
+src\EventLoop.cpp, code is 30, comment is 12, blank is 6.
+src\EventLoop.h, code is 26, comment is 7, blank is 7.
+src\HttpRequest.cpp, code is 298, comment is 84, blank is 56.
+src\HttpRequest.h, code is 83, comment is 24, blank is 14.
+src\Logging\CMakeFiles\3.16.3\CompilerIdC\CMakeCCompilerId.c, code is 507, comment is 50, blank is 114.
+src\Logging\CMakeFiles\3.16.3\CompilerIdCXX\CMakeCXXCompilerId.cpp, code is 491, comment is 52, blank is 117.
+src\Logging\LogBuffer.h, code is 106, comment is 64, blank is 12.
+src\Logging\Logging.cpp, code is 74, comment is 46, blank is 13.
+src\Logging\Logging.h, code is 77, comment is 30, blank is 14.
+src\Logging\main.cpp, code is 32, comment is 0, blank is 3.
+src\Main.cpp, code is 12, comment is 0, blank is 1.
+src\MutexLock.h, code is 21, comment is 6, blank is 5.
+src\ThreadPool.cpp, code is 33, comment is 32, blank is 6.
+src\ThreadPool.h, code is 22, comment is 9, blank is 5.
+src\Timer\CMakeFiles\3.16.3\CompilerIdC\CMakeCCompilerId.c, code is 507, comment is 50, blank is 114.
+src\Timer\CMakeFiles\3.16.3\CompilerIdCXX\CMakeCXXCompilerId.cpp, code is 491, comment is 52, blank is 117.
+src\Timer\Timer.cpp, code is 62, comment is 8, blank is 11.
+src\Timer\Timer.h, code is 45, comment is 3, blank is 9.
+src\Utils.cpp, code is 111, comment is 8, blank is 18.
+src\Utils.h, code is 13, comment is 2, blank is 6.
+src\WebServer.cpp, code is 49, comment is 54, blank is 10.
+src\WebServer.h, code is 29, comment is 8, blank is 9.
+src\Worker.cpp, code is 34, comment is 13, blank is 5.
+src\Worker.h, code is 22, comment is 2, blank is 7.
+test\Person1.h, code is 17, comment is 0, blank is 2.
+test\Person2.h, code is 7, comment is 0, blank is 1.
+test\Test.cpp, code is 19, comment is 0, blank is 2.
+test\Test10.cpp, code is 23, comment is 1, blank is 6.
+test\Test11.cpp, code is 10, comment is 2, blank is 1.
+test\Test12.cpp, code is 10, comment is 1, blank is 0.
+test\Test13.cpp, code is 9, comment is 0, blank is 0.
+test\Test14.cpp, code is 24, comment is 2, blank is 7.
+test\Test2.cpp, code is 22, comment is 1, blank is 1.
+test\Test3.cpp, code is 23, comment is 3, blank is 1.
+test\Test4.cpp, code is 25, comment is 1, blank is 2.
+test\Test5.cpp, code is 22, comment is 4, blank is 4.
+test\Test6.cpp, code is 30, comment is 1, blank is 3.
+test\Test7.cpp, code is 54, comment is 1, blank is 6.
+test\Test8.cpp, code is 10, comment is 1, blank is 1.
+test\Test9.cpp, code is 33, comment is 1, blank is 4.
+===============================================================================
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2020-12-03 19:02:51
+count workspace : d:\Project\P10_C++_LinuxWebServer\LightningWebServer
+total files : 50
+total code lines : 3812
+total comment lines : 687
+total blank lines : 795
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |           .cpp|           3246|            514|            676|     85|
+   |             .h|            566|            173|            119|     15|
+   -------------------------------------------------------------------------
+build\CMakeFiles\3.16.3\CompilerIdCXX\CMakeCXXCompilerId.cpp, code is 491, comment is 52, blank is 117.
+old\TimerLinkedList.cpp, code is 100, comment is 17, blank is 18.
+old\TimerLinkedList.h, code is 26, comment is 3, blank is 8.
+old\TimeWheel.cpp, code is 1, comment is 0, blank is 0.
+old\TimeWheel.h, code is 16, comment is 7, blank is 6.
+src\CMakeFiles\3.16.3\CompilerIdCXX\CMakeCXXCompilerId.cpp, code is 491, comment is 52, blank is 117.
+src\DataBase\RedisDataBase.cpp, code is 68, comment is 6, blank is 12.
+src\DataBase\RedisDataBase.h, code is 22, comment is 5, blank is 4.
+src\DataBase\SQLConnectPool.cpp, code is 3, comment is 0, blank is 1.
+src\DataBase\SQLConnectPool.h, code is 11, comment is 3, blank is 4.
+src\Epoll.cpp, code is 61, comment is 7, blank is 10.
+src\Epoll.h, code is 23, comment is 0, blank is 6.
+src\EventLoop.cpp, code is 30, comment is 12, blank is 6.
+src\EventLoop.h, code is 26, comment is 7, blank is 7.
+src\HttpRequest.cpp, code is 298, comment is 84, blank is 56.
+src\HttpRequest.h, code is 83, comment is 24, blank is 14.
+src\Logging\CMakeFiles\3.16.3\CompilerIdCXX\CMakeCXXCompilerId.cpp, code is 491, comment is 52, blank is 117.
+src\Logging\LogBuffer.h, code is 106, comment is 64, blank is 12.
+src\Logging\Logging.cpp, code is 74, comment is 46, blank is 13.
+src\Logging\Logging.h, code is 77, comment is 30, blank is 14.
+src\Logging\main.cpp, code is 32, comment is 0, blank is 3.
+src\Main.cpp, code is 12, comment is 0, blank is 1.
+src\MutexLock.h, code is 21, comment is 6, blank is 5.
+src\ThreadPool.cpp, code is 33, comment is 32, blank is 6.
+src\ThreadPool.h, code is 22, comment is 9, blank is 5.
+src\Timer\CMakeFiles\3.16.3\CompilerIdCXX\CMakeCXXCompilerId.cpp, code is 491, comment is 52, blank is 117.
+src\Timer\Timer.cpp, code is 62, comment is 8, blank is 11.
+src\Timer\Timer.h, code is 45, comment is 3, blank is 9.
+src\Utils.cpp, code is 111, comment is 8, blank is 18.
+src\Utils.h, code is 13, comment is 2, blank is 6.
+src\WebServer.cpp, code is 49, comment is 54, blank is 10.
+src\WebServer.h, code is 29, comment is 8, blank is 9.
+src\Worker.cpp, code is 34, comment is 13, blank is 5.
+src\Worker.h, code is 22, comment is 2, blank is 7.
+test\Person1.h, code is 17, comment is 0, blank is 2.
+test\Person2.h, code is 7, comment is 0, blank is 1.
+test\Test.cpp, code is 19, comment is 0, blank is 2.
+test\Test10.cpp, code is 23, comment is 1, blank is 6.
+test\Test11.cpp, code is 10, comment is 2, blank is 1.
+test\Test12.cpp, code is 10, comment is 1, blank is 0.
+test\Test13.cpp, code is 9, comment is 0, blank is 0.
+test\Test14.cpp, code is 24, comment is 2, blank is 7.
+test\Test2.cpp, code is 22, comment is 1, blank is 1.
+test\Test3.cpp, code is 23, comment is 3, blank is 1.
+test\Test4.cpp, code is 25, comment is 1, blank is 2.
+test\Test5.cpp, code is 22, comment is 4, blank is 4.
+test\Test6.cpp, code is 30, comment is 1, blank is 3.
+test\Test7.cpp, code is 54, comment is 1, blank is 6.
+test\Test8.cpp, code is 10, comment is 1, blank is 1.
+test\Test9.cpp, code is 33, comment is 1, blank is 4.
+===============================================================================
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2020-12-03 19:03:40
+count workspace : d:\Project\P10_C++_LinuxWebServer\LightningWebServer
+total files : 34
+total code lines : 3474
+total comment lines : 668
+total blank lines : 754
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |             .h|            542|            173|            116|     16|
+   |           .cpp|           2932|            495|            638|     84|
+   -------------------------------------------------------------------------
+build\CMakeFiles\3.16.3\CompilerIdCXX\CMakeCXXCompilerId.cpp, code is 491, comment is 52, blank is 117.
+old\TimerLinkedList.cpp, code is 100, comment is 17, blank is 18.
+old\TimerLinkedList.h, code is 26, comment is 3, blank is 8.
+old\TimeWheel.cpp, code is 1, comment is 0, blank is 0.
+old\TimeWheel.h, code is 16, comment is 7, blank is 6.
+src\CMakeFiles\3.16.3\CompilerIdCXX\CMakeCXXCompilerId.cpp, code is 491, comment is 52, blank is 117.
+src\DataBase\RedisDataBase.cpp, code is 68, comment is 6, blank is 12.
+src\DataBase\RedisDataBase.h, code is 22, comment is 5, blank is 4.
+src\DataBase\SQLConnectPool.cpp, code is 3, comment is 0, blank is 1.
+src\DataBase\SQLConnectPool.h, code is 11, comment is 3, blank is 4.
+src\Epoll.cpp, code is 61, comment is 7, blank is 10.
+src\Epoll.h, code is 23, comment is 0, blank is 6.
+src\EventLoop.cpp, code is 30, comment is 12, blank is 6.
+src\EventLoop.h, code is 26, comment is 7, blank is 7.
+src\HttpRequest.cpp, code is 298, comment is 84, blank is 56.
+src\HttpRequest.h, code is 83, comment is 24, blank is 14.
+src\Logging\CMakeFiles\3.16.3\CompilerIdCXX\CMakeCXXCompilerId.cpp, code is 491, comment is 52, blank is 117.
+src\Logging\LogBuffer.h, code is 106, comment is 64, blank is 12.
+src\Logging\Logging.cpp, code is 74, comment is 46, blank is 13.
+src\Logging\Logging.h, code is 77, comment is 30, blank is 14.
+src\Logging\main.cpp, code is 32, comment is 0, blank is 3.
+src\Main.cpp, code is 12, comment is 0, blank is 1.
+src\MutexLock.h, code is 21, comment is 6, blank is 5.
+src\ThreadPool.cpp, code is 33, comment is 32, blank is 6.
+src\ThreadPool.h, code is 22, comment is 9, blank is 5.
+src\Timer\CMakeFiles\3.16.3\CompilerIdCXX\CMakeCXXCompilerId.cpp, code is 491, comment is 52, blank is 117.
+src\Timer\Timer.cpp, code is 62, comment is 8, blank is 11.
+src\Timer\Timer.h, code is 45, comment is 3, blank is 9.
+src\Utils.cpp, code is 111, comment is 8, blank is 18.
+src\Utils.h, code is 13, comment is 2, blank is 6.
+src\WebServer.cpp, code is 49, comment is 54, blank is 10.
+src\WebServer.h, code is 29, comment is 8, blank is 9.
+src\Worker.cpp, code is 34, comment is 13, blank is 5.
+src\Worker.h, code is 22, comment is 2, blank is 7.
+===============================================================================
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2020-12-03 19:04:28
+count workspace : d:\Project\P10_C++_LinuxWebServer\LightningWebServer
+total files : 32
+total code lines : 2492
+total comment lines : 564
+total blank lines : 520
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |             .h|            542|            173|            116|     22|
+   |           .cpp|           1950|            391|            404|     78|
+   -------------------------------------------------------------------------
+old\TimerLinkedList.cpp, code is 100, comment is 17, blank is 18.
+old\TimerLinkedList.h, code is 26, comment is 3, blank is 8.
+old\TimeWheel.cpp, code is 1, comment is 0, blank is 0.
+old\TimeWheel.h, code is 16, comment is 7, blank is 6.
+src\DataBase\RedisDataBase.cpp, code is 68, comment is 6, blank is 12.
+src\DataBase\RedisDataBase.h, code is 22, comment is 5, blank is 4.
+src\DataBase\SQLConnectPool.cpp, code is 3, comment is 0, blank is 1.
+src\DataBase\SQLConnectPool.h, code is 11, comment is 3, blank is 4.
+src\Epoll.cpp, code is 61, comment is 7, blank is 10.
+src\Epoll.h, code is 23, comment is 0, blank is 6.
+src\EventLoop.cpp, code is 30, comment is 12, blank is 6.
+src\EventLoop.h, code is 26, comment is 7, blank is 7.
+src\HttpRequest.cpp, code is 298, comment is 84, blank is 56.
+src\HttpRequest.h, code is 83, comment is 24, blank is 14.
+src\Logging\CMakeFiles\3.16.3\CompilerIdCXX\CMakeCXXCompilerId.cpp, code is 491, comment is 52, blank is 117.
+src\Logging\LogBuffer.h, code is 106, comment is 64, blank is 12.
+src\Logging\Logging.cpp, code is 74, comment is 46, blank is 13.
+src\Logging\Logging.h, code is 77, comment is 30, blank is 14.
+src\Logging\main.cpp, code is 32, comment is 0, blank is 3.
+src\Main.cpp, code is 12, comment is 0, blank is 1.
+src\MutexLock.h, code is 21, comment is 6, blank is 5.
+src\ThreadPool.cpp, code is 33, comment is 32, blank is 6.
+src\ThreadPool.h, code is 22, comment is 9, blank is 5.
+src\Timer\CMakeFiles\3.16.3\CompilerIdCXX\CMakeCXXCompilerId.cpp, code is 491, comment is 52, blank is 117.
+src\Timer\Timer.cpp, code is 62, comment is 8, blank is 11.
+src\Timer\Timer.h, code is 45, comment is 3, blank is 9.
+src\Utils.cpp, code is 111, comment is 8, blank is 18.
+src\Utils.h, code is 13, comment is 2, blank is 6.
+src\WebServer.cpp, code is 49, comment is 54, blank is 10.
+src\WebServer.h, code is 29, comment is 8, blank is 9.
+src\Worker.cpp, code is 34, comment is 13, blank is 5.
+src\Worker.h, code is 22, comment is 2, blank is 7.
+===============================================================================
