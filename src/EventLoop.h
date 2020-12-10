@@ -16,7 +16,7 @@ const int DEFAULT_LIVE_TIME = 2 * 60 * 1000; // 2分钟
     由封装好的线程类负责调用和运行函数
     EventLoop和Worker可以视作劳心者与劳力者。EventLoop负责接收请求，并让线程来处理相应的请求
 */
-class EventLoop
+class EventLoop: public std::enable_shared_from_this<EventLoop>
 {
 private:
     std::shared_ptr<Epoll>      EpollPtr;
@@ -29,7 +29,7 @@ private:
 public:
     // TODO 是否需要增加拷贝构造函数和拷贝赋值运算符
     EventLoop();
-    ~EventLoop();
+    ~EventLoop() = default;
 
     void AddRequest(std::shared_ptr<HttpRequest> request, int timeout = DEFAULT_LIVE_TIME);
     void ModifyRequest(std::shared_ptr<HttpRequest> request, epoll_event *event);

@@ -94,10 +94,11 @@ public:
     // 设置相关属性
     void SetFd(int fd);
     void SetEvent(uint32_t event);
-    void SetReadHandler(std::function<void()> handler);
-    void SetWriteHandler(std::function<void()> handler);
-    void SetUpdateHandler(std::function<void()> handler);
-    void SetErrorHandler(std::function<void()> handler);
+    void SetReadHandler(std::function<void()> &&handler);
+    void SetWriteHandler(std::function<void()> &&handler);
+    void SetUpdateHandler(std::function<void()> &&handler);
+    void SetErrorHandler(std::function<void()> &&handler);
+    void SetEventloopPtr(std::shared_ptr<EventLoop> eventloopPtr);
 
     // 处理请求
     void HandleRequest();

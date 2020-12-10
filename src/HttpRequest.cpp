@@ -10,9 +10,11 @@
 
 #include "HttpRequest.h"
 
+class EventLoop;
 HttpRequest::HttpRequest() {}   // 在epoll里用到了
 
-HttpRequest::HttpRequest(int socketFd, const sockaddr_in &address): Fd(socketFd), ClientAddr(address)
+HttpRequest::HttpRequest(int socketFd, const sockaddr_in &address): Fd(socketFd), ClientAddr(address),
+                                                                    EventloopPtr(std::make_shared<EventLoop>())
 {
     if (HttpRequest::Request_Nums > MAX_REQUESTS)
     {
@@ -24,9 +26,11 @@ HttpRequest::HttpRequest(int socketFd, const sockaddr_in &address): Fd(socketFd)
     // 默认写入自带的函数对象，在新连接中会覆盖这一请求
     // 考虑通过继承关系，将EPOLLIN的状态的处理函数设置virtual
     // NewRequest类继承自HttpRequest类然后将其覆盖
-    SetReadHandler(std::bind(&HttpRequest::HandleReadEvent(), this));
-    SetWriteHandler(std::bind(&HttpRequest::HandleWriteEvent), this);
-    SetUpdateHandler(std::bind(&HttpRequest::UpdateConnect()), this);
+    // 第一次std::bind报错，原因是加了括号: std::bind(&HttpRequest::HandleReadEvent(), this)
+    // 正确的做法应当是: std::bind(&HttpRequest::HandleReadEvent, this)
+    SetReadHandler(std::bind(&HttpRequest::HandleReadEvent, this));
+    SetWriteHandler(std::bind(&HttpRequest::HandleWriteEvent, this));
+    SetUpdateHandler(std::bind(&HttpRequest::UpdateConnect, this));
 }
 
 // TODO 定义拷贝构造函数和拷贝赋值运算符
@@ -176,7 +180,7 @@ void HttpRequest::UpdateConnect()
     if ((RequestHeader.find("Connection") != RequestHeader.end()) && (RequestHeader["Connection"] != "close"))
     {
         SetEvent(EPOLLIN | EPOLLET);
-        EventloopPtr->AddRequest(this); // TODO 是否shared_from_this
+        EventloopPtr->AddRequest(shared_from_this()); // TODO 是否shared_from_this //DONE 需要
     }
 }
 
@@ -376,24 +380,29 @@ void HttpRequest::SetEvent(uint32_t event)
     this->EventPtr->events = event;
 }
 
-void HttpRequest::SetReadHandler(std::function<void()> handler) // 使用右值引用
+void HttpRequest::SetReadHandler(std::function<void()> &&handler) // 使用右值引用
 {
     this->ReadHandler = handler;
 }
 
-void HttpRequest::SetWriteHandler(std::function<void()> handler)
+void HttpRequest::SetWriteHandler(std::function<void()> &&handler)
 {
     this->WriteHandler = handler;
 }
 
-void HttpRequest::SetUpdateHandler(std::function<void()> handler)
+void HttpRequest::SetUpdateHandler(std::function<void()> &&handler)
 {
     this->UpdateHandler = handler;
 }
 
-void HttpRequest::SetErrorHandler(std::function<void()> handler)
+void HttpRequest::SetErrorHandler(std::function<void()> &&handler)
 {
     this->ErrorHandler = handler;
+}
+
+void HttpRequest::SetEventloopPtr(std::shared_ptr<EventLoop> eventloopPtr)
+{
+    this->EventloopPtr = eventloopPtr;
 }
 
 // TODO 检查是否所有属性都被重置
@@ -423,4 +432,3 @@ void HttpRequest::DetachTimerNode()
         断开的TimerNode在小根堆里依次被销毁后，TimerNodeWPtr指向的对象也被释放。
     */
 }
-

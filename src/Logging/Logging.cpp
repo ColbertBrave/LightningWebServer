@@ -5,6 +5,7 @@
 #include <iostream>
 #include <ctime>
 #include <iomanip>
+#include <string>
 
 #include "Logging.h"
 
@@ -20,7 +21,8 @@ Logging::Logging(int logBufferNum): LogBufferNum(logBufferNum)
     // 定义双向循环缓冲区链表的头节点和尾节点, 初始时只有一个节点
     // NOTE make_shared是动态分配了一个新的对象，然后用*Tail初始化了它的各项属性，和Tail是两码事
     // 补充 这里其实没有建立一个双向循环链表，单向循环链表足矣
-    
+    std::cout << "in the logging constructor" << std::endl;
+
     Head = std::make_shared<Buffer>();
     Tail = Head;
     LogBufferNum--;
@@ -89,7 +91,15 @@ std::string Logging::GenerateFileName()
     auto time = std::time(nullptr);
     auto localTime = *std::localtime(&time);
     std::ostringstream fileNameStream;
-    fileNameStream << LogSavePath <<std::put_time(&localTime, "%Y-%m-%d %H-%M.txt"); //TODO 这里的文件路径名似乎有些问题
+    if (LogSavePath.empty())
+    {
+        fileNameStream <<std::put_time(&localTime, "%Y-%m-%d %H.txt");
+    }
+    else
+    {
+        fileNameStream << LogSavePath << "/" <<std::put_time(&localTime, "%Y-%m-%d %H-%M.txt"); //TODO 这里的文件路径名似乎有些问题
+    }
+    
     std::cout << fileNameStream.str() << std::endl;
     return fileNameStream.str();
 }
@@ -97,6 +107,7 @@ std::string Logging::GenerateFileName()
 // 向双向缓冲区链表里写入日志
 void Logging::AppendLog(std::string log)
 {
+    std::cout << "进入了AppendLog" << std::endl;
     // 如果当前缓冲区已满，则选择下一个
     while (!WritePtr->Append(log, sizeof(log)))
     {
@@ -106,13 +117,15 @@ void Logging::AppendLog(std::string log)
 
 void Logging::LogThreadFunc()
 {
+    std::cout << "保存线程LogThreadFunc已经启动" << std::endl;
     // 从缓冲区内将日志保存至本地文件
     while(true)
     {
         // 条件变量，当FullFlag变为true时，即将缓冲区的日志保存至磁盘中
         // 保存后，清空了日志缓冲区，重置了标志位
-        if (SavePtr->Status == 1) // 缓冲区已满
+        if (SavePtr->Status == Buffer::Buffer_Status::FREE) // 缓冲区已满
         {
+            std::cout << "调用日志保存函数" << std::endl;
             SavePtr->SaveToFile(this->GenerateFileName());
             //pthread_mutex_unlock(&Mutex);       // 首先释放锁，保存时间长且无需加锁 NOTE 也许有问题
         }

@@ -1,11 +1,16 @@
+#include <cassert>
+#include <memory>
+
 #include "EventLoop.h"
 #include "WebServer.h"
-#include <cassert>
+
 
 EventLoop::EventLoop(): EpollPtr(std::make_shared<Epoll>()), ThreadID(gettid())
-{}
+{
+    // 构造时即将Epoll和EventLoop关联起来，避免后续可能出现的空指针情况
+    EpollPtr->SetEventloopPtr(shared_from_this());
+}
 
-EventLoop::~EventLoop() {}
 
 // 添加事件给EventLoop进行监听
 void EventLoop::AddRequest(std::shared_ptr<HttpRequest> request, int timeout)

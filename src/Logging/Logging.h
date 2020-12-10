@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <iostream>
 
 #include "LogBuffer.h"
 /*
@@ -15,7 +16,7 @@
     由多块缓冲区组成一个双向循环链表，一端写入日志，另一端将日志保存至队列中写入磁盘
     TODO 将日志分为多个级别debug/error/trace
 */
-const int LogBufferSize =  16 * 1024 * 1024;         // 16MB
+const int LogBufferSize =  16 * 1024 ;         // 16KB
 typedef LogBuffer<LogBufferSize> Buffer;             // NOTE 这里如何优化，用enum？还是constxpr
 
 class Logging
@@ -61,9 +62,15 @@ public:
     // 当日志消息为char数组时
     Logging& operator<<(const char log[])
     {
+        std::cout << "进入了operator<<" << std::endl;
         std::string str(log);
         this->AppendLog(str);
         return *this;
+    }
+
+    void Print()
+    {
+        std::cout << "This is a test message" << std::endl;
     }
 
     // 当日志消息为数值类型时
@@ -77,24 +84,49 @@ public:
     }
 
     static std::shared_ptr<Logging> LoggingPtr;
-    static void Singleton()
+    static void Singleton(void)
     {
-        //if (!LoggingPtr)
+        std::cout << "创建Singleton" << std::endl;
+        // if (!LoggingPtr)
         {
             Logging logSingleton;
             Logging::LoggingPtr = std::make_shared<Logging>(logSingleton);
         }
+        std::cout << "出Singleton()" << std::endl;
     }
 
     // 创建目录，确定是否具有访问权限
     void SetLogSavePath(std::string logSavePath)
     {
         Logging::LogSavePath = logSavePath;
+        std::cout << "已经写入了日志保存路径" << std::endl;
     }
 
+    /*
+        为什么这个函数的定义放在cpp中时会报错？
+        并且如果Once不加Logging::，会提示
+        Logging.cpp: In function ‘Logging& Init()’:
+        Logging.cpp:137:19: error: ‘Once’ was not declared in this scope
+        137 |     pthread_once(&Once, Logging::Singleton);
+            |                   ^~~~
+        
+        Logging.cpp: In function ‘Logging Init()’:
+        Logging.cpp:137:29: error: ‘pthread_once_t Logging::Once’ is private within this context
+        137 |     pthread_once(&(Logging::Once), Logging::Singleton);
+            |                             ^~~~
+        Logging.cpp:11:16: note: declared private here
+        11 | pthread_once_t Logging::Once = PTHREAD_ONCE_INIT;
+            |                ^~~~~~~
+        make: *** [Makefile:9: Logging.o] Error 1
+    */
     static Logging& Init()
     {
-        pthread_once(&Once, Logging::Singleton);
+        if (pthread_once(&Once, Logging::Singleton) !=0)
+        {
+            std::cout << "Error occured" << std::endl;
+        }
+        
+        std::cout << "返回一个Logging对象" << std::endl;
         return *(Logging::LoggingPtr);
     }
     // {

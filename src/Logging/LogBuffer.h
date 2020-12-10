@@ -1,6 +1,9 @@
 #ifndef LOGBUFFER_H
 #define LOGBUFFER_H
 
+#include <sys/syscall.h>
+#include <pthread.h>
+
 #include <string>
 #include <algorithm>
 #include <array>
@@ -9,9 +12,9 @@
 #include <iomanip>
 #include <ctime>
 #include <sstream>
-#include <pthread.h>
 #include <unistd.h>
-#include <sys/syscall.h>
+#include <iostream>
+
 #define gettid() syscall(SYS_gettid)
 /*
     日志缓冲类
@@ -74,6 +77,7 @@ public:
     // 向日志缓冲区写入日志
     bool Append(std::string log, size_t len)
     {
+        std::cout << "进入了Append" << std::endl;
         // 判断要写入的日志大小是否小于可用空间
         // 如果空间不够，返回false，将选用下一块缓冲区写入
         // TODO flag更改的位置是否合理
@@ -85,6 +89,7 @@ public:
             return false;
         }
 
+        std::cout << "在AppendLog中对buffer上锁后" << std::endl;
         // 每条日志消息都加上时间戳
         auto time = std::time(nullptr);
         auto localTime = *std::localtime(&time);
@@ -92,6 +97,7 @@ public:
         timeStream << std::put_time(&localTime, "[%Y-%m-%d %H:%M:%S ]");
         std::string totalLog = timeStream.str() + "[Tid:" +std::to_string(gettid())+"] " + log;
 
+        std::cout << "在AppendLog中开始写入日志" << std::endl;
         // 空间足够，写入日志
         for (auto i : totalLog)
         {
@@ -99,6 +105,7 @@ public:
             Cur++;                      // TODO memcpy/move等其他写入方式
         }
         pthread_mutex_unlock(&Mutex);
+        std::cout << "日志写入完毕" << std::endl;
         return true;
     }
 
@@ -154,6 +161,7 @@ public:
     */
     void SaveToFile(std::string fileName)
     {
+        std::cout << "In the save to file function" << std::endl;
         // 以追加模式将当前日志append到fileName文件的末尾
         std::ofstream outfile(fileName, std::ios_base::app);
         for (auto i = 0; i < this->Cur; i++)
@@ -166,6 +174,7 @@ public:
         this->Reset();
         outfile << std::endl;
         outfile.close();
+        std::cout << "日志保存完毕" << std::endl;
     }
 };
 

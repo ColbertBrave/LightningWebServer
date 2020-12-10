@@ -74,12 +74,12 @@ ssize_t Read(int fd, std::string &buffer)
             return sumReadBytes;
         }
 
-        if (onceReadBytes < 0) && (errno == EINTR)
+        if ((onceReadBytes < 0) && (errno == EINTR))
         {
             continue;
         }
 
-        if (onceReadBytes < 0) && (errno == EAGAIN)
+        if ((onceReadBytes < 0) && (errno == EAGAIN))
         {
             return sumReadBytes;
         }

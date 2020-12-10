@@ -33,12 +33,15 @@ void ThreadPool::RunThreadPool()
 
 std::shared_ptr<EventLoop> ThreadPool::GetNextEventLoop()
 {
-    if (!EventLoopList.empty())
+    
+    if (EventLoopList.empty())
     {
-        std::shared_ptr<EventLoop> nextLoop = EventLoopList[NextLoopIndex];
-        NextLoopIndex = (NextLoopIndex + 1) % ThreadNum;
-        return nextLoop;
+        return nullptr;
     }
+
+    std::shared_ptr<EventLoop> nextLoop = EventLoopList[NextLoopIndex];
+    NextLoopIndex = (NextLoopIndex + 1) % ThreadNum;
+    return nextLoop;
 }
 
 // ThreadPool::ThreadPool(int thread_num = 12, int max_requests = 10000): ThreadNum(thread_num), MaxRequests(max_requests)

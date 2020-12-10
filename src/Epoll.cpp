@@ -50,6 +50,11 @@ void Epoll::RemoveExpiredEvent()
     TimerQueuePtr->RemoveExpiredTimerNode();
 }
 
+void SetEventloopPtr(std::shared_ptr<EventLoop> eventloopPtr)
+{
+    this->EventLoopPtr = eventloopPtr;
+}
+
 std::vector<std::shared_ptr<HttpRequest>> Epoll::GetReadyEvents()
 {
     while (WebServer::Server_Run)
@@ -66,7 +71,9 @@ std::vector<std::shared_ptr<HttpRequest>> Epoll::GetReadyEvents()
         for (size_t i = 0; i < readyEventNums; i++)
         {
             int fd = ReadyEvents[i]->data.fd;
-            std::shared_ptr<HttpRequest> request;
+            std::shared_ptr<HttpRequest> request = std::make_shared<HttpRequest>();
+            request->SetEventloopPtr(EventloopPtr); 
+            // TODO 这里有问题，在request构造时就需要一个明确的EventLoopPtr了
             request->SetFd(fd);
             request->SetEvent(ReadyEvents[i]->events);
             ReadyRequestsList.push_back(request);

@@ -1,4 +1,3 @@
-#pragma once
 #include "WebServer.h"
 #include "EventLoop.h"
 #include "Logging/Logging.h"
