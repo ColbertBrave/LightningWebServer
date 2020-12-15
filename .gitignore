@@ -19,3 +19,4 @@ src/Logging/CMakeCache.txt
 src/Timer/*.cmake
 src/*/*.a
 doc
+.vscode

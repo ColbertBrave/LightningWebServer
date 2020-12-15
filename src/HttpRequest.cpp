@@ -6,12 +6,15 @@
 
 #include <iostream>
 #include <map>
+#include <memory>
 #include <functional>
 
 #include "HttpRequest.h"
 
 class EventLoop;
-HttpRequest::HttpRequest() {}   // 在epoll里用到了
+
+HttpRequest::HttpRequest(): EventLoopPtr(std::make_shared<EventLoop>()) 
+{}   // 在epoll里用到了
 
 HttpRequest::HttpRequest(int socketFd, const sockaddr_in &address): Fd(socketFd), ClientAddr(address),
                                                                     EventloopPtr(std::make_shared<EventLoop>())

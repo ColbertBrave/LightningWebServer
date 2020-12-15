@@ -15,7 +15,7 @@
 class Worker
 {
 private:
-    pthread_t                       ThreadID;
+    pthread_t                   ThreadID;
     std::shared_ptr<EventLoop>  Eventloop;
 
     static void* Run(void* args);

@@ -102,7 +102,8 @@ public:
         for (auto i : totalLog)
         {
             Buffer[Cur] = i;
-            Cur++;                      // TODO memcpy/move等其他写入方式
+            Cur++;                      
+            // TODO memcpy/move/swap等其他写入方式
         }
         pthread_mutex_unlock(&Mutex);
         std::cout << "日志写入完毕" << std::endl;

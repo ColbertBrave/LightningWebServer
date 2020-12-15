@@ -93,6 +93,7 @@ public:
 
     // 设置相关属性
     void SetFd(int fd);
+    
     void SetEvent(uint32_t event);
     void SetReadHandler(std::function<void()> &&handler);
     void SetWriteHandler(std::function<void()> &&handler);
